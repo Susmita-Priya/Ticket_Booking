@@ -132,6 +132,33 @@
                 </li>
                 @endcan
 
+                @can('faq-list')
+                    <li class="side-nav-item">
+                        <a href="{{route('faq.section')}}" class="side-nav-link">
+                            <i class=" ri-pencil-fill"></i>
+                            <span> Faq </span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('terms-list')
+                    <li class="side-nav-item">
+                        <a href="{{route('terms.section')}}" class="side-nav-link">
+                            <i class=" ri-pencil-fill"></i>
+                            <span> Terms & Condition </span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('offer-list')
+                    <li class="side-nav-item">
+                        <a href="{{route('offer.section')}}" class="side-nav-link">
+                            <i class=" ri-pencil-fill"></i>
+                            <span> Offer </span>
+                        </a>
+                    </li>
+                @endcan
+
 
 
 
