@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\admin;
-
 use App\Http\Controllers\Controller;
 use App\Models\Offer;
 use Illuminate\Http\Request;
@@ -17,7 +16,6 @@ class OfferController extends Controller
             if (!Gate::allows('offer-list')) {
                 return redirect()->route('unauthorized.action');
             }
-
             return $next($request);
         })->only('index');
     }
@@ -46,7 +44,6 @@ class OfferController extends Controller
             Toastr::success('Offer Added Successfully', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
-            // Handle the exception here
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
@@ -85,7 +82,6 @@ class OfferController extends Controller
             if (file_exists($imagePath)) {
                 unlink($imagePath);
             }
-            // Delete the Team member
             $offer->delete();
             Toastr::success('Offer Deleted Successfully', 'Success');
             return redirect()->back();
