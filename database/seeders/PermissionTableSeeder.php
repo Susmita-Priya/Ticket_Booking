@@ -40,7 +40,6 @@ class PermissionTableSeeder extends Seeder
             'about-delete',
 
 
-
             //Site Setting
             'site-setting',
             'cart-list',

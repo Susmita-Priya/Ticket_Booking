@@ -133,11 +133,11 @@ export default {
                             </div>
                             <div class="search_item">
                                 <div>check in</div>
-                                <input type="text" class="check_in search_input" placeholder="YYYY-MM-DD">
+                                <input type="date" class="check_in search_input" placeholder="YYYY-MM-DD">
                             </div>
                             <div class="search_item">
                                 <div>check out</div>
-                                <input type="text" class="check_out search_input" placeholder="YYYY-MM-DD">
+                                <input type="date" class="check_out search_input" placeholder="YYYY-MM-DD">
                             </div>
                             <div class="search_item">
                                 <div>adults</div>

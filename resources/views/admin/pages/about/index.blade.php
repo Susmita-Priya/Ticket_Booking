@@ -30,6 +30,7 @@
                 <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
                     <thead>
                     <tr>
+                        <th>S/N</th>
                         <th>Image</th>
                         <th>Title</th>
                         <th>Details</th>
@@ -38,8 +39,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($about as $aboutData)
+                    @foreach($about as $key=>$aboutData)
                     <tr>
+                        <td>{{++$key}}</td>
                         <td>
                             <img src="{{asset('images/about/'. $aboutData->image )}}" alt="Current Image" style="max-width: 50px;">
                         </td>
