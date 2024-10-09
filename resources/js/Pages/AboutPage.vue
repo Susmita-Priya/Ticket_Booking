@@ -1,16 +1,11 @@
 <script>
-
 import HomeLayout from "../FrontendBase/HomeLayout.vue";
-
 export default {
     name: "AboutPage",
     layout:HomeLayout,
 }
 </script>
 <template>
-
-
-
     <div class="intro">
         <div class="container">
             <div class="row">
@@ -28,7 +23,6 @@ export default {
     </div>
 
     <!-- Stats -->
-
     <div class="stats">
         <div class="container">
             <div class="row">
@@ -168,7 +162,6 @@ export default {
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -176,7 +169,6 @@ export default {
     </div>
 
     <!-- Add -->
-
     <div class="add">
         <div class="container">
             <div class="row">
@@ -195,11 +187,9 @@ export default {
     </div>
 
     <!-- Milestones -->
-
     <div class="milestones">
         <div class="container">
             <div class="row">
-
                 <!-- Milestone -->
                 <div class="col-lg-3 milestone_col">
                     <div class="milestone text-center">
@@ -208,7 +198,6 @@ export default {
                         <div class="milestone_text">Clients</div>
                     </div>
                 </div>
-
                 <!-- Milestone -->
                 <div class="col-lg-3 milestone_col">
                     <div class="milestone text-center">
@@ -217,7 +206,6 @@ export default {
                         <div class="milestone_text">Projects</div>
                     </div>
                 </div>
-
                 <!-- Milestone -->
                 <div class="col-lg-3 milestone_col">
                     <div class="milestone text-center">
@@ -226,7 +214,6 @@ export default {
                         <div class="milestone_text">Countries</div>
                     </div>
                 </div>
-
                 <!-- Milestone -->
                 <div class="col-lg-3 milestone_col">
                     <div class="milestone text-center">
@@ -240,7 +227,5 @@ export default {
         </div>
     </div>
 </template>
-
 <style scoped>
-
 </style>

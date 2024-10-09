@@ -23,7 +23,6 @@
     {{-- Custom Css File here --}}
     <script src="{{asset('backend/js/chart.js')}}"></script>
     <script src="{{asset('backend/js/echarts.min.js')}}"></script>
-
 </head>
 
 <body>
@@ -209,7 +208,6 @@
         </footer>
     </div>
 </div>
-
 
 <script src="{{asset('backend/js/vendor.min.js')}}"></script>
 <!-- Dropzone File Upload js -->
