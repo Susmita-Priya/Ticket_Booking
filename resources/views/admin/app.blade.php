@@ -89,7 +89,6 @@
             <span class="logo-sm">
                 <img src="{{URL::to('backend/images/bb.png')}}" alt="small logo">
             </span>
-
         </a>
 
         <div class="h-100" id="leftside-menu-container" data-simplebar>
@@ -118,10 +117,6 @@
 {{--                    </div>--}}
 {{--                </li>--}}
 {{--                @endcan--}}
-
-
-
-
 
                 @can('about-list')
                 <li class="side-nav-item">
@@ -159,9 +154,6 @@
                     </li>
                 @endcan
 
-
-
-
                 @can('site-setting')
                     <li class="side-nav-item">
                         <a href="{{route('site.setting')}}" class="side-nav-link">
@@ -170,7 +162,6 @@
                         </a>
                     </li>
                 @endcan
-
 
                 @can('role-and-permission-list')
                 <li class="side-nav-item">
