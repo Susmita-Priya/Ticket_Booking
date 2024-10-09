@@ -3,7 +3,6 @@ export default {
     name: "HomeFooter"
 }
 </script>
-
 <template>
     <!-- Footer -->
     <footer class="footer">
@@ -69,7 +68,6 @@ export default {
         </div>
     </footer>
 </template>
-
 <style scoped>
 
 </style>
