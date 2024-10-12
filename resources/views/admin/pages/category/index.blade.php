@@ -39,8 +39,7 @@
                     @foreach($category as $key=>$categoryData)
                         <tr>
                             <td>{{++$key}}</td>
-                            <td>{{$categoryData->title}}</td>
-                            <td>{!! Str::limit($categoryData->details, 30) !!}</td>
+                            <td>{{$categoryData->name}}</td>
                             <td>{{$categoryData->status==1? 'Active':'Inactive'}}</td>
                             <td style="width: 100px;">
                                 <div class="d-flex justify-content-end gap-1">
@@ -68,7 +67,7 @@
                                                     <div class="col-12">
                                                         <div class="mb-3">
                                                             <label for="name" class="form-label">Name</label>
-                                                            <input type="text" id="name" name="name" value="{{$categoryData->form}}"
+                                                            <input type="text" id="name" name="name" value="{{$categoryData->name}}"
                                                                    class="form-control" placeholder="Enter name" required>
                                                         </div>
                                                     </div>
