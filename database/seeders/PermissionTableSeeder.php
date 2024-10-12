@@ -57,6 +57,18 @@ class PermissionTableSeeder extends Seeder
             'terms-edit',
             'terms-delete',
 
+            //For Category
+            'category-list',
+            'category-create',
+            'category-edit',
+            'category-delete',
+
+            //For Type
+            'type-list',
+            'type-create',
+            'type-edit',
+            'type-delete',
+
 
             //Site Setting
             'site-setting',

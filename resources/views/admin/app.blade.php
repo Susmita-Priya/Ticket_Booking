@@ -135,6 +135,24 @@
                     </li>
                 @endcan
 
+                @can('category-list')
+                    <li class="side-nav-item">
+                        <a href="{{route('category.section')}}" class="side-nav-link">
+                            <i class=" ri-pencil-fill"></i>
+                            <span> Category </span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('type-list')
+                    <li class="side-nav-item">
+                        <a href="{{route('type.section')}}" class="side-nav-link">
+                            <i class=" ri-pencil-fill"></i>
+                            <span> Type </span>
+                        </a>
+                    </li>
+                @endcan
+
                 @can('terms-list')
                     <li class="side-nav-item">
                         <a href="{{route('terms.section')}}" class="side-nav-link">
