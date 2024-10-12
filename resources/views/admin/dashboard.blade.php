@@ -56,8 +56,8 @@
                         <div class="float-end">
                             <i class="ri-file-line widget-icon"></i>
                         </div>
-                        <h6 class="text-uppercase mt-0" title="Customers">Total Blog</h6>
-                        <h2 class="my-2">10</h2>
+                        <h6 class="text-uppercase mt-0" title="Customers">Total Offer</h6>
+                        <h2 class="my-2">{{$totalOffer}}</h2>
                     </div>
                 </div>
             </div>

@@ -58,7 +58,6 @@ Route::middleware('auth')->group(callback: function () {
     Route::put('/terms-update/{id}', [TermsController::class, 'update'])->name('terms.update');
     Route::get('/terms-delete/{id}', [TermsController::class, 'destroy'])->name('terms.destroy');
 
-
     //Role and User Section
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
