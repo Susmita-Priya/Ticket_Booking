@@ -23,7 +23,6 @@
     {{-- Custom Css File here --}}
     <script src="{{asset('backend/js/chart.js')}}"></script>
     <script src="{{asset('backend/js/echarts.min.js')}}"></script>
-
 </head>
 
 <body>
@@ -89,7 +88,6 @@
             <span class="logo-sm">
                 <img src="{{URL::to('backend/images/bb.png')}}" alt="small logo">
             </span>
-
         </a>
 
         <div class="h-100" id="leftside-menu-container" data-simplebar>
@@ -119,10 +117,6 @@
 {{--                </li>--}}
 {{--                @endcan--}}
 
-
-
-
-
                 @can('about-list')
                 <li class="side-nav-item">
                     <a href="{{route('about.section')}}" class="side-nav-link">
@@ -132,8 +126,50 @@
                 </li>
                 @endcan
 
+                @can('faq-list')
+                    <li class="side-nav-item">
+                        <a href="{{route('faq.section')}}" class="side-nav-link">
+                            <i class=" ri-pencil-fill"></i>
+                            <span> Faq </span>
+                        </a>
+                    </li>
+                @endcan
 
+                @can('category-list')
+                    <li class="side-nav-item">
+                        <a href="{{route('category.section')}}" class="side-nav-link">
+                            <i class=" ri-pencil-fill"></i>
+                            <span> Category </span>
+                        </a>
+                    </li>
+                @endcan
 
+                @can('type-list')
+                    <li class="side-nav-item">
+                        <a href="{{route('type.section')}}" class="side-nav-link">
+                            <i class=" ri-pencil-fill"></i>
+                            <span> Type </span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('terms-list')
+                    <li class="side-nav-item">
+                        <a href="{{route('terms.section')}}" class="side-nav-link">
+                            <i class=" ri-pencil-fill"></i>
+                            <span> Terms & Condition </span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('offer-list')
+                    <li class="side-nav-item">
+                        <a href="{{route('offer.section')}}" class="side-nav-link">
+                            <i class=" ri-pencil-fill"></i>
+                            <span> Offer </span>
+                        </a>
+                    </li>
+                @endcan
 
                 @can('site-setting')
                     <li class="side-nav-item">
@@ -143,7 +179,6 @@
                         </a>
                     </li>
                 @endcan
-
 
                 @can('role-and-permission-list')
                 <li class="side-nav-item">
@@ -192,7 +227,6 @@
     </div>
 </div>
 
-
 <script src="{{asset('backend/js/vendor.min.js')}}"></script>
 <!-- Dropzone File Upload js -->
 <script src="{{asset('backend/vendor/dropzone/min/dropzone.min.js')}}"></script>
@@ -237,5 +271,16 @@
             });
     });
 </script>
+
+<!-- Include JS for Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.form-control[multiple]').select2({
+            allowClear: true
+        });
+    });
+</script>
+
 </body>
 </html>

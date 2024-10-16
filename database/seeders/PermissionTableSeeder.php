@@ -39,6 +39,35 @@ class PermissionTableSeeder extends Seeder
             'about-edit',
             'about-delete',
 
+            //For Faq
+            'faq-list',
+            'faq-create',
+            'faq-edit',
+            'faq-delete',
+
+            //For Offer
+            'offer-list',
+            'offer-create',
+            'offer-edit',
+            'offer-delete',
+
+            //For Terms
+            'terms-list',
+            'terms-create',
+            'terms-edit',
+            'terms-delete',
+
+            //For Category
+            'category-list',
+            'category-create',
+            'category-edit',
+            'category-delete',
+
+            //For Type
+            'type-list',
+            'type-create',
+            'type-edit',
+            'type-delete',
 
 
             //Site Setting
