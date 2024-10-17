@@ -144,6 +144,15 @@
                     </li>
                 @endcan
 
+                @can('amenities-list')
+                <li class="side-nav-item">
+                    <a href="{{route('amenities.section')}}" class="side-nav-link">
+                        <i class=" ri-pencil-fill"></i>
+                        <span> Amenities </span>
+                    </a>
+                </li>
+            @endcan
+
                 @can('type-list')
                     <li class="side-nav-item">
                         <a href="{{route('type.section')}}" class="side-nav-link">

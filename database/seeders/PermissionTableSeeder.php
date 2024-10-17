@@ -70,6 +70,13 @@ class PermissionTableSeeder extends Seeder
             'type-delete',
 
 
+            //For Amenities
+            'amenities-list',
+            'amenities-create',
+            'amenities-edit',
+            'amenities-delete',
+
+
             //Site Setting
             'site-setting',
             'cart-list',

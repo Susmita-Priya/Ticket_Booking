@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\About;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Toastr;
+use Yoeunes\Toastr\Facades\Toastr;
 class AboutController extends Controller
 {
     public function __construct()

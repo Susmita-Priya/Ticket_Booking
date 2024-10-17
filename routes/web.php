@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\AboutController;
 use App\Http\Controllers\admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AmenitiesController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\FaqController;
 use App\Http\Controllers\admin\OfferController;
@@ -67,6 +68,12 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/category-delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
 
+    //Category Section
+    Route::get('/amenities-section', [AmenitiesController::class, 'index'])->name('amenities.section');
+    Route::post('/amenities-store', [AmenitiesController::class, 'store'])->name('amenities.store');
+    Route::put('/amenities-update/{id}', [AmenitiesController::class, 'update'])->name('amenities.update');
+    Route::get('/amenities-delete/{id}', [AmenitiesController::class, 'destroy'])->name('amenities.destroy');
+
     //Type Section
     Route::get('/type-section', [TypeController::class, 'index'])->name('type.section');
     Route::post('/type-store', [TypeController::class, 'store'])->name('type.store');
@@ -80,7 +87,6 @@ Route::middleware('auth')->group(callback: function () {
     //Site Setting
     Route::get('/site-setting', [SiteSettingController::class, 'index'])->name('site.setting');
     Route::post('/site-settings-store-update/{id?}', [SiteSettingController::class, 'createOrUpdate'])->name('site-settings.createOrUpdate');
-
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
