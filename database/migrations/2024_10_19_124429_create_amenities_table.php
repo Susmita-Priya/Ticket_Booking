@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('amenities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id');
+            $table->string('name');
             $table->string('short_details');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();

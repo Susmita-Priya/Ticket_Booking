@@ -9,9 +9,11 @@ use App\Http\Controllers\admin\OfferController;
 use App\Http\Controllers\admin\SiteSettingController;
 use App\Http\Controllers\admin\TermsController;
 use App\Http\Controllers\admin\TypeController;
+use App\Http\Controllers\Admin\VehicleController;
 use App\Http\Controllers\frontend\HomePageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Models\Vehicle;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -68,11 +70,19 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/category-delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
 
-    //Category Section
+    //Amenities Section
     Route::get('/amenities-section', [AmenitiesController::class, 'index'])->name('amenities.section');
     Route::post('/amenities-store', [AmenitiesController::class, 'store'])->name('amenities.store');
     Route::put('/amenities-update/{id}', [AmenitiesController::class, 'update'])->name('amenities.update');
     Route::get('/amenities-delete/{id}', [AmenitiesController::class, 'destroy'])->name('amenities.destroy');
+
+
+    //Vehicle Section
+    Route::get('/vehicle-section', [VehicleController::class, 'index'])->name('vehicle.section');
+    Route::post('/vehicle-store', [VehicleController::class, 'store'])->name('vehicle.store');
+    Route::put('/vehicle-update/{id}', [VehicleController::class, 'update'])->name('vehicle.update');
+    Route::get('/vehicle-delete/{id}', [VehicleController::class, 'destroy'])->name('vehicle.destroy');
+
 
     //Type Section
     Route::get('/type-section', [TypeController::class, 'index'])->name('type.section');

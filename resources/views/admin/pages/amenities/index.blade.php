@@ -30,6 +30,7 @@
                     <thead>
                     <tr>
                         <th>S/N</th>
+                        <th>Name</th>
                         <th>Short Details</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -39,6 +40,7 @@
                     @foreach($amenities as $key=>$amenitiesData)
                         <tr>
                             <td>{{++$key}}</td>
+                            <td>{{$amenitiesData->name}}</td>
                             <td>{{$amenitiesData->short_details}}</td>
                             <td>{{$amenitiesData->status==1? 'Active':'Inactive'}}</td>
                             <td style="width: 100px;">
@@ -65,6 +67,11 @@
                                                 @method('PUT')
                                                 <div class="row">
                                                     <div class="col-12">
+                                                        <div class="mb-3">
+                                                            <label for="name" class="form-label">Name</label>
+                                                            <input type="text" id="name" name="name" value="{{$amenitiesData->name}}"
+                                                                   class="form-control" placeholder="Enter Name" required>
+                                                        </div>
                                                         <div class="mb-3">
                                                             <label for="short_details" class="form-label">Short Details</label>
                                                             <input type="text" id="short_details" name="short_details" value="{{$amenitiesData->short_details}}"
@@ -130,6 +137,11 @@
                         @csrf
                         <div class="row">
                             <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" id="name" name="name"
+                                           class="form-control" placeholder="Enter Name" required>
+                                </div>
                                 <div class="mb-3">
                                     <label for="short_details" class="form-label">Short Details</label>
                                     <input type="text" id="short_details" name="short_details"

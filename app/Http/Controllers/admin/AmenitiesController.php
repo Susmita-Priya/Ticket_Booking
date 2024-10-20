@@ -31,6 +31,7 @@ class AmenitiesController extends Controller
     {
         try {
             $amenities = new Amenities();
+            $amenities->name = $request->name;
             $amenities->short_details = $request->short_details;
             $amenities->company_id = auth()->user()->id;
             $amenities->save();
@@ -46,6 +47,7 @@ class AmenitiesController extends Controller
     {
         try {
             $amenities = Amenities::find($id);
+            $amenities->name = $request->name;
             $amenities->short_details = $request->short_details;
             $amenities->status = $request->status;
             $amenities->save();

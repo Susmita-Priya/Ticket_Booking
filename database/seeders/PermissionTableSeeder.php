@@ -76,6 +76,12 @@ class PermissionTableSeeder extends Seeder
             'amenities-edit',
             'amenities-delete',
 
+            //For Vehicle
+            'vehicle-list',
+            'vehicle-create',
+            'vehicle-edit',
+            'vehicle-delete',
+
 
             //Site Setting
             'site-setting',
