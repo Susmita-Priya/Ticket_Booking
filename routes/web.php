@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AmenitiesController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\FaqController;
 use App\Http\Controllers\admin\OfferController;
+use App\Http\Controllers\Admin\SeatController;
 use App\Http\Controllers\admin\SiteSettingController;
 use App\Http\Controllers\admin\TermsController;
 use App\Http\Controllers\admin\TypeController;
@@ -82,6 +83,13 @@ Route::middleware('auth')->group(callback: function () {
     Route::post('/vehicle-store', [VehicleController::class, 'store'])->name('vehicle.store');
     Route::put('/vehicle-update/{id}', [VehicleController::class, 'update'])->name('vehicle.update');
     Route::get('/vehicle-delete/{id}', [VehicleController::class, 'destroy'])->name('vehicle.destroy');
+
+
+    //Vehicle Section
+    Route::get('/seats-section', [SeatController::class, 'index'])->name('seats.section');
+    Route::post('/seats-store', [SeatController::class, 'store'])->name('seats.store');
+    Route::put('/seats-update/{id}', [SeatController::class, 'update'])->name('seats.update');
+    Route::get('/seats-delete/{id}', [SeatController::class, 'destroy'])->name('seats.destroy');
 
 
     //Type Section

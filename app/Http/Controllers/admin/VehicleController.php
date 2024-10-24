@@ -39,6 +39,7 @@ class VehicleController extends Controller
     {
         try {
             $request->validate([
+                'name' => 'required',
                 'engin_no' => 'required',
                 'total_seat' => 'required',
             ]);
@@ -47,6 +48,7 @@ class VehicleController extends Controller
             $vehicle->category_id = $request->category_id;
             $vehicle->type_id = $request->type_id;
             $vehicle->amenities_ids = json_encode($request->amenities_ids);
+            $vehicle->name = $request->name;
             $vehicle->engin_no = $request->engin_no;
             $vehicle->total_seat = $request->total_seat;
             $vehicle->save();
@@ -62,6 +64,7 @@ class VehicleController extends Controller
     {
         try {
             $request->validate([
+                'name' => 'required',
                 'engin_no' => 'required',
                 'total_seat' => 'required',
             ]);
@@ -72,6 +75,7 @@ class VehicleController extends Controller
             $vehicle->category_id = $request->category_id;
             $vehicle->type_id = $request->type_id;
             $vehicle->amenities_ids = json_encode($request->amenities_ids);
+            $vehicle->name = $request->name;
             $vehicle->engin_no = $request->engin_no;
             $vehicle->total_seat = $request->total_seat;
             $vehicle->status = $request->status;

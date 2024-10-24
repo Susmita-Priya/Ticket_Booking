@@ -30,6 +30,7 @@
                     <thead>
                         <tr>
                             <th>S/N</th>
+                            <th>Name</th>
                             <th>Engine No</th>
                             <th>Total Seat</th>
                             <th>Category</th>
@@ -43,6 +44,7 @@
                         @foreach ($vehicles as $key => $vehicle)
                             <tr>
                                 <td>{{ ++$key }}</td>
+                                <td>{{ $vehicle->name }}</td>
                                 <td>{{ $vehicle->engin_no }}</td>
                                 <td>{{ $vehicle->total_seat }}</td>
                                 <td>
@@ -148,6 +150,14 @@
                                                             </select>
                                                         </div>
                                                     </div>
+
+                                                    <div class="row">
+                                                        <div class="col-12 mb-3">
+                                                            <label for="name" class="form-label">Name</label>
+                                                            <input type="text" id="name" name="name"
+                                                                value="{{ $vehicle->name }}" class="form-control"
+                                                                placeholder="Enter Name" required>
+                                                        </div>
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
@@ -266,6 +276,14 @@
                                         <option value="{{ $amenity->id }}">{{ $amenity->name }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" id="name" name="name" class="form-control"
+                                    placeholder="Enter Name" required>
                             </div>
                         </div>
 

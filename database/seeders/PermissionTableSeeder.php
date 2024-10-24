@@ -82,6 +82,11 @@ class PermissionTableSeeder extends Seeder
             'vehicle-edit',
             'vehicle-delete',
 
+            //For Seats
+            'seats-list',
+            'seats-create',
+            'seats-edit',
+            'seats-delete',
 
             //Site Setting
             'site-setting',

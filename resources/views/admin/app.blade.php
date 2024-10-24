@@ -162,6 +162,16 @@
                 </li>
             @endcan
 
+
+            @can('seats-list')
+                <li class="side-nav-item">
+                    <a href="{{route('seats.section')}}" class="side-nav-link">
+                        <i class=" ri-pencil-fill"></i>
+                        <span> Seats </span>
+                    </a>
+                </li>
+            @endcan
+
                 @can('type-list')
                     <li class="side-nav-item">
                         <a href="{{route('type.section')}}" class="side-nav-link">
