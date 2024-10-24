@@ -30,7 +30,7 @@ class VehicleController extends Controller
         $vehicles = Vehicle::where('company_id',auth()->user()->id)->latest()->get();
         $categories = Category::all(); 
         $types = Type::all();
-        $amenities = Amenities::all(); 
+        $amenities = Amenities::where('company_id',auth()->user()->id)->latest()->get();
 
         return view('admin.pages.vehicle.index', compact('vehicles', 'categories', 'types', 'amenities'));
     }

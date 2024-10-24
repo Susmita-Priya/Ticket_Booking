@@ -27,7 +27,7 @@ class SeatController extends Controller
     public function index(Request $request)
     {
         $seats = Seat::where('vehicle_id', $request->vehicle_id)->latest()->get();
-        $vehicles = Vehicle::all();
+        $vehicles = Vehicle::where('company_id',auth()->user()->id)->latest()->get();
 
         return view('admin.pages.seat.index', compact('vehicles', 'seats'));
     }

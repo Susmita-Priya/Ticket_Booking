@@ -45,7 +45,7 @@
                                 @php
                                     $vehicle = $vehicles->firstWhere('id', $seatData->vehicle_id);
                                 @endphp
-                                {{ $vehicle ? $vehicle->name : 'N/A' }}
+                                {{ $vehicle ? $vehicle->name : 'N/A' }} ({{ $vehicle ? $vehicle->engin_no : 'N/A' }})
                             </td>
                             <td>{{$seatData->seat_no}}</td>
                             <td>{{$seatData->is_booked==1? 'Yes':'No'}}</td>
@@ -166,7 +166,7 @@
                                 <select name="vehicle_id" class="form-select">
                                     @foreach ($vehicles as $vehicle)
                                         <option value="{{ $vehicle->id }}">
-                                            {{ $vehicle->name }}</option>
+                                            {{ $vehicle->name }} ( {{ $vehicle->engin_no }} )</option>
                                     @endforeach
                                 </select>
                             </div>
