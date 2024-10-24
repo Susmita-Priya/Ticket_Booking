@@ -23,7 +23,7 @@ class AmenitiesController extends Controller
     }
     public function index()
     {
-        $amenities = Amenities::latest()->get();
+        $amenities = Amenities::where('company_id',auth()->user()->id)->latest()->get();
         return view('admin.pages.amenities.index', compact('amenities'));
     }
 
