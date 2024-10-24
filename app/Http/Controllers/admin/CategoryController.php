@@ -23,7 +23,7 @@ class CategoryController extends Controller
     }
     public function index()
     {
-        $category = Category::latest()->get();
+        $category = Category::where('company_id',auth()->user()->id)->latest()->get();
         return view('admin.pages.category.index', compact('category'));
     }
 

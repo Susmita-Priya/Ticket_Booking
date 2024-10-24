@@ -27,7 +27,7 @@ class VehicleController extends Controller
 
     public function index()
     {
-        $vehicles = Vehicle::latest()->get();
+        $vehicles = Vehicle::where('company_id',auth()->user()->id)->latest()->get();
         $categories = Category::all(); 
         $types = Type::all();
         $amenities = Amenities::all(); 

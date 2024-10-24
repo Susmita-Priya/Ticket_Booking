@@ -41,7 +41,12 @@
                     @foreach($seats as $key=>$seatData)
                         <tr>
                             <td>{{++$key}}</td>
-                            <td>{{$seatData->vehicle_id}}</td>
+                            <td>
+                                @php
+                                    $vehicle = $vehicles->firstWhere('id', $seatData->vehicle_id);
+                                @endphp
+                                {{ $vehicle ? $vehicle->name : 'N/A' }}
+                            </td>
                             <td>{{$seatData->seat_no}}</td>
                             <td>{{$seatData->is_booked==1? 'Yes':'No'}}</td>
                             <td>{{$seatData->status==1? 'Active':'Inactive'}}</td>

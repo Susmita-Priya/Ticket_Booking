@@ -86,7 +86,7 @@ Route::middleware('auth')->group(callback: function () {
 
 
     //Vehicle Section
-    Route::get('/seats-section', [SeatController::class, 'index'])->name('seats.section');
+    Route::get('/seats-section/{vehicle_id}', [SeatController::class, 'index'])->name('seats.section');
     Route::post('/seats-store', [SeatController::class, 'store'])->name('seats.store');
     Route::put('/seats-update/{id}', [SeatController::class, 'update'])->name('seats.update');
     Route::get('/seats-delete/{id}', [SeatController::class, 'destroy'])->name('seats.destroy');

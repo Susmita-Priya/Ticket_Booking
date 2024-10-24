@@ -24,9 +24,9 @@ class SeatController extends Controller
         })->only('index');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $seats = Seat::latest()->get();
+        $seats = Seat::where('vehicle_id', $request->vehicle_id)->latest()->get();
         $vehicles = Vehicle::all();
 
         return view('admin.pages.seat.index', compact('vehicles', 'seats'));
