@@ -70,11 +70,19 @@ class PermissionTableSeeder extends Seeder
             'type-delete',
 
 
+            //For Journey Type
+            'journey_type-list',
+            'journey_type-create',
+            'journey_type-edit',
+            'journey_type-delete',
+
+
             //For Amenities
             'amenities-list',
             'amenities-create',
             'amenities-edit',
             'amenities-delete',
+
 
             //For Vehicle
             'vehicle-list',
@@ -82,16 +90,40 @@ class PermissionTableSeeder extends Seeder
             'vehicle-edit',
             'vehicle-delete',
 
+
+            //For Country
+            'country-list',
+            'country-create',
+            'country-edit',
+            'country-delete',
+
+
+            //For Location
+            'location-list',
+            'location-create',
+            'location-edit',
+            'location-delete',
+
+
             //For Seats
             'seats-list',
             'seats-create',
             'seats-edit',
             'seats-delete',
 
+
             //Site Setting
             'site-setting',
             'cart-list',
 
+
+            //For Booking
+            'booking-list',
+            'booking-create',
+            'booking-edit',
+            'booking-delete',
+
+            
             //Dashboard
             'login-log-list',
 

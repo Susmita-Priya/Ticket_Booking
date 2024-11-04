@@ -4,7 +4,10 @@ use App\Http\Controllers\admin\AboutController;
 use App\Http\Controllers\admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AmenitiesController;
 use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\CountryController;
 use App\Http\Controllers\admin\FaqController;
+use App\Http\Controllers\admin\Journey_typeController;
+use App\Http\Controllers\admin\LocationController;
 use App\Http\Controllers\admin\OfferController;
 use App\Http\Controllers\Admin\SeatController;
 use App\Http\Controllers\admin\SiteSettingController;
@@ -70,13 +73,11 @@ Route::middleware('auth')->group(callback: function () {
     Route::put('/category-update/{id}', [CategoryController::class, 'update'])->name('category.update');
     Route::get('/category-delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
-
     //Amenities Section
     Route::get('/amenities-section', [AmenitiesController::class, 'index'])->name('amenities.section');
     Route::post('/amenities-store', [AmenitiesController::class, 'store'])->name('amenities.store');
     Route::put('/amenities-update/{id}', [AmenitiesController::class, 'update'])->name('amenities.update');
     Route::get('/amenities-delete/{id}', [AmenitiesController::class, 'destroy'])->name('amenities.destroy');
-
 
     //Vehicle Section
     Route::get('/vehicle-section', [VehicleController::class, 'index'])->name('vehicle.section');
@@ -84,19 +85,36 @@ Route::middleware('auth')->group(callback: function () {
     Route::put('/vehicle-update/{id}', [VehicleController::class, 'update'])->name('vehicle.update');
     Route::get('/vehicle-delete/{id}', [VehicleController::class, 'destroy'])->name('vehicle.destroy');
 
-
-    //Vehicle Section
+    //Seat Section
     Route::get('/seats-section/{vehicle_id}', [SeatController::class, 'index'])->name('seats.section');
     Route::post('/seats-store', [SeatController::class, 'store'])->name('seats.store');
     Route::put('/seats-update/{id}', [SeatController::class, 'update'])->name('seats.update');
     Route::get('/seats-delete/{id}', [SeatController::class, 'destroy'])->name('seats.destroy');
 
+    //Country Section
+    Route::get('/country-section', [CountryController::class, 'index'])->name('country.section');
+    Route::post('/country-store', [CountryController::class, 'store'])->name('country.store');
+    Route::put('/country-update/{id}', [CountryController::class, 'update'])->name('country.update');
+    Route::get('/country-delete/{id}', [CountryController::class, 'destroy'])->name('country.destroy');
+
+    //Location Section
+    Route::get('/location-section', [LocationController::class, 'index'])->name('location.section');
+    Route::post('/location-store', [LocationController::class, 'store'])->name('location.store');
+    Route::put('/location-update/{id}', [LocationController::class, 'update'])->name('location.update');
+    Route::get('/location-delete/{id}', [LocationController::class, 'destroy'])->name('location.destroy');
 
     //Type Section
     Route::get('/type-section', [TypeController::class, 'index'])->name('type.section');
     Route::post('/type-store', [TypeController::class, 'store'])->name('type.store');
     Route::put('/type-update/{id}', [TypeController::class, 'update'])->name('type.update');
     Route::get('/type-delete/{id}', [TypeController::class, 'destroy'])->name('type.destroy');
+
+    //Journey Type Section
+    Route::get('/journey-type-section', [Journey_typeController::class, 'index'])->name('journey_type.section');
+    Route::post('/journey-type-store', [Journey_typeController::class, 'store'])->name('journey_type.store');
+    Route::put('/journey-type-update/{id}', [Journey_typeController::class, 'update'])->name('journey_type.update');
+    Route::get('/journey-type-delete/{id}', [Journey_typeController::class, 'destroy'])->name('journey_type.destroy');
+
 
     //Role and User Section
     Route::resource('roles', RoleController::class);

@@ -26,10 +26,10 @@ class SeatController extends Controller
 
     public function index(Request $request)
     {
+        
         $seats = Seat::where('vehicle_id', $request->vehicle_id)->latest()->get();
-        $vehicles = Vehicle::where('company_id',auth()->user()->id)->latest()->get();
-
-        return view('admin.pages.seat.index', compact('vehicles', 'seats'));
+        $vehicle = Vehicle::where('id', $request->vehicle_id)->get();
+        return view('admin.pages.seat.index', compact('vehicle', 'seats'));
     }
 
     public function store(Request $request)
@@ -40,7 +40,7 @@ class SeatController extends Controller
             ]);
             $seat = new Seat();
             $seat->company_id = auth()->user()->id;
-            $seat->vehicle_id = $request->vehicle_id;
+            $seat->vehicle_id = $request->vehicle_id; 
             $seat->seat_no = $request->seat_no;
             $seat->save();
             Toastr::success('Seat Added Successfully', 'Success');
@@ -61,7 +61,7 @@ class SeatController extends Controller
             if (!$seat) {
                 return redirect()->back()->with('error', 'Seat not found');
             }
-            $seat->vehicle_id = $request->vehicle_id;
+            // $seat->vehicle_id = $request->vehicle_id;
             $seat->seat_no = $request->seat_no;
             $seat->is_booked = $request->is_booked;
             $seat->status = $request->status;

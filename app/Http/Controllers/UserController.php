@@ -74,7 +74,7 @@ class UserController extends Controller
             $input['password'] = Hash::make($input['password']);
         }else{
             $input = Arr::except($input,array('password'));
-        }
+        } 
 
         $user = User::find($id);
         $user->update($input);

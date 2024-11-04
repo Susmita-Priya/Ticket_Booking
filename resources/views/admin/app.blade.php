@@ -172,6 +172,33 @@
                         </li>
                     @endcan
 
+                    @can('country-list')
+                        <li class="side-nav-item">
+                            <a href="{{ route('country.section') }}" class="side-nav-link">
+                                <i class=" ri-pencil-fill"></i>
+                                <span> Country </span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('location-list')
+                        <li class="side-nav-item">
+                            <a href="{{ route('location.section') }}" class="side-nav-link">
+                                <i class=" ri-pencil-fill"></i>
+                                <span> Location </span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('journey_type-list')
+                        <li class="side-nav-item">
+                            <a href="{{ route('journey_type.section') }}" class="side-nav-link">
+                                <i class=" ri-pencil-fill"></i>
+                                <span> Journey Type </span>
+                            </a>
+                        </li>
+                    @endcan
+
                     @can('type-list')
                         <li class="side-nav-item">
                             <a href="{{ route('type.section') }}" class="side-nav-link">
