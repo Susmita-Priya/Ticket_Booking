@@ -123,6 +123,20 @@ class PermissionTableSeeder extends Seeder
             'booking-edit',
             'booking-delete',
 
+
+            //For Cupon
+            'cupon-list',
+            'cupon-create',
+            'cupon-edit',
+            'cupon-delete',
+
+            
+            //For Plane
+            'plane-list',
+            'plane-create',
+            'plane-edit',
+            'plane-delete',
+
             
             //Dashboard
             'login-log-list',

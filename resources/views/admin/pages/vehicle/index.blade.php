@@ -7,10 +7,10 @@
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Online Ticket Booking</a></li>
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Resource</a></li>
-                        <li class="breadcrumb-item active">Vehicles</li>
+                        <li class="breadcrumb-item active">Vehicles!</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Vehicles</h4>
+                <h4 class="page-title">Vehicles!</h4>
             </div>
         </div>
     </div>
@@ -259,6 +259,7 @@
                             <div class="col-12 mb-3">
                                 <label for="category_id" class="form-label">Category</label>
                                 <select name="category_id" class="form-select">
+                                    <option selected value="">Select Category</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
@@ -270,6 +271,7 @@
                             <div class="col-12 mb-3">
                                 <label for="type_id" class="form-label">Type</label>
                                 <select name="type_id" class="form-select">
+                                    <option selected value="">Select Type</option>
                                     @foreach ($types as $type)
                                         <option value="{{ $type->id }}">{{ $type->name }}</option>
                                     @endforeach

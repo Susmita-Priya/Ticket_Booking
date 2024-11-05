@@ -198,6 +198,25 @@
                             </a>
                         </li>
                     @endcan
+                    
+
+                    @can('cupon-list')
+                        <li class="side-nav-item">
+                            <a href="{{ route('cupon.section') }}" class="side-nav-link">
+                                <i class=" ri-pencil-fill"></i>
+                                <span> Cupon </span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('plane-list')
+                        <li class="side-nav-item">
+                            <a href="{{ route('plane.section') }}" class="side-nav-link">
+                                <i class=" ri-pencil-fill"></i>
+                                <span> Plane </span>
+                            </a>
+                        </li>
+                    @endcan
 
                     @can('type-list')
                         <li class="side-nav-item">
@@ -234,8 +253,6 @@
                             </a>
                         </li>
                     @endcan
-
-
 
                     @can('role-and-permission-list')
                         <li class="side-nav-item">

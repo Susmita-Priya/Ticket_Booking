@@ -5,10 +5,12 @@ use App\Http\Controllers\admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AmenitiesController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\CountryController;
+use App\Http\Controllers\admin\CuponController;
 use App\Http\Controllers\admin\FaqController;
 use App\Http\Controllers\admin\Journey_typeController;
 use App\Http\Controllers\admin\LocationController;
 use App\Http\Controllers\admin\OfferController;
+use App\Http\Controllers\admin\PlaneController;
 use App\Http\Controllers\Admin\SeatController;
 use App\Http\Controllers\admin\SiteSettingController;
 use App\Http\Controllers\admin\TermsController;
@@ -115,6 +117,19 @@ Route::middleware('auth')->group(callback: function () {
     Route::put('/journey-type-update/{id}', [Journey_typeController::class, 'update'])->name('journey_type.update');
     Route::get('/journey-type-delete/{id}', [Journey_typeController::class, 'destroy'])->name('journey_type.destroy');
 
+    //Cupon Section
+    Route::get('/cupon-section', [CuponController::class, 'index'])->name('cupon.section');
+    Route::post('/cupon-store', [CuponController::class, 'store'])->name('cupon.store');
+    Route::put('/cupon-update/{id}', [CuponController::class, 'update'])->name('cupon.update');
+    Route::get('/cupon-delete/{id}', [CuponController::class, 'destroy'])->name('cupon.destroy');
+
+    //plane Section
+    Route::get('/plane-section', [PlaneController::class, 'index'])->name('plane.section');
+    Route::post('/plane-store', [PlaneController::class, 'store'])->name('plane.store');
+    Route::put('/plane-update/{id}', [PlaneController::class, 'update'])->name('plane.update');
+    Route::get('/plane-delete/{id}', [PlaneController::class, 'destroy'])->name('plane.destroy');
+
+    Route::get('/countries/{id}/locations', [PlaneController::class, 'getlocation'])->name('plane.getlocation');
 
     //Role and User Section
     Route::resource('roles', RoleController::class);

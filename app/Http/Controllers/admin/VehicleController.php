@@ -20,7 +20,6 @@ class VehicleController extends Controller
             if (!Gate::allows('vehicle-list')) {
                 return redirect()->route('unauthorized.action');
             }
-
             return $next($request);
         })->only('index');
     }

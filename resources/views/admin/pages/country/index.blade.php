@@ -8,10 +8,10 @@
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Online Ticket Booking</a></li>
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Resource</a></li>
-                        <li class="breadcrumb-item active">country!</li>
+                        <li class="breadcrumb-item active">Country!</li>
                     </ol>
                 </div>
-                <h4 class="page-title">country!</h4>
+                <h4 class="page-title">Country!</h4>
             </div>
         </div>
     </div>
