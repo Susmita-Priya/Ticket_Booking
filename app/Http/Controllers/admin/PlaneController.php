@@ -30,7 +30,7 @@ class PlaneController extends Controller
         $plane = Plane::where('company_id',auth()->user()->id)->latest()->get();
         $journey_types = Journey_type::all();
         $amenities = Amenities::where('company_id',auth()->user()->id)->latest()->get();
-        $countries = Country::all();
+        $countries = Country::where('status', 1)->latest()->get();
         $locations = Location::all();
         return view('admin.pages.plane.index', compact('plane', 'journey_types', 'amenities', 'countries', 'locations'));
     }

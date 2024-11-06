@@ -89,9 +89,9 @@
                                 </td>
 
                                 <!-- Edit Modal -->
-                                <div class="modal fade" id="editNewModalId{{ $planeData->id }}" data-bs-backdrop="static"
-                                    tabindex="-1" role="dialog" aria-labelledby="editNewModalLabel{{ $planeData->id }}"
-                                    aria-hidden="true">
+                                <div class="modal fade" id="editNewModalId{{ $planeData->id }}"
+                                    data-bs-backdrop="static" tabindex="-1" role="dialog"
+                                    aria-labelledby="editNewModalLabel{{ $planeData->id }}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -152,12 +152,8 @@
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
-                                                            <label for="country-select-{{ $planeData->id }}"
-                                                                class="form-label">Country</label>
-                                                            <select name="country_id"
-                                                                id="country-select-{{ $planeData->id }}"
-                                                                class="form-select edit-country-select"
-                                                                data-plane-id="{{ $planeData->id }}">
+                                                            <label for="country-select-{{ $planeData->id }}" class="form-label">Country</label>
+                                                            <select name="country_id" id="country-select-{{ $planeData->id }}" class="form-select edit-country-select" data-plane-id="{{ $planeData->id }}">
                                                                 <option selected value="">Select Country</option>
                                                                 @foreach ($countries as $country)
                                                                     <option value="{{ $country->id }}"
@@ -170,11 +166,8 @@
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
-                                                            <label for="location-select-{{ $planeData->id }}"
-                                                                class="form-label">Location</label>
-                                                            <select name="location_id"
-                                                                id="location-select-{{ $planeData->id }}"
-                                                                class="form-select">
+                                                            <label for="location-select-{{ $planeData->id }}" class="form-label">Location</label>
+                                                            <select name="location_id" id="location-select-{{ $planeData->id }}" class="form-select">
                                                                 {{-- <option selected value="">Select Location</option> --}}
                                                                 <!-- Sub categories will be dynamically loaded here -->
                                                                 @foreach ($locations as $location)
@@ -183,7 +176,7 @@
                                                                         {{ $location->name }}</option>
                                                                 @endforeach
                                                             </select>
-                                                        </div>`
+                                                        </div>
                                                     </div>
 
                                                     <div class="d-flex justify-content-end">
@@ -349,10 +342,11 @@
                 var planeId = modal.find('.edit-country-select').data('plane-id');
                 var countryId = $('#country-select-' + planeId).val();
                 var selectedLocationId = modal.find('#location-select-' + planeId)
-            .val(); // Current selected location
+                .val(); // Current selected location
 
                 loadlocations(countryId, '#location-select-' + planeId, selectedLocationId);
             });
         });
     </script>
+
 @endsection
