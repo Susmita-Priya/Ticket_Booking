@@ -127,32 +127,8 @@
                     {{--                </li> --}}
                     {{--                @endcan --}}
 
-                    @can('about-list')
-                        <li class="side-nav-item">
-                            <a href="{{ route('about.section') }}" class="side-nav-link">
-                                <i class=" ri-pencil-fill"></i>
-                                <span> About </span>
-                            </a>
-                        </li>
-                    @endcan
 
-                    @can('faq-list')
-                        <li class="side-nav-item">
-                            <a href="{{ route('faq.section') }}" class="side-nav-link">
-                                <i class=" ri-pencil-fill"></i>
-                                <span> Faq </span>
-                            </a>
-                        </li>
-                    @endcan
 
-                    @can('category-list')
-                        <li class="side-nav-item">
-                            <a href="{{ route('category.section') }}" class="side-nav-link">
-                                <i class=" ri-pencil-fill"></i>
-                                <span> Category </span>
-                            </a>
-                        </li>
-                    @endcan
 
                     @can('amenities-list')
                         <li class="side-nav-item">
@@ -163,14 +139,6 @@
                         </li>
                     @endcan
 
-                    @can('vehicle-list')
-                        <li class="side-nav-item">
-                            <a href="{{ route('vehicle.section') }}" class="side-nav-link">
-                                <i class=" ri-pencil-fill"></i>
-                                <span> Vehicle </span>
-                            </a>
-                        </li>
-                    @endcan
 
                     @can('country-list')
                         <li class="side-nav-item">
@@ -190,67 +158,131 @@
                         </li>
                     @endcan
 
-                    @can('journey_type-list')
-                        <li class="side-nav-item">
-                            <a href="{{ route('journey_type.section') }}" class="side-nav-link">
-                                <i class=" ri-pencil-fill"></i>
-                                <span> Journey Type </span>
-                            </a>
-                        </li>
-                    @endcan
-                    
+
 
                     @can('cupon-list')
                         <li class="side-nav-item">
                             <a href="{{ route('cupon.section') }}" class="side-nav-link">
                                 <i class=" ri-pencil-fill"></i>
-                                <span> Cupon </span>
+                                <span> Coupon </span>
                             </a>
                         </li>
                     @endcan
 
-                    @can('plane-list')
+
+
+
+
+
+                    @can('menu-list-for-bus')
                         <li class="side-nav-item">
-                            <a href="{{ route('plane.section') }}" class="side-nav-link">
-                                <i class=" ri-pencil-fill"></i>
-                                <span> Plane </span>
+                            <a data-bs-toggle="collapse" href="#sidebarPages102" aria-expanded="false"
+                               aria-controls="sidebarPages102" class="side-nav-link">
+                                <i class="ri-rotate-lock-line"></i>
+                                <span>For Bus</span>
+                                <span class="menu-arrow"></span>
                             </a>
+                            <div class="collapse" id="sidebarPages102">
+                                <ul class="side-nav-second-level">
+                                    @can('type-list')
+                                        <li>
+                                            <a href="{{ route('type.section') }}">Type</a>
+                                        </li>
+                                    @endcan
+                                    @can('vehicle-list')
+                                        <li>
+                                            <a href="{{ route('vehicle.section') }}">Vehicle</a>
+                                        </li>
+                                    @endcan
+                                </ul>
+                            </div>
                         </li>
                     @endcan
 
-                    @can('type-list')
+
+                    @can('menu-list-for-plane')
                         <li class="side-nav-item">
-                            <a href="{{ route('type.section') }}" class="side-nav-link">
-                                <i class=" ri-pencil-fill"></i>
-                                <span> Type </span>
+                            <a data-bs-toggle="collapse" href="#sidebarPages103" aria-expanded="false"
+                               aria-controls="sidebarPages103" class="side-nav-link">
+                                <i class="ri-rotate-lock-line"></i>
+                                <span>For Flight</span>
+                                <span class="menu-arrow"></span>
                             </a>
+                            <div class="collapse" id="sidebarPages103">
+                                <ul class="side-nav-second-level">
+                                    @can('journey_type-list')
+                                        <li>
+                                            <a href="{{ route('journey_type.section') }}"> Journey Type</a>
+                                        </li>
+                                    @endcan
+                                    @can('plane-list')
+                                        <li>
+                                            <a href="{{ route('plane.section') }}">Plane</a>
+                                        </li>
+                                    @endcan
+
+
+
+                                </ul>
+                            </div>
                         </li>
                     @endcan
 
-                    @can('terms-list')
-                        <li class="side-nav-item">
-                            <a href="{{ route('terms.section') }}" class="side-nav-link">
-                                <i class=" ri-pencil-fill"></i>
-                                <span> Terms & Condition </span>
-                            </a>
-                        </li>
-                    @endcan
 
-                    @can('offer-list')
-                        <li class="side-nav-item">
-                            <a href="{{ route('offer.section') }}" class="side-nav-link">
-                                <i class=" ri-pencil-fill"></i>
-                                <span> Offer </span>
-                            </a>
-                        </li>
-                    @endcan
 
-                    @can('site-setting')
+
+
+
+
+
+
+                @can('admin-menu-list')
                         <li class="side-nav-item">
-                            <a href="{{ route('site.setting') }}" class="side-nav-link">
-                                <i class="ri-drag-move-fill"></i>
-                                <span> Site Setting </span>
+                            <a data-bs-toggle="collapse" href="#sidebarPages101" aria-expanded="false"
+                               aria-controls="sidebarPages101" class="side-nav-link">
+                                <i class="ri-rotate-lock-line"></i>
+                                <span>Admin Menu </span>
+                                <span class="menu-arrow"></span>
                             </a>
+                            <div class="collapse" id="sidebarPages101">
+                                <ul class="side-nav-second-level">
+                                    @can('about-list')
+                                        <li>
+                                            <a href="{{ route('about.section') }}">About</a>
+                                        </li>
+                                    @endcan
+
+                                     @can('faq-list')
+                                        <li>
+                                            <a href="{{ route('faq.section') }}">Faq</a>
+                                        </li>
+                                     @endcan
+
+                                    @can('category-list')
+                                        <li>
+                                            <a href="{{ route('category.section') }}">Category</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('offer-list')
+                                        <li>
+                                            <a href="{{ route('offer.section') }}">Offer</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('terms-list')
+                                        <li>
+                                            <a href="{{ route('terms.section') }}">Terms & Condition</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('site-setting')
+                                        <li>
+                                            <a href="{{ route('site.setting') }}">Site Setting</a>
+                                        </li>
+                                    @endcan
+                                </ul>
+                            </div>
                         </li>
                     @endcan
 

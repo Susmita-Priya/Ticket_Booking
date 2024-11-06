@@ -130,16 +130,19 @@ class PermissionTableSeeder extends Seeder
             'cupon-edit',
             'cupon-delete',
 
-            
+
             //For Plane
             'plane-list',
             'plane-create',
             'plane-edit',
             'plane-delete',
 
-            
+
             //Dashboard
             'login-log-list',
+            'admin-menu-list',
+            'menu-list-for-bus',
+            'menu-list-for-plane',
 
 
         ];

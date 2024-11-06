@@ -16,6 +16,7 @@ use App\Http\Controllers\admin\SiteSettingController;
 use App\Http\Controllers\admin\TermsController;
 use App\Http\Controllers\admin\TypeController;
 use App\Http\Controllers\Admin\VehicleController;
+use App\Http\Controllers\api\UserController as ApiUserController;
 use App\Http\Controllers\frontend\HomePageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -130,6 +131,7 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/plane-delete/{id}', [PlaneController::class, 'destroy'])->name('plane.destroy');
 
     Route::get('/countries/{id}/locations', [PlaneController::class, 'getlocation'])->name('plane.getlocation');
+
 
     //Role and User Section
     Route::resource('roles', RoleController::class);
