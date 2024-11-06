@@ -141,6 +141,8 @@ class PermissionTableSeeder extends Seeder
             //Dashboard
             'login-log-list',
             'admin-menu-list',
+            'menu-list-for-bus',
+            'menu-list-for-plane',
 
 
         ];
