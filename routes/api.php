@@ -18,7 +18,12 @@ use Illuminate\Support\Facades\Route;
 Route::post('/user-registration', [UserController::class, 'storeRegistration']);
 Route::post('/verify', [UserController::class, 'verify']);
 Route::post('/login', [UserController::class, 'login']);
-Route::get('/getinfo',[UserController::class, 'getinfo']);
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('getinfo', [UserController::class, 'getinfo']);
+
+});
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

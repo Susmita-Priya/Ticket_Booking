@@ -127,7 +127,7 @@ class UserController extends Controller
 
     public function getinfo()
     {
-        $user = User::all();
+        $user = Auth::user();
 
         return response()->json([
             'message' => 'Login successful.',
