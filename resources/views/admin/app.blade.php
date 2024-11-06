@@ -198,7 +198,7 @@
                             </a>
                         </li>
                     @endcan
-                    
+
 
                     @can('cupon-list')
                         <li class="side-nav-item">
@@ -251,6 +251,33 @@
                                 <i class="ri-drag-move-fill"></i>
                                 <span> Site Setting </span>
                             </a>
+                        </li>
+                    @endcan
+
+
+                    @can('admin-menu-list')
+                        <li class="side-nav-item">
+                            <a data-bs-toggle="collapse" href="#sidebarPages101" aria-expanded="false"
+                               aria-controls="sidebarPages" class="side-nav-link">
+                                <i class="ri-rotate-lock-line"></i>
+                                <span>Permission Manage </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <div class="collapse" id="sidebarPages101">
+                                <ul class="side-nav-second-level">
+                                    @can('user-list')
+                                        <li>
+                                            <a href="{{ url('users') }}">Create User</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('role-list')
+                                        <li>
+                                            <a href="{{ url('roles') }}">Role & Permission</a>
+                                        </li>
+                                    @endcan
+                                </ul>
+                            </div>
                         </li>
                     @endcan
 
