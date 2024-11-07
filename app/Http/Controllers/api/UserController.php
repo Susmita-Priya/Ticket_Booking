@@ -125,7 +125,7 @@ class UserController extends Controller
         }
     }
 
-    public function getinfo()
+    public function UserInfo()
     {
         $user = Auth::user();
 
