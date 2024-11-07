@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class CuponController extends Controller
 {
-    public function getinfo()
+    public function cupon()
     {
        $cupons = Cupon::all();
 

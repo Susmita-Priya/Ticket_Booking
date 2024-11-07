@@ -30,12 +30,11 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 
-
 // Cupon routes
-Route::get('/getcupons', [CuponController::class, 'getinfo']);
+Route::get('/cupon', [CuponController::class, 'cupon']);
 
 
 // Plane routes
-Route::get('/getplanes', [PlaneController::class, 'getinfo']);
+Route::get('/plane', [PlaneController::class, 'plane']);
 
 

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class PlaneController extends Controller
 {
-    public function getinfo()
+    public function plane()
     {
        $planes = Plane::all();
 
