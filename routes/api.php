@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\api\CuponController;
+use App\Http\Controllers\api\PlaneController;
 use App\Http\Controllers\api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,19 +17,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+// User routes
 Route::post('/user-registration', [UserController::class, 'storeRegistration']);
 Route::post('/verify', [UserController::class, 'verify']);
 Route::post('/login', [UserController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::get('getinfo', [UserController::class, 'getinfo']);
+    Route::get('/getuserinfo', [UserController::class, 'getinfo']);
 
 });
 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+// Cupon routes
+Route::get('/getcupons', [CuponController::class, 'getinfo']);
+
+
+// Plane routes
+Route::get('/getplanes', [PlaneController::class, 'getinfo']);
 
 
