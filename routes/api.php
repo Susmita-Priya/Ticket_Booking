@@ -23,9 +23,10 @@ Route::post('/user-registration', [UserController::class, 'storeRegistration']);
 Route::post('/verify', [UserController::class, 'verify']);
 Route::post('/login', [UserController::class, 'login']);
 
+//user info
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::get('/getuserinfo', [UserController::class, 'getinfo']);
+    Route::get('/user-info', [UserController::class, 'userInfo']);
 
 });
 
