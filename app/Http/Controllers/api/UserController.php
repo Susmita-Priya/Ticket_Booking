@@ -116,6 +116,7 @@ class UserController extends Controller
                 'message' => 'Login successful.',
                 'token' => $token,
                 'user' => $user, // Optionally return user data
+           
             ], 200);
         } else {
             // Return error response for invalid credentials 
