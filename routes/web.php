@@ -34,9 +34,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return view('auth.login');
+});
 
-Route::get('/', [HomePageController::class, 'index'])->name('home');
 
+//Route::get('/', [HomePageController::class, 'index'])->name('home');
 Route::get('/about', [HomePageController::class, 'about'])->name('about');
 
 Route::get('/offer', [HomePageController::class, 'offer'])->name('offer');
