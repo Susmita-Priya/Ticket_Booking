@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\admin\AboutController;
 use App\Http\Controllers\admin\AdminDashboardController;
-use App\Http\Controllers\Admin\AmenitiesController;
+use App\Http\Controllers\admin\AmenitiesController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\CountryController;
 use App\Http\Controllers\admin\CuponController;
@@ -11,11 +11,11 @@ use App\Http\Controllers\admin\Journey_typeController;
 use App\Http\Controllers\admin\LocationController;
 use App\Http\Controllers\admin\OfferController;
 use App\Http\Controllers\admin\PlaneController;
-use App\Http\Controllers\Admin\SeatController;
+use App\Http\Controllers\admin\SeatController;
 use App\Http\Controllers\admin\SiteSettingController;
 use App\Http\Controllers\admin\TermsController;
 use App\Http\Controllers\admin\TypeController;
-use App\Http\Controllers\Admin\VehicleController;
+use App\Http\Controllers\admin\VehicleController;
 use App\Http\Controllers\api\UserController as ApiUserController;
 use App\Http\Controllers\frontend\HomePageController;
 use App\Http\Controllers\RoleController;
