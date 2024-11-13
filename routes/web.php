@@ -11,6 +11,7 @@ use App\Http\Controllers\admin\Journey_typeController;
 use App\Http\Controllers\admin\LocationController;
 use App\Http\Controllers\admin\OfferController;
 use App\Http\Controllers\admin\PlaneController;
+use App\Http\Controllers\admin\PlaneJourneyController;
 use App\Http\Controllers\Admin\SeatController;
 use App\Http\Controllers\admin\SiteSettingController;
 use App\Http\Controllers\admin\TermsController;
@@ -130,7 +131,14 @@ Route::middleware('auth')->group(callback: function () {
     Route::put('/plane-update/{id}', [PlaneController::class, 'update'])->name('plane.update');
     Route::get('/plane-delete/{id}', [PlaneController::class, 'destroy'])->name('plane.destroy');
 
-    Route::get('/countries/{id}/locations', [PlaneController::class, 'getlocation'])->name('plane.getlocation');
+
+    //Plane Journey Section
+    Route::get('/plane-journey-section', [PlaneJourneyController::class, 'index'])->name('plane_journey.section');
+    Route::post('/plane-journey-store', [PlaneJourneyController::class, 'store'])->name('plane_journey.store');
+    Route::put('/plane-journey-update/{id}', [PlaneJourneyController::class, 'update'])->name('plane_journey.update');
+    Route::get('/plane-journey-delete/{id}', [PlaneJourneyController::class, 'destroy'])->name('plane_journey.destroy');
+    
+    Route::get('/countries/{id}/locations', [PlaneJourneyController::class, 'getlocation'])->name('plane.getlocation');
 
 
     //Role and User Section

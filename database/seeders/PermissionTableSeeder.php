@@ -137,6 +137,13 @@ class PermissionTableSeeder extends Seeder
             'plane-edit',
             'plane-delete',
 
+            
+            //For Plane Journey
+            'plane-journey-list',
+            'plane-journey-create',
+            'plane-journey-edit',
+            'plane-journey-delete',
+
 
             //Dashboard
             'login-log-list',

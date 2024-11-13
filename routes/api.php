@@ -3,6 +3,7 @@
 use App\Http\Controllers\api\CuponController;
 use App\Http\Controllers\api\PassengerController;
 use App\Http\Controllers\api\PlaneController;
+use App\Http\Controllers\api\SearchController;
 use App\Http\Controllers\api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,18 +29,16 @@ Route::post('/login', [UserController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/user-info', [UserController::class, 'userInfo']);
-    Route::post('/store-passenger', [PassengerController::class, 'storePassenger']);
 
+    // Passenger routes
+    Route::post('/store-passenger', [PassengerController::class, 'storePassenger']);
 });
 
 // Define Cupon routes
 Route::get('/cupon', [CuponController::class, 'cupon']);
 
-
 // Plane routes
 Route::get('/plane', [PlaneController::class, 'plane']);
 
-
-// Passenger routes
-
-
+// search routes
+Route::post('/search', [SearchController::class, 'search']);

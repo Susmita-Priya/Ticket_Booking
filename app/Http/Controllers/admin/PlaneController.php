@@ -28,32 +28,20 @@ class PlaneController extends Controller
     public function index()
     {
         $plane = Plane::where('company_id',auth()->user()->id)->latest()->get();
-        $journey_types = Journey_type::all();
         $amenities = Amenities::where('company_id',auth()->user()->id)->latest()->get();
-        $countries = Country::where('status', 1)->latest()->get();
-        $locations = Location::all();
-        return view('admin.pages.plane.index', compact('plane', 'journey_types', 'amenities', 'countries', 'locations'));
-    }
-
-    public function getlocation($id)
-    {
-         $locations = Location::where('country_id', $id)->get();
-         return response()->json($locations);
+        return view('admin.pages.plane.index', compact('plane', 'amenities'));
     }
 
     public function store(Request $request)
     {
         try {
             $request->validate([
-                'name' => 'required',
+                'plane_name' => 'required',
             ]);
             $plane = new Plane();
             $plane->company_id = auth()->user()->id;
-            $plane->journey_type_id = $request->journey_type_id;
-            $plane->amenities_ids = json_encode($request->amenities_ids);
-            $plane->country_id = $request->country_id;
-            $plane->location_id = $request->location_id;
-            $plane->name = $request->name;
+            $plane->plane_name = $request->plane_name;
+            $plane->amenities_id = json_encode($request->amenities_id);
             $plane->save();
             Toastr::success('Plane Added Successfully', 'Success');
             return redirect()->back();
@@ -67,14 +55,11 @@ class PlaneController extends Controller
     {
         try {
             $request->validate([
-                'name' => 'required',
+                'plane_name' => 'required',
             ]);
             $plane = Plane::find($id);
-            $plane->journey_type_id = $request->journey_type_id;
-            $plane->amenities_ids = json_encode($request->amenities_ids);
-            $plane->country_id = $request->country_id;
-            $plane->location_id = $request->location_id;
-            $plane->name = $request->name;
+            $plane->plane_name = $request->plane_name;
+            $plane->amenities_id = json_encode($request->amenities_id);
             $plane->save();
             Toastr::success('Plane Updated Successfully', 'Success');
             return redirect()->back();

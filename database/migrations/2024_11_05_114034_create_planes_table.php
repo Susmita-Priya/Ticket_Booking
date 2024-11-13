@@ -14,11 +14,8 @@ return new class extends Migration
         Schema::create('planes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id');
-            $table->foreignId('journey_type_id');
-            $table->json('amenities_ids');
-            $table->foreignId('country_id');
-            $table->foreignId('location_id');
-            $table->string('name');
+            $table->string('plane_name');
+            $table->json('amenities_id');
             $table->timestamps();
         });
     }
