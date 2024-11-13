@@ -138,6 +138,8 @@ Route::middleware('auth')->group(callback: function () {
     Route::put('/plane-journey-update/{id}', [PlaneJourneyController::class, 'update'])->name('plane_journey.update');
     Route::get('/plane-journey-delete/{id}', [PlaneJourneyController::class, 'destroy'])->name('plane_journey.destroy');
     
+
+    // country and location
     Route::get('/countries/{id}/locations', [PlaneJourneyController::class, 'getlocation'])->name('plane.getlocation');
 
 
