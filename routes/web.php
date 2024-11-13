@@ -8,6 +8,7 @@ use App\Http\Controllers\admin\CountryController;
 use App\Http\Controllers\admin\CuponController;
 use App\Http\Controllers\admin\FaqController;
 use App\Http\Controllers\admin\Journey_typeController;
+use App\Http\Controllers\admin\JourneyTypeController;
 use App\Http\Controllers\admin\LocationController;
 use App\Http\Controllers\admin\OfferController;
 use App\Http\Controllers\admin\PlaneController;
@@ -116,10 +117,10 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/type-delete/{id}', [TypeController::class, 'destroy'])->name('type.destroy');
 
     //Journey Type Section
-    Route::get('/journey-type-section', [Journey_typeController::class, 'index'])->name('journey_type.section');
-    Route::post('/journey-type-store', [Journey_typeController::class, 'store'])->name('journey_type.store');
-    Route::put('/journey-type-update/{id}', [Journey_typeController::class, 'update'])->name('journey_type.update');
-    Route::get('/journey-type-delete/{id}', [Journey_typeController::class, 'destroy'])->name('journey_type.destroy');
+    Route::get('/journey-type-section', [JourneyTypeController::class, 'index'])->name('journey_type.section');
+    Route::post('/journey-type-store', [JourneyTypeController::class, 'store'])->name('journey_type.store');
+    Route::put('/journey-type-update/{id}', [JourneyTypeController::class, 'update'])->name('journey_type.update');
+    Route::get('/journey-type-delete/{id}', [JourneyTypeController::class, 'destroy'])->name('journey_type.destroy');
 
     //Cupon Section
     Route::get('/cupon-section', [CuponController::class, 'index'])->name('cupon.section');

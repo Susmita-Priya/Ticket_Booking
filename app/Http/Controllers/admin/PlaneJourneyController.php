@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Amenities;
 use App\Models\Country;
 use App\Models\Journey_type;
+use App\Models\JourneyType;
 use App\Models\Location;
 use App\Models\Plane;
 use App\Models\PlaneJourney;
@@ -30,7 +31,7 @@ class PlaneJourneyController extends Controller
     {
         $plane_journey = PlaneJourney::where('company_id',auth()->user()->id)->latest()->get();
         $planes = Plane::where('company_id',auth()->user()->id)->latest()->get();
-        $journey_types = Journey_type::all();
+        $journey_types = JourneyType::all();
         $countries = Country::where('status', 1)->latest()->get();
         $locations = Location::all();
 
