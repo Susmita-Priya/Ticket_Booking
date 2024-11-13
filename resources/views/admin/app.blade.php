@@ -221,6 +221,12 @@
                                         </li>
                                     @endcan
 
+                                    @can('plane-journey-list')
+                                        <li>
+                                            <a href="{{ route('plane_journey.section') }}">Plane Journey</a>
+                                        </li>
+                                    @endcan
+
 
 
                                 </ul>

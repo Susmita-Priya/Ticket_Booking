@@ -30,11 +30,8 @@
                     <thead>
                         <tr>
                             <th>S/N</th>
-                            <th>Name</th>
-                            <th>Journey Type</th>
+                            <th>Plane Name</th>
                             <th>Amenities</th>
-                            <th>Country</th>
-                            <th>Location</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -42,36 +39,16 @@
                         @foreach ($plane as $key => $planeData)
                             <tr>
                                 <td>{{ ++$key }}</td>
-                                <td>{{ $planeData->name }}</td>
+                                <td>{{ $planeData->plane_name }}</td>
                                 <td>
                                     @php
-                                        $journey_type = $journey_types->firstWhere('id', $planeData->journey_type_id);
-                                    @endphp
-                                    {{ $journey_type ? $journey_type->name : 'N/A' }}
-                                </td>
-
-                                <td>
-                                    @php
-                                        $planeAmenities = json_decode($planeData->amenities_ids, true) ?? [];
+                                        $planeAmenities = json_decode($planeData->amenities_id, true) ?? [];
                                     @endphp
                                     @foreach ($amenities as $amenity)
                                         @if (in_array($amenity->id, $planeAmenities))
                                             <span class="badge bg-primary">{{ $amenity->name }}</span>
                                         @endif
                                     @endforeach
-                                </td>
-
-                                <td>
-                                    @php
-                                        $country = $countries->firstWhere('id', $planeData->country_id);
-                                    @endphp
-                                    {{ $country ? $country->name : 'N/A' }}
-                                </td>
-                                <td>
-                                    @php
-                                        $location = $locations->firstWhere('id', $planeData->location_id);
-                                    @endphp
-                                    {{ $location ? $location->name : 'N/A' }}
                                 </td>
 
                                 <td style="width: 100px;">
@@ -107,73 +84,30 @@
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
-                                                            <label for="name" class="form-label">Name</label>
-                                                            <input type="text" id="name" name="name"
-                                                                value="{{ $planeData->name }}" class="form-control"
+                                                            <label for="plane_name" class="form-label">Plane Name</label>
+                                                            <input type="text" id="plane_name" name="plane_name"
+                                                                value="{{ $planeData->plane_name }}" class="form-control"
                                                                 placeholder="Enter Name" required>
                                                         </div>
                                                     </div>
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
-                                                            <label for="journey_type_id" class="form-label">Journey
-                                                                Type</label>
-                                                            <select name="journey_type_id" class="form-select">
-                                                                @foreach ($journey_types as $journey_type)
-                                                                    <option value="{{ $journey_type->id }}"
-                                                                        {{ $planeData->journey_type_id == $journey_type->id ? 'selected' : '' }}>
-                                                                        {{ $journey_type->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row">
-                                                        <div class="col-12 mb-3">
-                                                            <label for="amenities_ids" class="form-label">Amenities</label>
-                                                            <select name="amenities_ids[]"
+                                                            <label for="amenities_id" class="form-label">Amenities</label>
+                                                            <select name="amenities_id[]"
                                                                 class="select2 form-control select2-multiple"
                                                                 data-toggle="select2" multiple="multiple">
                                                                 @foreach ($amenities as $amenity)
                                                                     @php
                                                                         $selectedAmenities =
                                                                             json_decode(
-                                                                                $planeData->amenities_ids,
+                                                                                $planeData->amenities_id,
                                                                                 true,
                                                                             ) ?? [];
                                                                     @endphp
                                                                     <option value="{{ $amenity->id }}"
                                                                         {{ in_array($amenity->id, $selectedAmenities) ? 'selected' : '' }}>
                                                                         {{ $amenity->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row">
-                                                        <div class="col-12 mb-3">
-                                                            <label for="country-select-{{ $planeData->id }}" class="form-label">Country</label>
-                                                            <select name="country_id" id="country-select-{{ $planeData->id }}" class="form-select edit-country-select" data-plane-id="{{ $planeData->id }}">
-                                                                <option selected value="">Select Country</option>
-                                                                @foreach ($countries as $country)
-                                                                    <option value="{{ $country->id }}"
-                                                                        {{ $planeData->country_id == $country->id ? 'selected' : '' }}>
-                                                                        {{ $country->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row">
-                                                        <div class="col-12 mb-3">
-                                                            <label for="location-select-{{ $planeData->id }}" class="form-label">Location</label>
-                                                            <select name="location_id" id="location-select-{{ $planeData->id }}" class="form-select">
-                                                                {{-- <option selected value="">Select Location</option> --}}
-                                                                <!-- Sub categories will be dynamically loaded here -->
-                                                                @foreach ($locations as $location)
-                                                                    <option value="{{ $location->id }}"
-                                                                        {{ $planeData->location_id == $location->id ? 'selected' : '' }}>
-                                                                        {{ $location->name }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -235,54 +169,20 @@
                         @csrf
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" id="name" name="name" class="form-control"
+                                <label for="plane_name" class="form-label">Plane Name</label>
+                                <input type="text" id="plane_name" name="plane_name" class="form-control"
                                     placeholder="Enter Name" required>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="journey_type_id" class="form-label">Journey Type</label>
-                                <select name="journey_type_id" class="form-select">
-                                    <option selected value="">Select Journey Type</option>
-                                    @foreach ($journey_types as $journey_type)
-                                        <option value="{{ $journey_type->id }}">{{ $journey_type->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <label for="amenities_ids" class="form-label">Amenities</label>
-                                <select name="amenities_ids[]" class="select2 form-control select2-multiple"
+                                <label for="amenities_id" class="form-label">Amenities</label>
+                                <select name="amenities_id[]" class="select2 form-control select2-multiple"
                                     data-toggle="select2" multiple="multiple">
                                     @foreach ($amenities as $amenity)
                                         <option value="{{ $amenity->id }}">{{ $amenity->name }}</option>
                                     @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <label for="country-select" class="form-label">Country</label>
-                                <select name="country_id" id="country-select" class="form-select">
-                                    <option selected value="">Select Country</option>
-                                    @foreach ($countries as $country)
-                                        <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <label for="location-select" class="form-label">Location</label>
-                                <select name="location_id" id="location-select" class="form-select">
-                                    <option selected value="">Select Location</option>
-                                    <!-- Sub categories will be dynamically loaded here -->
                                 </select>
                             </div>
                         </div>
@@ -295,58 +195,5 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            function loadlocations(countryId, locationSelectId, selectedLocationId = null) {
-                if (countryId) {
-                    $.ajax({
-                        url: '/countries/' + countryId + '/locations',
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(data) {
-                            console.log(data);
-                            $(locationSelectId).empty();
-                            $(locationSelectId).append('<option value="">Select Location</option>');
-                            $.each(data, function(key, value) {
-                                var selected = selectedLocationId == value.id ? 'selected' : '';
-                                $(locationSelectId).append('<option value="' + value.id + '" ' +
-                                    selected + '>' + value.name + '</option>');
-                            });
-                        },
-                        error: function(xhr, status, error) {
-                            console.log(error);
-                        }
-                    });
-                } else {
-                    $(locationSelectId).empty();
-                    $(locationSelectId).append('<option value="">Select Location</option>');
-                }
-            }
-
-            // Add Modal Country Change
-            $('#country-select').on('change', function() {
-                var countryId = $(this).val();
-                loadlocations(countryId, '#location-select');
-            });
-
-            // Edit Modal Country Change
-            $('.edit-country-select').on('change', function() {
-                var planeId = $(this).data('plane-id');
-                var countryId = $(this).val();
-                loadlocations(countryId, '#location-select-' + planeId);
-            });
-
-            $('.modal').on('show.bs.modal', function(event) {
-                var modal = $(this);
-                var planeId = modal.find('.edit-country-select').data('plane-id');
-                var countryId = $('#country-select-' + planeId).val();
-                var selectedLocationId = modal.find('#location-select-' + planeId)
-                .val(); // Current selected location
-
-                loadlocations(countryId, '#location-select-' + planeId, selectedLocationId);
-            });
-        });
-    </script>
 
 @endsection

@@ -12,10 +12,7 @@ class Plane extends Model
 
     protected $fillable = [
         'company_id',
-        'journey_type_id',
-        'amenities_ids',
-        'country_id',
-        'location_id',
-        'name',
+        'plane_name',
+        'amenities_id'
     ];
 }
