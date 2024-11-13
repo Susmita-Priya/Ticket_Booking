@@ -8,13 +8,19 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Plane extends Model
 {
-    use HasApiTokens, HasFactory;
+    use HasFactory;
 
     protected $fillable = [
         'company_id',
         'plane_name',
         'amenities_id'
     ];
+
+    // protected $casts = [
+    //     'amenities_id' => 'array',
+    // ];
+
+
 
     public function company()
     {

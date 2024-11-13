@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\JourneyType;
 use App\Models\PlaneJourney;
 use Illuminate\Http\Request;
 
@@ -12,33 +13,39 @@ class SearchController extends Controller
     {
         // $plane_journeys = Plane_journey::all();
 
-    //    Validate input
-       $this->validate($request, [
-            'from' => 'required',
-            'to' => 'required',
+        // Validate input
+        $this->validate($request, [
+            'from_location_id' => 'required',
+            'to_location_id' => 'required',
             'date' => 'required|date',
-            'person_no' => 'required',
-    ]);
-// dd($request->all());
+            'person_no' => 'required|integer|min:1',
+        ]);
 
-        $plane_journeys = PlaneJourney::where('start_location_id', $request->from)
-            ->where('end_location_id', $request->to)
+        // Query the database for matching plane journeys
+        $plane_journeys = PlaneJourney::where('start_location_id', $request->from_location_id)
+            ->where('end_location_id', $request->to_location_id)
             ->where('start_date', $request->date)
             ->where('available_seats', '>=', $request->person_no)
             ->get();
 
+        // Check if any planes were found
+        if ($plane_journeys->isEmpty()) {
+            return response()->json([
+                'error' => 'No available planes.',
+            ], 400);
+        }
 
-            if (count($plane_journeys) > 0) {
-                return response()->json([
-                    'message' => 'Available Planes',
-                    'planes' => $plane_journeys, // Optionally return data
-                ], 200);
-            } else {
-                // Return error response for invalid verification code
-                return response()->json([
-                    'error' => 'No available Plane.',
-                ], 400);
-            }
+        // Ensure journey_types_id is an array for each plane journey
+        foreach ($plane_journeys as $planeJourney) {
+            $planeJourney->journey_types_id = is_string($planeJourney->journey_types_id)
+                ? json_decode($planeJourney->journey_types_id, true)
+                : [];
+        }
+
+        // Return the results with journey_types_id as an array
+        return response()->json([
+            'message' => 'Available planes',
+            'planes' => $plane_journeys,
+        ], 200);
     }
-
 }

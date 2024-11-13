@@ -130,9 +130,18 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        return response()->json([
-            'message' => 'Login successful.',
-            'user' => $user, // Optionally return user data
-        ], 200);
+        if ($user->isEmpty()) {
+            return response()->json([
+                'error' => 'User not found.',
+            ], 404); // 404 Not Found
+        }
+        else{
+            return response()->json([
+                'message' => 'User info',
+                'user' => $user, // Optionally return user data
+            ], 200);
+        }
+
+        
     }
 }

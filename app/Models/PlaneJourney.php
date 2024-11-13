@@ -22,6 +22,7 @@ class PlaneJourney extends Model
         'published_status'
     ];
 
+
     public function plane()
     {
         return $this->belongsTo(Plane::class);

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\CuponController;
+use App\Http\Controllers\api\LocationController;
 use App\Http\Controllers\api\PassengerController;
 use App\Http\Controllers\api\PlaneController;
 use App\Http\Controllers\api\SearchController;
@@ -42,3 +43,6 @@ Route::get('/plane', [PlaneController::class, 'plane']);
 
 // search routes
 Route::post('/search', [SearchController::class, 'search']);
+
+// location routes
+Route::get('/location', [LocationController::class, 'location']);
