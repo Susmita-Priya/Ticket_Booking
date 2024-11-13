@@ -21,8 +21,8 @@ class Plane extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function plane_journeys()
+    public function planejourneys()
     {
-        return $this->hasMany(Plane_journey::class);
+        return $this->hasMany(PlaneJourney::class);
     }
 }

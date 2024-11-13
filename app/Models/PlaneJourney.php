@@ -21,4 +21,9 @@ class PlaneJourney extends Model
         'available_seats',
         'published_status'
     ];
+
+    public function plane()
+    {
+        return $this->belongsTo(Plane::class);
+    }
 }

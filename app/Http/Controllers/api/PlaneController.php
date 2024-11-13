@@ -10,7 +10,7 @@ class PlaneController extends Controller
 {
     public function plane()
     {
-       $planes = Plane::all();
+       $planes = Plane::with('planejourneys','company')->get();
 
         return response()->json([
             'message' => 'Check out Planes',
