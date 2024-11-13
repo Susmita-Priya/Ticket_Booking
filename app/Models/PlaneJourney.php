@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Sanctum\HasApiTokens;
 
-class Plane_journey extends Model
+class PlaneJourney extends Model
 {
-    use HasApiTokens,HasFactory;
-
+    use HasFactory;
     protected $fillable = [
         'plane_id',
         'journey_types_id',

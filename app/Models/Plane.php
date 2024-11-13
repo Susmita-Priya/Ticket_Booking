@@ -15,4 +15,14 @@ class Plane extends Model
         'plane_name',
         'amenities_id'
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function plane_journeys()
+    {
+        return $this->hasMany(Plane_journey::class);
+    }
 }

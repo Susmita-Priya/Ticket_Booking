@@ -8,7 +8,7 @@ use App\Models\Country;
 use App\Models\Journey_type;
 use App\Models\Location;
 use App\Models\Plane;
-use App\Models\Plane_journey;
+use App\Models\PlaneJourney;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Yoeunes\Toastr\Facades\Toastr;
@@ -28,7 +28,7 @@ class PlaneJourneyController extends Controller
     }
     public function index()
     {
-        $plane_journey = Plane_journey::where('company_id',auth()->user()->id)->latest()->get();
+        $plane_journey = PlaneJourney::where('company_id',auth()->user()->id)->latest()->get();
         $planes = Plane::where('company_id',auth()->user()->id)->latest()->get();
         $journey_types = Journey_type::all();
         $countries = Country::where('status', 1)->latest()->get();
@@ -46,13 +46,13 @@ class PlaneJourneyController extends Controller
                 'journey_types_id' => 'required',
                 'from_country_id' => 'required',
                 'start_location_id' => 'required',
-                'to_country_id' => 'required',               
+                'to_country_id' => 'required',
                 'end_location_id' => 'required',
                 'start_date' => 'required',
                 'end_date' => 'required',
                 'total_seats' => 'required',
             ]);
-            $plane_journey = new Plane_journey();
+            $plane_journey = new PlaneJourney();
             $plane_journey->company_id = auth()->user()->id;
             $plane_journey->plane_id = $request->plane_id;
             $plane_journey->journey_types_id = json_encode($request->journey_types_id);
@@ -93,7 +93,7 @@ class PlaneJourneyController extends Controller
                 'end_date' => 'required',
                 'total_seats' => 'required',
             ]);
-            $plane_journey = Plane_journey::find($id);
+            $plane_journey = PlaneJourney::find($id);
             $plane_journey->plane_id = $request->plane_id;
             $plane_journey->journey_types_id = json_encode($request->journey_types_id);
             $plane_journey->from_country_id = $request->from_country_id;
@@ -116,7 +116,7 @@ class PlaneJourneyController extends Controller
     public function destroy($id)
     {
         try {
-            $plane_journey = Plane_journey::find($id);
+            $plane_journey = PlaneJourney::find($id);
             $plane_journey->delete();
             Toastr::success('Plane Journey Deleted Successfully', 'Success');
             return redirect()->back();

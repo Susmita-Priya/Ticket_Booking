@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Plane_journey;
+use App\Models\PlaneJourney;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
@@ -11,7 +11,7 @@ class SearchController extends Controller
     public function search(Request $request)
     {
         // $plane_journeys = Plane_journey::all();
-        
+
     //    Validate input
        $this->validate($request, [
             'from' => 'required',
@@ -21,7 +21,7 @@ class SearchController extends Controller
     ]);
 // dd($request->all());
 
-        $plane_journeys = Plane_journey::where('start_location_id', $request->from)
+        $plane_journeys = PlaneJourney::where('start_location_id', $request->from)
             ->where('end_location_id', $request->to)
             ->where('start_date', $request->date)
             ->where('available_seats', '>=', $request->person_no)
@@ -40,5 +40,5 @@ class SearchController extends Controller
                 ], 400);
             }
     }
-    
+
 }

@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Journey_type;
+use App\Models\JourneyType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Yoeunes\Toastr\Facades\Toastr;
-class Journey_typeController extends Controller
+
+class JourneyTypeController extends Controller
 {
     public function __construct()
     {
@@ -22,7 +23,7 @@ class Journey_typeController extends Controller
     }
     public function index()
     {
-        $journey_type = Journey_type::latest()->get();
+        $journey_type = JourneyType::latest()->get();
         return view('admin.pages.journey_type.index', compact('journey_type'));
     }
 
@@ -32,7 +33,7 @@ class Journey_typeController extends Controller
             $request->validate([
                 'name' => 'required',
             ]);
-            $journey_type = new Journey_type();
+            $journey_type = new JourneyType();
             $journey_type->name = $request->name;
             $journey_type->save();
             Toastr::success('Journey Type Added Successfully', 'Success');
@@ -49,7 +50,7 @@ class Journey_typeController extends Controller
             $request->validate([
                 'name' => 'required',
             ]);
-            $journey_type = Journey_type::find($id);
+            $journey_type = JourneyType::find($id);
             $journey_type->name = $request->name;
             $journey_type->status = $request->status;
             $journey_type->save();
@@ -63,7 +64,7 @@ class Journey_typeController extends Controller
     public function destroy($id)
     {
         try {
-            $journey_type = Journey_type::find($id);
+            $journey_type = JourneyType::find($id);
             $journey_type->delete();
             Toastr::success('Journey Type Deleted Successfully', 'Success');
             return redirect()->back();
