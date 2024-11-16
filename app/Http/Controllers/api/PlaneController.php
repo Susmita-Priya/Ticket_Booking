@@ -15,15 +15,11 @@ class PlaneController extends Controller
         // Process amenities_id and journey_types_id to ensure they're arrays
         foreach ($planes as $plane) {
             // Decode amenities_id as array
-            $plane->amenities_id = is_string($plane->amenities_id)
-                ? json_decode($plane->amenities_id, true) ?? []
-                : [];
+            $plane->amenities_id = json_decode($plane->amenities_id);
 
             // Decode journey_types_id for each plane journey as an array
             foreach ($plane->planejourneys as $planeJourney) {
-                $planeJourney->journey_types_id = is_string($planeJourney->journey_types_id)
-                    ? json_decode($planeJourney->journey_types_id, true) ?? []
-                    : [];
+                $planeJourney->journey_types_id = json_decode($planeJourney->journey_types_id, true) ;
             }
         }
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\BookingController;
 use App\Http\Controllers\api\CuponController;
 use App\Http\Controllers\api\LocationController;
 use App\Http\Controllers\api\PassengerController;
@@ -33,7 +34,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Passenger routes
     Route::post('/store-passenger', [PassengerController::class, 'storePassenger']);
+
+    // Booking routes
+    Route::post('/store-booking', [BookingController::class, 'storeBooking']);
+
+    Route::get('/booking', [BookingController::class, 'booking']);
 });
+
 
 // Define Cupon routes
 Route::get('/cupon', [CuponController::class, 'cupon']);
