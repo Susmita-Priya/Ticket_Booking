@@ -4,7 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
-use App\Models\Plane;
+use App\Models\PlaneJourney;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 
@@ -15,13 +15,13 @@ class BookingController extends Controller
     public function storeBooking(Request $request)
     {
         $this->validate($request, [
-            'plane_id' => 'required',
             'plane_journey_id' => 'required',
             'passengers_name' => 'required',
             'passengers_phone' => 'required',
             'passengers_passport_no' => 'required',
             'passengers_age' => 'required',
         ]);
+   
 
         if (count($request->passengers_name) !== count($request->passengers_phone) ||
         count($request->passengers_name) !== count($request->passengers_passport_no) ||
@@ -32,13 +32,16 @@ class BookingController extends Controller
         }
 
         $user = auth()->user()->id;
-        $plane = Plane::find($request->plane_id)->first();
-        $company_id = $plane->company_id;
+        $planeJourney = PlaneJourney::find($request->plane_journey_id)->first();
+        $plane_id = $planeJourney->plane_id;
+        $company_id = $planeJourney->company_id;
+
+        // dd($plane_id, $company_id);
 
         try {
         $booking = new Booking();
         $booking->user_id = $user;
-        $booking->plane_id = $request->plane_id;
+        $booking->plane_id = $plane_id;
         $booking->company_id = $company_id;
         $booking->plane_journey_id = $request->plane_journey_id; 
         $booking->passengers_name = json_encode($request->passengers_name);
@@ -46,7 +49,7 @@ class BookingController extends Controller
         $booking->passengers_passport_no = json_encode($request->passengers_passport_no);
         $booking->passengers_age = json_encode($request->passengers_age);
         $booking->save();
-        // dd($request->all());
+        
 
         return response()->json([
             'message' => 'Booking created successfully',
