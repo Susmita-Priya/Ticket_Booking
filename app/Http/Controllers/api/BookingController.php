@@ -53,7 +53,7 @@ class BookingController extends Controller
 
         return response()->json([
             'message' => 'Booking created successfully',
-            'data' => $booking
+            // 'data' => $booking
         ],201);
         } catch (QueryException $e) {
             return response()->json([
