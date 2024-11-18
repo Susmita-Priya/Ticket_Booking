@@ -101,64 +101,27 @@
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="mb-3">
-                                                            <label for="passergers_name" class="form-label">Name</label>
                                                             @php
                                                                 $passengersName =json_decode($bookingData->passengers_name, true) ?? [];
-                                                            @endphp
-                                                            @foreach ($passengersName as $passengerName)
-                                                            <ul>
-                                                                <li >{{ $passengerName }}</li>
-                                                            </ul>
-                                                            @endforeach
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="mb-3">
-                                                            <label for="passergers_phone" class="form-label">Phone</label>
-                                                            @php
                                                                 $passengersPhone =json_decode($bookingData->passengers_phone, true) ?? [];
-                                                            @endphp
-                                                            @foreach ($passengersPhone as $passengerPhone)
-                                                            <ul>
-                                                                <li >{{ $passengerPhone}}</li>
-                                                            </ul>
-                                                            @endforeach
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="mb-3">
-                                                            <label for="passergers_passport" class="form-label">Passport No</label>
-                                                            @php
                                                                 $passengersPassport =json_decode($bookingData->passengers_passport_no, true) ?? [];
-                                                            @endphp
-                                                            @foreach ($passengersPassport as $passengerPassport)
-                                                            <ul>
-                                                                <li >{{ $passengerPassport }}</li>
-                                                            </ul>
-                                                            @endforeach
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="mb-3">
-                                                            <label for="passergers_age" class="form-label">Age</label>
-                                                            @php
                                                                 $passengersAge =json_decode($bookingData->passengers_age, true) ?? [];
+                                                                $passengerCount = count($passengersName);
+                                                                $no = 1;
                                                             @endphp
-                                                            @foreach ($passengersAge as $passengerAge)
+
+                                                            @for ($i = 0; $i < $passengerCount; $i++)
+                                                            <label for="passerger" class="form-label">Passenger {{ $no ++}}</label> 
                                                             <ul>
-                                                                <li >{{ $passengerAge }}</li>
+                                                                <li > <b> Name : </b>{{ $passengersName[$i] }}</li>
+                                                                <li > <b> Phone : </b>{{ $passengersPhone[$i] }}</li>
+                                                                <li > <b> Passport No : </b>{{ $passengersPassport[$i] }}</li>
+                                                                <li > <b> Age : </b>{{ $passengersAge[$i] }}</li>
                                                             </ul>
-                                                            @endforeach
+                                                            @endfor
                                                         </div>
                                                     </div>
                                                 </div>
-                                                </form>
                                             </div>
                                         </div>
                                     </div>
