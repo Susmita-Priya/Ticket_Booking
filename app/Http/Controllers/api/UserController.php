@@ -129,19 +129,9 @@ class UserController extends Controller
     public function userInfo()
     {
         $user = Auth::user();
-
-        if ($user->isEmpty()) {
-            return response()->json([
-                'error' => 'User not found.',
-            ], 404); // 404 Not Found
-        }
-        else{
             return response()->json([
                 'message' => 'User info',
                 'user' => $user, // Optionally return user data
             ], 200);
         }
-
-        
-    }
 }
