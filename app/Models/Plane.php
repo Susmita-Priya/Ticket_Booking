@@ -16,12 +16,6 @@ class Plane extends Model
         'amenities_id'
     ];
 
-    // protected $casts = [
-    //     'amenities_id' => 'array',
-    // ];
-
-
-
     public function company()
     {
         return $this->belongsTo(User::class);

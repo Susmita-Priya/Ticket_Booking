@@ -38,7 +38,7 @@ class UserController extends Controller
                 'password' => $input['password'],
                 'verification_code' => $verificationCode,
                 'status' => 0,
-                'role' => 'user',
+                'role' => 'User',
             ]);
 
             // Send verification email

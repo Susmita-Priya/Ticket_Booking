@@ -17,5 +17,4 @@ class LoginLog extends Model
         'user_agent',
     ];
 
-
 }

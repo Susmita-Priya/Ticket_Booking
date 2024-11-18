@@ -228,6 +228,14 @@
                                     @endcan
 
 
+                                    @can('booking-list')
+                                        <li>
+                                            <a href="{{ route('booking.section') }}">Plane Booking</a>
+                                        </li>
+                                        
+                                    @endcan
+
+
 
                                 </ul>
                             </div>

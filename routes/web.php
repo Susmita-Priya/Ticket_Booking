@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\AboutController;
 use App\Http\Controllers\admin\AdminDashboardController;
 use App\Http\Controllers\admin\AmenitiesController;
+use App\Http\Controllers\admin\BookingController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\CountryController;
 use App\Http\Controllers\admin\CuponController;
@@ -144,6 +145,12 @@ Route::middleware('auth')->group(callback: function () {
 
     // country and location
     Route::get('/countries/{id}/locations', [PlaneJourneyController::class, 'getlocation'])->name('plane.getlocation');
+
+
+    //booking Section
+    Route::get('/booking-section', [BookingController::class, 'index'])->name('booking.section');
+    Route::get('/booking-delete/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
+
 
 
     //Role and User Section

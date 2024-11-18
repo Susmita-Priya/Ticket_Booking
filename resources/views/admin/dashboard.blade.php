@@ -92,7 +92,7 @@
                                 <td>{{$loginLogData->ip}}</td>
                                 <td>{{$loginLogData->browser}}</td>
                                 <td>{{$loginLogData->platform}}</td>
-                                <td>{{$loginLogData->last_login}}
+                                <td>{{$loginLogData->last_login}}</td>
                                 <td>{{$loginLogData->user_agent}}</td>
                             </tr>
                         @endforeach

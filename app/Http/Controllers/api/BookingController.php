@@ -23,13 +23,13 @@ class BookingController extends Controller
         ]);
    
 
-        if (count($request->passengers_name) !== count($request->passengers_phone) ||
-        count($request->passengers_name) !== count($request->passengers_passport_no) ||
-        count($request->passengers_name) !== count($request->passengers_age)) {
-        return response()->json([
-            'message' => 'Passenger information arrays must have the same length'
-        ], 422);
-        }
+        // if (count($request->passengers_name) !== count($request->passengers_phone) ||
+        // count($request->passengers_name) !== count($request->passengers_passport_no) ||
+        // count($request->passengers_name) !== count($request->passengers_age)) {
+        // return response()->json([
+        //     'message' => 'Passenger information arrays must have the same length'
+        // ], 422);
+        // }
 
         $user = auth()->user()->id;
         $planeJourney = PlaneJourney::find($request->plane_journey_id)->first();
