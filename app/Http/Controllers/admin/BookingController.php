@@ -34,4 +34,16 @@ class BookingController extends Controller
         return view('admin.pages.booking.index', compact('booking', 'planes', 'locations','planeJourneys'));
     }
 
+    public function destroy($id)
+    {
+        try {
+           $booking = Booking::find($id);
+            $booking->delete();
+            Toastr::success('Booking Deleted Successfully', 'Success');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+        }
+    }
+
 }
