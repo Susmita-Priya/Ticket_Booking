@@ -25,6 +25,7 @@ class PlaneController extends Controller
             return $next($request);
         })->only('index');
     }
+    
     public function index()
     {
         $plane = Plane::where('company_id',auth()->user()->id)->latest()->get();

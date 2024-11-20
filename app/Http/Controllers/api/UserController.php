@@ -40,7 +40,7 @@ class UserController extends Controller
                 'status' => 0,
                 'role' => 'User',
             ]);
-
+                                                                           
             // Send verification email
             Mail::to($request->email)->send(new VerifyMail($user));
 

@@ -128,8 +128,6 @@
                     {{--                @endcan --}}
 
 
-
-
                     @can('amenities-list')
                         <li class="side-nav-item">
                             <a href="{{ route('amenities.section') }}" class="side-nav-link">
@@ -169,11 +167,7 @@
                         </li>
                     @endcan
 
-
-
-
-
-
+                    
                     @can('menu-list-for-bus')
                         <li class="side-nav-item">
                             <a data-bs-toggle="collapse" href="#sidebarPages102" aria-expanded="false"
