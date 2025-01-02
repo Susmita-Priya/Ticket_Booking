@@ -21,16 +21,6 @@ class BookingController extends Controller
             'passengers_passport_no' => 'required',
             'passengers_age' => 'required',
         ]);
-   
-
-        // if (count($request->passengers_name) !== count($request->passengers_phone) ||
-        // count($request->passengers_name) !== count($request->passengers_passport_no) ||
-        // count($request->passengers_name) !== count($request->passengers_age)) {
-        // return response()->json([
-        //     'message' => 'Passenger information arrays must have the same length'
-        // ], 422);
-        // }
-
         $user = auth()->user()->id;
         $planeJourney = PlaneJourney::find($request->plane_journey_id)->first();
         $plane_id = $planeJourney->plane_id;
@@ -43,13 +33,13 @@ class BookingController extends Controller
         $booking->user_id = $user;
         $booking->plane_id = $plane_id;
         $booking->company_id = $company_id;
-        $booking->plane_journey_id = $request->plane_journey_id; 
+        $booking->plane_journey_id = $request->plane_journey_id;
         $booking->passengers_name = json_encode($request->passengers_name);
         $booking->passengers_phone = json_encode($request->passengers_phone);
         $booking->passengers_passport_no = json_encode($request->passengers_passport_no);
         $booking->passengers_age = json_encode($request->passengers_age);
         $booking->save();
-        
+
 
         return response()->json([
             'message' => 'Booking created successfully',
@@ -79,7 +69,7 @@ class BookingController extends Controller
             'data' => $bookings
         ], 200);
     }
-    
 
-    
+
+
 }
