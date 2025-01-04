@@ -1,4 +1,5 @@
 @extends('admin.app')
+
 @section('admin_content')
     <div class="row">
         <div class="col-12">

@@ -68,21 +68,17 @@ class UserController extends Controller
         $this->validate($request, [
             'verification_code' => 'required',
         ]);
-
         // Find the user by verification code
         $user = User::where('verification_code', $request->verification_code)->first();
-
         if ($user) {
             // Update the user's status and clear the verification code
             $user->update([
                 'status' => 1,
                 'verification_code' => null,
             ]);
-
             // Set the email verified timestamp
             $user->email_verified_at = now();
             $user->save();
-
             // Return a success response
             return response()->json([
                 'message' => 'Your account has been verified. You can now login.',
@@ -103,23 +99,19 @@ class UserController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
         // Attempt to log in the user
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
-
             // Generate a new token
             $token = $user->createToken('YourAppName')->plainTextToken;
-
             // Return a success response with the token
             return response()->json([
                 'message' => 'Login successful.',
                 'token' => $token,
                 'user' => $user, // Optionally return user data
-           
             ], 200);
         } else {
-            // Return error response for invalid credentials 
+            // Return error response for invalid credentials
             return response()->json([
                 'error' => 'Invalid email or password.',
             ], 401); // 401 Unauthorized

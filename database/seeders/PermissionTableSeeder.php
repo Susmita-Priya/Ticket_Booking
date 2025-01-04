@@ -137,7 +137,7 @@ class PermissionTableSeeder extends Seeder
             'plane-edit',
             'plane-delete',
 
-            
+
             //For Plane Journey
             'plane-journey-list',
             'plane-journey-create',
@@ -150,6 +150,18 @@ class PermissionTableSeeder extends Seeder
             'admin-menu-list',
             'menu-list-for-bus',
             'menu-list-for-plane',
+
+            //For Division
+            'division-list',
+            'division-create',
+            'division-edit',
+            'division-delete',
+
+            //For District
+            'district-list',
+            'district-create',
+            'district-edit',
+            'district-delete',
 
 
         ];

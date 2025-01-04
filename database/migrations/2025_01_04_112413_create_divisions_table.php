@@ -11,16 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vehicles', function (Blueprint $table) {
+        Schema::create('divisions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('company_id');
-            $table->foreignId('category_id');
-            $table->foreignId('type_id');
             $table->string('name');
-            $table->json('amenities_ids');
-            $table->string('engin_no');
-            $table->integer('total_seat');
-            $table->tinyInteger('is_booked')->default(0);
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
@@ -31,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vehicles');
+        Schema::dropIfExists('divisions');
     }
 };

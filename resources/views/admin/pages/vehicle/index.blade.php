@@ -37,6 +37,7 @@
                             <th>Type</th>
                             <th>Amenities</th>
                             <th>Seat</th>
+                            <th>Is Booked</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -72,13 +73,14 @@
                                 </td>
                                 <td>
                                     @can('seats-list')
-                                    
+
                                         <a href="{{route('seats.section', $vehicle->id)}}" class="btn btn-info btn-sm">
                                             <i class="ri-arrow-right-line"></i>
                                             <span> Seats </span>
                                         </a>
                                 @endcan
                             </td>
+                                <td>{{ $vehicle->is_booked == 1 ? 'Booked' : 'Not Booked' }}</td>
                                 <td>{{ $vehicle->status == 1 ? 'Active' : 'Inactive' }}</td>
                                 <td style="width: 100px;">
                                     <div class="d-flex justify-content-end gap-1">
