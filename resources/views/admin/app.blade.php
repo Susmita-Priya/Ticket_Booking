@@ -166,6 +166,12 @@
                                             <a href="{{ route('vehicle.section') }}">Vehicle</a>
                                         </li>
                                     @endcan
+
+                                    @can('published-vehicle')
+                                        <li>
+                                            <a href="{{ route('published.vehicle') }}">Published Vehicle</a>
+                                        </li>
+                                    @endcan
                                 </ul>
                             </div>
                         </li>
@@ -216,7 +222,6 @@
                                         <li>
                                             <a href="{{ route('booking.section') }}">Plane Booking</a>
                                         </li>
-
                                     @endcan
 
 

@@ -163,6 +163,9 @@ class PermissionTableSeeder extends Seeder
             'district-edit',
             'district-delete',
 
+            //publishedVehicle
+            'published-vehicle'
+
 
         ];
         foreach ($permissions as $permission) {

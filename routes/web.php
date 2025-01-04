@@ -16,6 +16,7 @@ use App\Http\Controllers\admin\LocationController;
 use App\Http\Controllers\admin\OfferController;
 use App\Http\Controllers\admin\PlaneController;
 use App\Http\Controllers\admin\PlaneJourneyController;
+use App\Http\Controllers\admin\PublishedVehicleController;
 use App\Http\Controllers\admin\SeatController;
 use App\Http\Controllers\admin\SiteSettingController;
 use App\Http\Controllers\admin\TermsController;
@@ -175,6 +176,11 @@ Route::middleware('auth')->group(callback: function () {
     Route::post('/district-store', [DistrictController::class, 'store'])->name('district.store');
     Route::put('/district-update/{id}', [DistrictController::class, 'update'])->name('district.update');
     Route::get('/district-delete/{id}', [DistrictController::class, 'destroy'])->name('district.destroy');
+
+
+    Route::get('/published-vehicle', [PublishedVehicleController::class, 'index'])->name('published.vehicle');
+    Route::post('/published-vehicle-store', [PublishedVehicleController::class, 'store'])->name('published.vehicle.store');
+    Route::get('/published-vehicle-delete/{id}', [PublishedVehicleController::class, 'destroy'])->name('published.vehicle.destroy');
 });
 
 require __DIR__ . '/auth.php';
