@@ -7,6 +7,8 @@ use App\Http\Controllers\admin\BookingController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\CountryController;
 use App\Http\Controllers\admin\CuponController;
+use App\Http\Controllers\admin\DistrictController;
+use App\Http\Controllers\admin\DivisionController;
 use App\Http\Controllers\admin\FaqController;
 use App\Http\Controllers\admin\Journey_typeController;
 use App\Http\Controllers\admin\JourneyTypeController;
@@ -160,6 +162,19 @@ Route::middleware('auth')->group(callback: function () {
     //Site Setting
     Route::get('/site-setting', [SiteSettingController::class, 'index'])->name('site.setting');
     Route::post('/site-settings-store-update/{id?}', [SiteSettingController::class, 'createOrUpdate'])->name('site-settings.createOrUpdate');
+
+
+    //Division Section
+    Route::get('/division-section', [DivisionController::class, 'index'])->name('division.section');
+    Route::post('/division-store', [DivisionController::class, 'store'])->name('division.store');
+    Route::put('/division-update/{id}', [DivisionController::class, 'update'])->name('division.update');
+    Route::get('/division-delete/{id}', [DivisionController::class, 'destroy'])->name('division.destroy');
+
+    //District Section
+    Route::get('/district-section', [DistrictController::class, 'index'])->name('district.section');
+    Route::post('/district-store', [DistrictController::class, 'store'])->name('district.store');
+    Route::put('/district-update/{id}', [DistrictController::class, 'update'])->name('district.update');
+    Route::get('/district-delete/{id}', [DistrictController::class, 'destroy'])->name('district.destroy');
 });
 
 require __DIR__ . '/auth.php';

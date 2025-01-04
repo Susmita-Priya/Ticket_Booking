@@ -134,11 +134,6 @@
                         </li>
                     @endcan
 
-
-
-
-
-
                     @can('menu-list-for-bus')
                         <li class="side-nav-item">
                             <a data-bs-toggle="collapse" href="#sidebarPages102" aria-expanded="false"
@@ -149,6 +144,18 @@
                             </a>
                             <div class="collapse" id="sidebarPages102">
                                 <ul class="side-nav-second-level">
+                                    @can('division-list')
+                                        <li>
+                                            <a href="{{ route('division.section') }}">Division</a>
+                                        </li>
+                                    @endcan
+
+                                        @can('district-list')
+                                            <li>
+                                                <a href="{{ route('district.section') }}">District</a>
+                                            </li>
+                                        @endcan
+
                                     @can('type-list')
                                         <li>
                                             <a href="{{ route('type.section') }}">Type</a>
