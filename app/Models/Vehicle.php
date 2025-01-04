@@ -21,8 +21,4 @@ class Vehicle extends Model
         'status',
     ];
 
-    protected $casts = [
-        'amenities_ids' => 'array',
-    ];
-
 }
