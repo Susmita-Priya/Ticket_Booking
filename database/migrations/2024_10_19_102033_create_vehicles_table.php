@@ -20,6 +20,7 @@ return new class extends Migration
             $table->json('amenities_ids');
             $table->string('engin_no');
             $table->integer('total_seat');
+            $table->tinyInteger('is_booked')->default(0);
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });

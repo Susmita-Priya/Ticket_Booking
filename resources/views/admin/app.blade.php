@@ -110,25 +110,6 @@
                         </a>
                     </li>
 
-                    {{--                @can('resource-list') --}}
-                    {{--                <li class="side-nav-item"> --}}
-                    {{--                    <a data-bs-toggle="collapse" href="#sidebarPages" aria-expanded="false" aria-controls="sidebarPages" class="side-nav-link"> --}}
-                    {{--                        <i class="ri-pages-line"></i> --}}
-                    {{--                        <span> Resource </span> --}}
-                    {{--                        <span class="menu-arrow"></span> --}}
-                    {{--                    </a> --}}
-                    {{--                    <div class="collapse" id="sidebarPages"> --}}
-                    {{--                        <ul class="side-nav-second-level"> --}}
-                    {{--                            <li> --}}
-                    {{--                                <a href="#">Test</a> --}}
-                    {{--                            </li> --}}
-                    {{--                        </ul> --}}
-                    {{--                    </div> --}}
-                    {{--                </li> --}}
-                    {{--                @endcan --}}
-
-
-
 
                     @can('amenities-list')
                         <li class="side-nav-item">
@@ -140,23 +121,7 @@
                     @endcan
 
 
-                    @can('country-list')
-                        <li class="side-nav-item">
-                            <a href="{{ route('country.section') }}" class="side-nav-link">
-                                <i class=" ri-pencil-fill"></i>
-                                <span> Country </span>
-                            </a>
-                        </li>
-                    @endcan
 
-                    @can('location-list')
-                        <li class="side-nav-item">
-                            <a href="{{ route('location.section') }}" class="side-nav-link">
-                                <i class=" ri-pencil-fill"></i>
-                                <span> Location </span>
-                            </a>
-                        </li>
-                    @endcan
 
 
 
@@ -210,6 +175,18 @@
                             </a>
                             <div class="collapse" id="sidebarPages103">
                                 <ul class="side-nav-second-level">
+
+                                    @can('country-list')
+                                        <li>
+                                            <a href="{{ route('country.section') }}"> Country</a>
+                                        </li>
+                                    @endcan
+                                    @can('location-list')
+                                        <li>
+                                            <a href="{{ route('location.section') }}">Location</a>
+                                        </li>
+                                    @endcan
+
                                     @can('journey_type-list')
                                         <li>
                                             <a href="{{ route('journey_type.section') }}"> Journey Type</a>
@@ -232,7 +209,7 @@
                                         <li>
                                             <a href="{{ route('booking.section') }}">Plane Booking</a>
                                         </li>
-                                        
+
                                     @endcan
 
 

@@ -17,6 +17,7 @@ class Vehicle extends Model
         'name',
         'engin_no',
         'total_seat',
+        'is_booked',
         'status',
     ];
 
