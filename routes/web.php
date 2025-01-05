@@ -178,7 +178,6 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/district-delete/{id}', [DistrictController::class, 'destroy'])->name('district.destroy');
 
     Route::get('/districts/{divisionId}', [PublishedVehicleController::class, 'getDistrictsByDivision']);
-
     Route::get('/published-vehicle', [PublishedVehicleController::class, 'index'])->name('published.vehicle');
     Route::post('/published-vehicle-store', [PublishedVehicleController::class, 'store'])->name('published.vehicle.store');
     Route::get('/published-vehicle-delete/{id}', [PublishedVehicleController::class, 'destroy'])->name('published.vehicle.destroy');

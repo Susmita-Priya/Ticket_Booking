@@ -58,4 +58,33 @@ class PublishedVehicleController extends Controller
         Toastr::success('Seat Added Successfully', 'Success');
         return redirect()->back();
     }
+
+
+    public function destroy($id)
+    {
+        try {
+            // Find the VehiclePublished record by its ID
+            $vehiclePublished = VehiclePublished::findOrFail($id); // Will throw an exception if not found
+
+            // Get the associated vehicle_id from the VehiclePublished record
+            $vehicleId = $vehiclePublished->vehicle_id;
+
+            // Find the related vehicle
+            $vehicle = Vehicle::findOrFail($vehicleId); // Will throw an exception if not found
+            $vehicle->is_booked = 0; // Mark the vehicle as unbooked
+            $vehicle->save(); // Save the vehicle changes
+
+            // Delete the VehiclePublished record
+            $vehiclePublished->delete(); // Delete the record
+
+            // Success message
+            Toastr::success('Vehicle Published and related Vehicle Updated Successfully', 'Success');
+
+            // Redirect back to the previous page
+            return redirect()->back();
+        } catch (\Exception $e) {
+            // If an error occurs, catch it and show an error message
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+        }
+    }
 }

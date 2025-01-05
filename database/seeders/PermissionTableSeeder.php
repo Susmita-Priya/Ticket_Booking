@@ -164,7 +164,8 @@ class PermissionTableSeeder extends Seeder
             'district-delete',
 
             //publishedVehicle
-            'published-vehicle'
+            'published-vehicle',
+            'published-vehicle-delete',
 
 
         ];

@@ -50,7 +50,7 @@
                             <td>{{$vehiclePublishedData->journey_date}}</td>
                             <td>{{ $vehiclePublishedData->status == 1 ? 'Active' : 'Inactive' }}</td>
                             <td style="width: 100px;">
-                                <div class="d-flex justify-content-end gap-1">
+                                <div class="d-flex  gap-1">
                                     @can('published-vehicle-delete')
                                         <a href="{{ route('published.vehicle.destroy', $vehiclePublishedData->id) }}" class="btn btn-danger btn-sm"
                                            data-bs-toggle="modal"
