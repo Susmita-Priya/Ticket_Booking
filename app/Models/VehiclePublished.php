@@ -20,4 +20,34 @@ class VehiclePublished extends Model
         'end_time',
         'status',
     ];
+
+    public function vehicle()
+    {
+        return $this->belongsTo(Vehicle::class);
+    }
+
+    public function startDivision()
+    {
+        return $this->belongsTo(Division::class, 'start_division_id');
+    }
+
+    public function endDivision()
+    {
+        return $this->belongsTo(Division::class, 'end_division_id');
+    }
+
+    public function startDistrict()
+    {
+        return $this->belongsTo(District::class, 'start_district_id');
+    }
+
+    public function endDistrict()
+    {
+        return $this->belongsTo(District::class, 'end_district_id');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(User::class, 'company_id');
+    }
 }

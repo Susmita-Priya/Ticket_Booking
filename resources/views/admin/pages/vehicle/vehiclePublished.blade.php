@@ -43,11 +43,11 @@
                     @foreach ($vehiclePublished as $key => $vehiclePublishedData)
                         <tr>
                             <td>{{ ++$key }}</td>
-                            <td>11</td>
-                            <td>11</td>
-                            <td>11</td>
-                            <td>11</td>
-                            <td>11</td>
+                            <td>{{$vehiclePublishedData->company->name}}</td>
+                            <td>{{$vehiclePublishedData->vehicle->name}}-{{$vehiclePublishedData->vehicle->engin_no}}</td>
+                            <td>{{$vehiclePublishedData->startDivision->name}} - {{$vehiclePublishedData->startDistrict->name}}</td>
+                            <td>{{$vehiclePublishedData->endDivision->name}} - {{$vehiclePublishedData->endDistrict->name}}</td>
+                            <td>{{$vehiclePublishedData->journey_date}}</td>
                             <td>{{ $vehiclePublishedData->status == 1 ? 'Active' : 'Inactive' }}</td>
                             <td style="width: 100px;">
                                 <div class="d-flex justify-content-end gap-1">
