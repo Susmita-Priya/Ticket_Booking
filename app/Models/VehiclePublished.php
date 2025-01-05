@@ -16,6 +16,8 @@ class VehiclePublished extends Model
         'start_district_id',
         'end_district_id',
         'journey_date',
+        'start_time',
+        'end_time',
         'status',
     ];
 }

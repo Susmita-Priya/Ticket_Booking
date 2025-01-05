@@ -107,6 +107,19 @@
 
                         <div class="row">
                             <div class="col-12 mb-3">
+                                <label class="form-label">Vehicle</label>
+                                <select name="vehicle_id"  class="form-select">
+                                    <option selected value="">Select Vehicle</option>
+                                    @foreach ($vehicle as $vehicleData)
+                                        <option value="{{ $vehicleData->id }}">{{ $vehicleData->name }}-{{ $vehicleData->engin_no }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
                                 <label for="start_division_id" class="form-label">Start Division</label>
                                 <select name="start_division_id" id="start_division_id" class="form-select">
                                     <option selected value="">Select Division</option>
@@ -153,6 +166,22 @@
                                 <input type="date" name="journey_date" id="journey_date" class="form-control" required>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="start_time" class="form-label">Start Time</label>
+                                <input type="time" name="start_time"  class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="end_time" class="form-label">End Time</label>
+                                <input type="time" name="end_time"  class="form-control" required>
+                            </div>
+                        </div>
+
+
 
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-primary" type="submit">Submit</button>
