@@ -14,13 +14,13 @@ class CuponController extends Controller
 
         if ($cupons->isEmpty()) {
             return response()->json([
-                'error' => 'No cupons found.',
+                'message' => 'No cupons found.',
             ], 400);
         }else{
 
         return response()->json([
             'message' => 'Check out cupons',
-            'cupons' => $cupons, // Optionally return data
+            'cupons' => $cupons, 
         ], 200);
     }
     }

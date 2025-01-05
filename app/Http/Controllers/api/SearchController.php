@@ -31,7 +31,7 @@ class SearchController extends Controller
         // Check if any planes were found
         if ($plane_journeys->isEmpty()) {
             return response()->json([
-                'error' => 'No available planes.',
+                'message' => 'No available planes.',
             ], 400);
         }
 

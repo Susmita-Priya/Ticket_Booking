@@ -12,7 +12,6 @@ class PassengerController extends Controller
 {
     public function storePassenger(Request $request)
     {
-
         // Validate input
         $this->validate($request, [
             'plane_id' => 'required',

@@ -87,7 +87,7 @@ class UserController extends Controller
         } else {
             // Return error response for invalid verification code
             return response()->json([
-                'error' => 'Invalid verification code.',
+                'message' => 'Invalid verification code.',
             ], 400);
         }
     }
@@ -113,7 +113,7 @@ class UserController extends Controller
         } else {
             // Return error response for invalid credentials
             return response()->json([
-                'error' => 'Invalid email or password.',
+                'message' => 'Invalid email or password.',
             ], 401); // 401 Unauthorized
         }
     }

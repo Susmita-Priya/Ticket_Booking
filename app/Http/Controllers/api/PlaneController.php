@@ -25,7 +25,7 @@ class PlaneController extends Controller
 
         if ($planes->isEmpty()) {
             return response()->json([
-                'error' => 'No planes found.',
+                'message' => 'No planes found.',
             ], 400);
         }else{
             return response()->json([
