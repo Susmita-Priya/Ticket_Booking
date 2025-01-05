@@ -14,7 +14,7 @@ class LocationController extends Controller
 
         if ($locations->isEmpty()) {
             return response()->json([
-                'error' => 'No locations found.',
+                'message' => 'No locations found.',
             ], 400);
         }else{
             return response()->json([
