@@ -7,10 +7,10 @@
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Online Ticket Booking</a></li>
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Resource</a></li>
-                        <li class="breadcrumb-item active">Vehicles!</li>
+                        <li class="breadcrumb-item active">Published Vehicles!</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Vehicles!</h4>
+                <h4 class="page-title">Published Vehicles!</h4>
             </div>
         </div>
     </div>
@@ -98,7 +98,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="addNewModalLabel">Add</h4>
+                    <h4 class="modal-title" id="addNewModalLabel">Add Vehicle</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -107,18 +107,52 @@
 
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="category_id" class="form-label">Company</label>
-                                <select name="category_id" class="form-select">
-                                    <option selected value="">Select Company</option>
-                                    @foreach ($company as $companyData)
-                                        <option value="{{ $companyData->id }}">{{ $companyData->name }}</option>
+                                <label for="start_division_id" class="form-label">Start Division</label>
+                                <select name="start_division_id" id="start_division_id" class="form-select">
+                                    <option selected value="">Select Division</option>
+                                    @foreach ($division as $divisionData)
+                                        <option value="{{ $divisionData->id }}">{{ $divisionData->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="start_district_id" class="form-label">Start District</label>
+                                <select name="start_district_id" id="start_district_id" class="form-select">
+                                    <option selected value="">Select District</option>
+                                </select>
+                            </div>
+                        </div>
 
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="end_division_id" class="form-label">End Division</label>
+                                <select name="end_division_id" id="end_division_id" class="form-select">
+                                    <option selected value="">Select Division</option>
+                                    @foreach ($division as $divisionData)
+                                        <option value="{{ $divisionData->id }}">{{ $divisionData->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="end_district_id" class="form-label">End District</label>
+                                <select name="end_district_id" id="end_district_id" class="form-select">
+                                    <option selected value="">Select District</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="journey_date" class="form-label">Journey Date</label>
+                                <input type="date" name="journey_date" id="journey_date" class="form-control" required>
+                            </div>
+                        </div>
 
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-primary" type="submit">Submit</button>
@@ -128,4 +162,45 @@
             </div>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Fetch districts based on selected division
+            $('#start_division_id').change(function() {
+                var divisionId = $(this).val();
+                fetchDistricts(divisionId, '#start_district_id');
+            });
+
+            $('#end_division_id').change(function() {
+                var divisionId = $(this).val();
+                fetchDistricts(divisionId, '#end_district_id');
+            });
+
+            // Fetch districts based on division ID
+            function fetchDistricts(divisionId, districtSelectId) {
+                if (divisionId) {
+                    $.ajax({
+                        url: '/districts/' + divisionId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            var districtSelect = $(districtSelectId);
+                            districtSelect.empty();
+                            districtSelect.append('<option selected value="">Select District</option>');
+
+                            $.each(data, function(index, district) {
+                                districtSelect.append('<option value="' + district.id + '">' + district.name + '</option>');
+                            });
+                        },
+                        error: function() {
+                            alert('Unable to fetch districts.');
+                        }
+                    });
+                } else {
+                    $(districtSelectId).empty().append('<option selected value="">Select District</option>');
+                }
+            }
+        });
+    </script>
 @endsection
