@@ -35,7 +35,8 @@
                         <th>Start Location</th>
                         <th>End Location</th>
                         <th>Journey Date</th>
-                        <th>Status</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -48,7 +49,9 @@
                             <td>{{$vehiclePublishedData->startDivision->name}} - {{$vehiclePublishedData->startDistrict->name}}</td>
                             <td>{{$vehiclePublishedData->endDivision->name}} - {{$vehiclePublishedData->endDistrict->name}}</td>
                             <td>{{$vehiclePublishedData->journey_date}}</td>
-                            <td>{{ $vehiclePublishedData->status == 1 ? 'Active' : 'Inactive' }}</td>
+                            <td>{{ \Carbon\Carbon::createFromFormat('H:i:s', $vehiclePublishedData->start_time)->format('h:i A') }}</td>
+                            <td>{{ \Carbon\Carbon::createFromFormat('H:i:s', $vehiclePublishedData->end_time)->format('h:i A') }}</td>
+
                             <td style="width: 100px;">
                                 <div class="d-flex  gap-1">
                                     @can('published-vehicle-delete')
