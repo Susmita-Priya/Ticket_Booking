@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('counters', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('company_id');
             $table->string('name');
             $table->string('counter_no');
             $table->string('location');

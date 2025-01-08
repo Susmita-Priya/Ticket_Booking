@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Checker;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Yoeunes\Toastr\Facades\Toastr;
 
@@ -23,7 +24,7 @@ class CheckerController extends Controller
 
     public function index()
     {
-        $checkers = Checker::latest()->get();
+        $checkers = Checker::where('company_id',auth()->user()->id)->latest()->get();
         return view('admin.pages.checker.index',compact('checkers'));
     }
 
@@ -39,6 +40,7 @@ class CheckerController extends Controller
             ]);
 
             $checker = new Checker();
+            $checker->company_id = auth()->user()->id;
             $checker->name = $request->name;
             $checker->email = $request->email;
             $checker->phone = $request->phone;

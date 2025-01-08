@@ -9,16 +9,30 @@ class Vehicle extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+    protected $fillable=[
         'company_id',
-        'category_id',
+        'owner_id',
         'type_id',
-        'amenities_ids',
         'name',
+        'vehicle_no',
         'engin_no',
+        'chest_no',
         'total_seat',
-        'is_booked',
+        'amenities_id',
+        'document',
         'status',
     ];
+
+    public function owner(){
+        return $this->belongsTo(Owner::class);
+    }
+
+    public function type(){
+        return $this->belongsTo(Type::class);
+    }
+
+    public function seats(){
+        return $this->hasMany(Seat::class);
+    }
 
 }

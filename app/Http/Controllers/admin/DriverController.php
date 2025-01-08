@@ -23,7 +23,7 @@ class DriverController extends Controller
 
     public function index()
     {
-        $drivers = Driver::latest()->get();
+        $drivers = Driver::where('company_id',auth()->user()->id)->latest()->get();
         return view('admin.pages.driver.index',compact('drivers'));
     }
 
@@ -40,6 +40,7 @@ class DriverController extends Controller
             ]);
 
             $driver = new Driver();
+            $driver->company_id = auth()->user()->id;
             $driver->name = $request->name;
             $driver->email = $request->email;
             $driver->phone = $request->phone;

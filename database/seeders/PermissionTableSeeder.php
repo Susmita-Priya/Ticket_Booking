@@ -211,6 +211,13 @@ class PermissionTableSeeder extends Seeder
             'supervisor-delete',
 
 
+            //For route
+            'route-list',
+            'route-create',
+            'route-edit',
+            'route-delete',
+
+
 
         ];
         foreach ($permissions as $permission) {

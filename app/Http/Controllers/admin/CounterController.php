@@ -23,7 +23,7 @@ class CounterController extends Controller
 
     public function index()
     {
-        $counters = Counter::latest()->get();
+        $counters = Counter::where('company_id',auth()->user()->id)->latest()->get();
         return view('admin.pages.counters.index',compact('counters'));
     }
 
@@ -37,6 +37,7 @@ class CounterController extends Controller
             ]);
 
             $counter = new Counter();
+            $counter->company_id = auth()->user()->id;
             $counter->name = $request->name;
             $counter->counter_no = $request->counter_no;
             $counter->location = $request->location;

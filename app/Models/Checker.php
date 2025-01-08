@@ -10,6 +10,7 @@ class Checker extends Model
     use HasFactory;
 
     protected $fillable = [
+        'company_id',
         'name',
         'email',
         'phone',

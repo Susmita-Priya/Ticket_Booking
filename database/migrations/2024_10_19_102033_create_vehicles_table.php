@@ -14,13 +14,15 @@ return new class extends Migration
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id');
-            $table->foreignId('category_id');
+            $table->foreignId('owner_id');
             $table->foreignId('type_id');
             $table->string('name');
-            $table->json('amenities_ids');
+            $table->string('vehicle_no');
             $table->string('engin_no');
-            $table->integer('total_seat');
-            $table->tinyInteger('is_booked')->default(0);
+            $table->string('chest_no');
+            $table->integer('total_seat'); 
+            $table->json('amenities_id');
+            $table->string('document')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });

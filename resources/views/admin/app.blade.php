@@ -209,6 +209,12 @@
                                         </li>
                                     @endcan
 
+                                    @can('route-list')
+                                        <li>
+                                            <a href="{{ route('route.section') }}">Route</a>
+                                        </li>
+                                    @endcan
+
                                 </ul>
                             </div>
                         </li>

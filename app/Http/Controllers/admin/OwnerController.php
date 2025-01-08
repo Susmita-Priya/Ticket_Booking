@@ -23,7 +23,7 @@ class OwnerController extends Controller
 
     public function index()
     {
-        $owners = Owner::latest()->get();
+        $owners = Owner::where('company_id',auth()->user()->id)->latest()->get();
         return view('admin.pages.owner.index',compact('owners'));
     }
 
@@ -39,6 +39,7 @@ class OwnerController extends Controller
             ]);
 
             $owner = new Owner();
+            $owner->company_id = auth()->user()->id;
             $owner->name = $request->name;
             $owner->email = $request->email;
             $owner->phone = $request->phone;

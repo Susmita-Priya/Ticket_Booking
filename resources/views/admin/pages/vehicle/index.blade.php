@@ -31,13 +31,16 @@
                         <tr>
                             <th>S/N</th>
                             <th>Name</th>
+                            <th>Vehicle No</th>
                             <th>Engine No</th>
-                            <th>Total Seat</th>
-                            <th>Category</th>
+                            <th>Chest No</th>
                             <th>Type</th>
+                            <th>Owner</th>
+                           
+                            <th>Total Seat</th>
                             <th>Amenities</th>
+                            <th>Document</th>
                             <th>Seat</th>
-                            <th>Is Booked</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -45,31 +48,30 @@
                     <tbody>
                         @foreach ($vehicles as $key => $vehicle)
                             <tr>
-                                <td>{{ ++$key }}</td>
+                                <td>{{ ++$key }}</td> 
                                 <td>{{ $vehicle->name }}</td>
+                                <td>{{ $vehicle->vehicle_no }}</td>
                                 <td>{{ $vehicle->engin_no }}</td>
+                                <td>{{ $vehicle->chest_no }}</td>
+                                <td>{{ $vehicle->type->name }}</td>
+                                <td>{{ $vehicle->owner->name }}</td>
                                 <td>{{ $vehicle->total_seat }}</td>
                                 <td>
                                     @php
-                                        $category = $categories->firstWhere('id', $vehicle->category_id);
-                                    @endphp
-                                    {{ $category ? $category->name : 'N/A' }}
-                                </td>
-                                <td>
-                                    @php
-                                        $type = $types->firstWhere('id', $vehicle->type_id);
-                                    @endphp
-                                    {{ $type ? $type->name : 'N/A' }}
-                                </td>
-                                <td>
-                                    @php
-                                        $vehicleAmenities = json_decode($vehicle->amenities_ids, true) ?? [];
+                                        $vehicleAmenities = json_decode($vehicle->amenities_id, true) ?? [];
                                     @endphp
                                     @foreach ($amenities as $amenity)
                                         @if (in_array($amenity->id, $vehicleAmenities))
                                             <span class="badge bg-primary">{{ $amenity->name }}</span>
                                         @endif
                                     @endforeach
+                                </td>
+                                <td>
+                                    @if($vehicle->document)
+                                    <a href="{{ asset($vehicle->document) }}" target="_blank" >View Document</a>
+                                    @else
+                                        No Document
+                                    @endif
                                 </td>
                                 <td>
                                     @can('seats-list')
@@ -80,7 +82,6 @@
                                         </a>
                                 @endcan
                             </td>
-                                <td>{{ $vehicle->is_booked == 1 ? 'Booked' : 'Not Booked' }}</td>
                                 <td>{{ $vehicle->status == 1 ? 'Active' : 'Inactive' }}</td>
                                 <td style="width: 100px;">
                                     <div class="d-flex justify-content-end gap-1">
@@ -115,12 +116,12 @@
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
-                                                            <label for="category_id" class="form-label">Category</label>
-                                                            <select name="category_id" class="form-select">
-                                                                @foreach ($categories as $category)
-                                                                    <option value="{{ $category->id }}"
-                                                                        {{ $vehicle->category_id == $category->id ? 'selected' : '' }}>
-                                                                        {{ $category->name }}</option>
+                                                            <label for="owner_id" class="form-label">Owner</label>
+                                                            <select name="owner_id" class="form-select">
+                                                                @foreach ($owners as $owner)
+                                                                    <option value="{{ $owner->id }}"
+                                                                        {{ $vehicle->owner_id == $owner->id ? 'selected' : '' }}>
+                                                                        {{ $owner->name }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -141,35 +142,21 @@
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
-                                                            <label for="amenities_ids" class="form-label">Amenities</label>
-                                                            <select name="amenities_ids[]"
-                                                                class="select2 form-control select2-multiple"
-                                                                data-toggle="select2" multiple="multiple">
-                                                                @foreach ($amenities as $amenity)
-                                                                    {{-- <option value="{{$amenity->id}}" {{ in_array($amenity->id, $vehicle->amenities_ids ?? []) ? 'selected' : '' }}>{{$amenity->name}}</option> --}}
-
-                                                                    @php
-                                                                        $selectedAmenities =
-                                                                            json_decode(
-                                                                                $vehicle->amenities_ids,
-                                                                                true,
-                                                                            ) ?? [];
-                                                                    @endphp
-                                                                    <option value="{{ $amenity->id }}"
-                                                                        {{ in_array($amenity->id, $selectedAmenities) ? 'selected' : '' }}>
-                                                                        {{ $amenity->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row">
-                                                        <div class="col-12 mb-3">
                                                             <label for="name" class="form-label">Name</label>
                                                             <input type="text" id="name" name="name"
                                                                 value="{{ $vehicle->name }}" class="form-control"
                                                                 placeholder="Enter Name" required>
                                                         </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-12 mb-3">
+                                                            <label for="vehicle_no" class="form-label">Vehicle No</label>
+                                                            <input type="text" id="vehicle_no" name="vehicle_no"
+                                                                value="{{ $vehicle->vehicle_no }}" class="form-control"
+                                                                placeholder="Enter vehicle number" required>
+                                                        </div>
+                                                    </div>
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
@@ -182,10 +169,49 @@
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
+                                                            <label for="chest_no" class="form-label">Chest No</label>
+                                                            <input type="text" id="chest_no" name="chest_no"
+                                                                value="{{ $vehicle->chest_no }}" class="form-control"
+                                                                placeholder="Enter chest number" required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-12 mb-3">
                                                             <label for="total_seat" class="form-label">Total Seat</label>
                                                             <input type="number" id="total_seat" name="total_seat"
                                                                 value="{{ $vehicle->total_seat }}" class="form-control"
                                                                 placeholder="Enter total seat" required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-12 mb-3">
+                                                            <label for="amenities_id" class="form-label">Amenities</label>
+                                                            <select name="amenities_id[]"
+                                                                class="select2 form-control select2-multiple"
+                                                                data-toggle="select2" multiple="multiple">
+                                                                @foreach ($amenities as $amenity)
+                                                                    @php
+                                                                        $selectedAmenities = json_decode($vehicle->amenities_ids, true) ?? [];
+                                                                    @endphp
+                                                                    <option value="{{ $amenity->id }}"
+                                                                        {{ in_array($amenity->id, $selectedAmenities) ? 'selected' : '' }}>
+                                                                        {{ $amenity->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-12 mb-3">
+                                                            <label for="document" class="form-label">Document</label>
+                                                            <input type="file" id="document" name="document" class="form-control">
+                                                            @if($vehicle->document)
+                                    <a href="{{ asset($vehicle->document) }}" target="_blank" >View Document</a>
+                                    @else
+                                        No Document
+                                    @endif
                                                         </div>
                                                     </div>
 
@@ -254,16 +280,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="{{ route('vehicle.store') }}">
+                    <form method="post" action="{{ route('vehicle.store') }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="category_id" class="form-label">Category</label>
-                                <select name="category_id" class="form-select">
-                                    <option selected value="">Select Category</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                <label for="owner_id" class="form-label">Owner</label>
+                                <select name="owner_id" class="form-select">
+                                    <option selected value="">Select Owner</option>
+                                    @foreach ($owners as $owner)
+                                        <option value="{{ $owner->id }}">{{ $owner->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -283,21 +309,17 @@
 
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="amenities_ids" class="form-label">Amenities</label>
-                                <select name="amenities_ids[]" class="select2 form-control select2-multiple"
-                                    data-toggle="select2" multiple="multiple">
-                                    @foreach ($amenities as $amenity)
-                                        <option value="{{ $amenity->id }}">{{ $amenity->name }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" id="name" name="name" class="form-control"
+                                    placeholder="Enter Name" required>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" id="name" name="name" class="form-control"
-                                    placeholder="Enter Name" required>
+                                <label for="vehicle_no" class="form-label">Vehicle No</label>
+                                <input type="text" id="vehicle_no" name="vehicle_no" class="form-control"
+                                    placeholder="Enter vehicle number" required>
                             </div>
                         </div>
 
@@ -311,11 +333,39 @@
 
                         <div class="row">
                             <div class="col-12 mb-3">
+                                <label for="chest_no" class="form-label">Chest No</label>
+                                <input type="text" id="chest_no" name="chest_no" class="form-control"
+                                    placeholder="Enter chest number" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
                                 <label for="total_seat" class="form-label">Total Seat</label>
                                 <input type="number" id="total_seat" name="total_seat" class="form-control"
                                     placeholder="Enter total seat" required>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="amenities_id" class="form-label">Amenities</label>
+                                <select name="amenities_id[]" class="select2 form-control select2-multiple"
+                                    data-toggle="select2" multiple="multiple">
+                                    @foreach ($amenities as $amenity)
+                                        <option value="{{ $amenity->id }}">{{ $amenity->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="document" class="form-label">Document</label>
+                                <input type="file" id="document" name="document" class="form-control">
+                            </div>
+                        </div>
+
 
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-primary" type="submit">Submit</button>

@@ -16,5 +16,6 @@ class Seat extends Model
         'is_booked',
         'status',
     ];
+
     
 }

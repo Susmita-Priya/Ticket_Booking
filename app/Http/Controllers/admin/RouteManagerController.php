@@ -23,7 +23,7 @@ class RouteManagerController extends Controller
 
     public function index()
     {
-        $routeManagers = RouteManager::latest()->get();
+        $routeManagers = RouteManager::where('company_id',auth()->user()->id)->latest()->get();
         return view('admin.pages.routeManager.index',compact('routeManagers'));
     }
 
@@ -39,6 +39,7 @@ class RouteManagerController extends Controller
             ]);
 
             $routeManager = new RouteManager();
+            $routeManager->company_id = auth()->user()->id;
             $routeManager->name = $request->name;
             $routeManager->email = $request->email;
             $routeManager->phone = $request->phone;

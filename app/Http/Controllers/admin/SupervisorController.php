@@ -23,7 +23,7 @@ class SupervisorController extends Controller
 
     public function index()
     {
-        $supervisors = Supervisor::latest()->get();
+        $supervisors = Supervisor::where('company_id',auth()->user()->id)->latest()->get();
         return view('admin.pages.supervisor.index',compact('supervisors'));
     }
 
@@ -39,6 +39,7 @@ class SupervisorController extends Controller
             ]);
 
             $supervisor = new Supervisor();
+            $supervisor->company_id = auth()->user()->id;
             $supervisor->name = $request->name;
             $supervisor->email = $request->email;
             $supervisor->phone = $request->phone;

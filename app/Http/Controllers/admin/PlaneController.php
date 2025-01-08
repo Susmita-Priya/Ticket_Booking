@@ -47,7 +47,6 @@ class PlaneController extends Controller
             Toastr::success('Plane Added Successfully', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
-            // Handle the exception here
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }

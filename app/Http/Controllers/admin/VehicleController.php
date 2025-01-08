@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Amenities;
 use App\Models\Category;
+use App\Models\Owner;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use App\Models\Vehicle;
@@ -26,12 +27,12 @@ class VehicleController extends Controller
 
     public function index()
     {
-        $vehicles = Vehicle::where('company_id',auth()->user()->id)->latest()->get();
-        $categories = Category::all(); 
+        $vehicles = Vehicle::with('owner','type')->where('company_id',auth()->user()->id)->latest()->get();
+        $owners =Owner::where('company_id',auth()->user()->id)->latest()->get();
         $types = Type::all();
         $amenities = Amenities::where('company_id',auth()->user()->id)->latest()->get();
 
-        return view('admin.pages.vehicle.index', compact('vehicles', 'categories', 'types', 'amenities'));
+        return view('admin.pages.vehicle.index', compact('vehicles', 'owners', 'types', 'amenities'));
     }
 
     public function store(Request $request)
@@ -39,18 +40,33 @@ class VehicleController extends Controller
         try {
             $request->validate([
                 'name' => 'required',
+                'vehicle_no' => 'required',
                 'engin_no' => 'required',
+                'chest_no' => 'required',
                 'total_seat' => 'required',
             ]);
+
             $vehicle = new Vehicle();
             $vehicle->company_id = auth()->user()->id;
-            $vehicle->category_id = $request->category_id;
+            $vehicle->owner_id = $request->owner_id;
             $vehicle->type_id = $request->type_id;
-            $vehicle->amenities_ids = json_encode($request->amenities_ids);
             $vehicle->name = $request->name;
+            $vehicle->vehicle_no = $request->vehicle_no;
             $vehicle->engin_no = $request->engin_no;
+            $vehicle->chest_no = $request->chest_no;
             $vehicle->total_seat = $request->total_seat;
+            $vehicle->amenities_id = json_encode($request->amenities_id);
+            if ($request->hasFile('document')) {
+                $file = $request->file('document');
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $path = 'uploads/vehiclesPdf';
+                $file->move(public_path($path), $filename);
+                $fullpath = $path . '/' . $filename;
+                $vehicle->document = $fullpath;
+            }
+
             $vehicle->save();
+           
             Toastr::success('Vehicle Added Successfully', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
@@ -63,20 +79,35 @@ class VehicleController extends Controller
     {
         try {
             $request->validate([
-                'name' => 'required',
-                'engin_no' => 'required',
-                'total_seat' => 'required',
+                
             ]);
             $vehicle = Vehicle::find($id);
             if (!$vehicle) {
                 return redirect()->back()->with('error', 'Vehicle not found');
             }
-            $vehicle->category_id = $request->category_id;
+            $vehicle->owner_id = $request->owner_id;
             $vehicle->type_id = $request->type_id;
-            $vehicle->amenities_ids = json_encode($request->amenities_ids);
             $vehicle->name = $request->name;
+            $vehicle->vehicle_no = $request->vehicle_no;
             $vehicle->engin_no = $request->engin_no;
+            $vehicle->chest_no = $request->chest_no;
             $vehicle->total_seat = $request->total_seat;
+            $vehicle->amenities_id = json_encode($request->amenities_id);
+            if ($request->hasFile('document')) {
+                $file = $request->file('document');
+
+                if ($vehicle->document && file_exists(public_path($vehicle->document))) {
+                    unlink(public_path($vehicle->document));
+                }
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $path = 'uploads/vehiclesPdf';
+                $file->move(public_path($path), $filename);
+                $fullpath = $path . '/' . $filename;
+                $vehicle->document = $fullpath;
+            }else{
+                $vehicle->document = $vehicle->document;
+            }
+
             $vehicle->status = $request->status;
             $vehicle->save();
             Toastr::success('Vehicle Updated Successfully', 'Success');
@@ -90,6 +121,13 @@ class VehicleController extends Controller
     {
         try {
             $vehicle = Vehicle::find($id);
+            if ($vehicle->document && file_exists(public_path($vehicle->document))) {
+                unlink(public_path($vehicle->document));
+            }
+            $seats = $vehicle->seats;
+            foreach ($seats as $seat) {
+                $seat->delete();
+            }
             $vehicle->delete();
             Toastr::success('Vehicle Deleted Successfully', 'Success');
             return redirect()->back();

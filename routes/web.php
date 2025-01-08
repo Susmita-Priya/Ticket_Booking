@@ -21,6 +21,7 @@ use App\Http\Controllers\admin\OwnerController;
 use App\Http\Controllers\admin\PlaneController;
 use App\Http\Controllers\admin\PlaneJourneyController;
 use App\Http\Controllers\admin\PublishedVehicleController;
+use App\Http\Controllers\admin\RouteController;
 use App\Http\Controllers\admin\RouteManagerController;
 use App\Http\Controllers\admin\SeatController;
 use App\Http\Controllers\admin\SiteSettingController;
@@ -229,6 +230,13 @@ Route::middleware('auth')->group(callback: function () {
     Route::post('/supervisor-store', [SupervisorController::class, 'store'])->name('supervisor.store');
     Route::put('/supervisor-update/{id}', [SupervisorController::class, 'update'])->name('supervisor.update');
     Route::get('/supervisor-delete/{id}', [SupervisorController::class, 'destroy'])->name('supervisor.destroy');
+
+
+    //route
+    Route::get('/route-section', [RouteController::class, 'index'])->name('route.section');
+    Route::post('/route-store', [RouteController::class, 'store'])->name('route.store');
+    Route::put('/route-update/{id}', [RouteController::class, 'update'])->name('route.update');
+    Route::get('/route-delete/{id}', [RouteController::class, 'destroy'])->name('route.destroy');
     
 });
 
