@@ -17,7 +17,6 @@ class UserController extends Controller
 {
     public function storeRegistration(Request $request)
     {
-        // Validate input
         $this->validate($request, [
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:15',

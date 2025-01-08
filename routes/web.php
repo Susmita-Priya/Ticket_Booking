@@ -5,20 +5,26 @@ use App\Http\Controllers\admin\AdminDashboardController;
 use App\Http\Controllers\admin\AmenitiesController;
 use App\Http\Controllers\admin\BookingController;
 use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\CheckerController;
+use App\Http\Controllers\admin\CounterController;
 use App\Http\Controllers\admin\CountryController;
 use App\Http\Controllers\admin\CuponController;
 use App\Http\Controllers\admin\DistrictController;
 use App\Http\Controllers\admin\DivisionController;
+use App\Http\Controllers\admin\DriverController;
 use App\Http\Controllers\admin\FaqController;
 use App\Http\Controllers\admin\Journey_typeController;
 use App\Http\Controllers\admin\JourneyTypeController;
 use App\Http\Controllers\admin\LocationController;
 use App\Http\Controllers\admin\OfferController;
+use App\Http\Controllers\admin\OwnerController;
 use App\Http\Controllers\admin\PlaneController;
 use App\Http\Controllers\admin\PlaneJourneyController;
 use App\Http\Controllers\admin\PublishedVehicleController;
+use App\Http\Controllers\admin\RouteManagerController;
 use App\Http\Controllers\admin\SeatController;
 use App\Http\Controllers\admin\SiteSettingController;
+use App\Http\Controllers\admin\SupervisorController;
 use App\Http\Controllers\admin\TermsController;
 use App\Http\Controllers\admin\TypeController;
 use App\Http\Controllers\admin\VehicleController;
@@ -181,6 +187,49 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/published-vehicle', [PublishedVehicleController::class, 'index'])->name('published.vehicle');
     Route::post('/published-vehicle-store', [PublishedVehicleController::class, 'store'])->name('published.vehicle.store');
     Route::get('/published-vehicle-delete/{id}', [PublishedVehicleController::class, 'destroy'])->name('published.vehicle.destroy');
+
+
+    //counter
+    Route::get('/counter-section', [CounterController::class, 'index'])->name('counter.section');
+    Route::post('/counter-store', [CounterController::class, 'store'])->name('counter.store');
+    Route::put('/counter-update/{id}', [CounterController::class, 'update'])->name('counter.update');
+    Route::get('/counter-delete/{id}', [CounterController::class, 'destroy'])->name('counter.destroy');
+
+
+    //RouteManager
+    Route::get('/routeManager-section', [RouteManagerController::class, 'index'])->name('routeManager.section');
+    Route::post('/routeManager-store', [RouteManagerController::class, 'store'])->name('routeManager.store');
+    Route::put('/routeManager-update/{id}', [RouteManagerController::class, 'update'])->name('routeManager.update');
+    Route::get('/routeManager-delete/{id}', [RouteManagerController::class, 'destroy'])->name('routeManager.destroy');
+
+
+    //checker
+    Route::get('/checker-section', [CheckerController::class, 'index'])->name('checker.section');
+    Route::post('/checker-store', [CheckerController::class, 'store'])->name('checker.store');
+    Route::put('/checker-update/{id}', [CheckerController::class, 'update'])->name('checker.update');
+    Route::get('/checker-delete/{id}', [CheckerController::class, 'destroy'])->name('checker.destroy');
+
+
+    //owner
+    Route::get('/owner-section', [OwnerController::class, 'index'])->name('owner.section');
+    Route::post('/owner-store', [OwnerController::class, 'store'])->name('owner.store');
+    Route::put('/owner-update/{id}', [OwnerController::class, 'update'])->name('owner.update');
+    Route::get('/owner-delete/{id}', [OwnerController::class, 'destroy'])->name('owner.destroy');
+
+
+    //driver
+    Route::get('/driver-section', [DriverController::class, 'index'])->name('driver.section');
+    Route::post('/driver-store', [DriverController::class, 'store'])->name('driver.store');
+    Route::put('/driver-update/{id}', [DriverController::class, 'update'])->name('driver.update');
+    Route::get('/driver-delete/{id}', [DriverController::class, 'destroy'])->name('driver.destroy');
+
+
+    //supervisor
+    Route::get('/supervisor-section', [SupervisorController::class, 'index'])->name('supervisor.section');
+    Route::post('/supervisor-store', [SupervisorController::class, 'store'])->name('supervisor.store');
+    Route::put('/supervisor-update/{id}', [SupervisorController::class, 'update'])->name('supervisor.update');
+    Route::get('/supervisor-delete/{id}', [SupervisorController::class, 'destroy'])->name('supervisor.destroy');
+    
 });
 
 require __DIR__ . '/auth.php';
