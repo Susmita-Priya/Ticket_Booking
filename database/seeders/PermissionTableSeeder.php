@@ -163,6 +163,52 @@ class PermissionTableSeeder extends Seeder
             'district-edit',
             'district-delete',
 
+            //publishedVehicle
+            'published-vehicle',
+
+            
+            //For Counter
+            'counter-list',
+            'counter-create',
+            'counter-edit',
+            'counter-delete',
+
+
+            //For routeManager
+            'route-manager-list',
+            'route-manager-create',
+            'route-manager-edit',
+            'route-manager-delete',
+
+
+            //For checker
+            'checker-list',
+            'checker-create',
+            'checker-edit',
+            'checker-delete',
+
+
+            //For owner
+            'owner-list',
+            'owner-create',
+            'owner-edit',
+            'owner-delete',
+
+
+            //For driver
+            'driver-list',
+            'driver-create',
+            'driver-edit',
+            'driver-delete',
+
+
+            //For supervisor
+            'supervisor-list',
+            'supervisor-create',
+            'supervisor-edit',
+            'supervisor-delete',
+
+
 
         ];
         foreach ($permissions as $permission) {

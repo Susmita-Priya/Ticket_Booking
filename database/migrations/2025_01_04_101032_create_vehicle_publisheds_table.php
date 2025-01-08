@@ -15,9 +15,13 @@ return new class extends Migration
             $table->id();
             $table->integer('company_id')->nullable();
             $table->integer('vehicle_id')->nullable();
-            $table->integer('start_location_id')->nullable();
-            $table->integer('end_location_id')->nullable();
+            $table->integer('start_division_id')->nullable();
+            $table->integer('end_division_id')->nullable();
+            $table->integer('start_district_id')->nullable();
+            $table->integer('end_district_id')->nullable();
             $table->date('journey_date')->nullable();
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
             $table->integer('status')->default(0);
             $table->timestamps();
         });

@@ -12,7 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('inspire')->hourly();
+        // Schedule the reset-expired-bookings command to run hourly
+        $schedule->command('vehicles:reset-expired-bookings')->hourly(); // Adjust to 'daily()' or 'everyFifteenMinutes()' if needed
     }
 
     /**
@@ -20,8 +21,10 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
+        // Load all the commands
         $this->load(__DIR__.'/Commands');
 
+        // Optionally, you can include commands from routes/console.php
         require base_path('routes/console.php');
     }
 }

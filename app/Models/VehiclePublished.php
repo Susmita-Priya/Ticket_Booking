@@ -11,9 +11,13 @@ class VehiclePublished extends Model
     protected $fillable = [
         'company_id',
         'vehicle_id',
-        'start_location_id',
-        'end_location_id',
+        'start_division_id',
+        'end_division_id',
+        'start_district_id',
+        'end_district_id',
         'journey_date',
+        'start_time',
+        'end_time',
         'status',
     ];
 }

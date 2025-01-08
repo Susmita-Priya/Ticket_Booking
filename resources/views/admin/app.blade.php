@@ -166,6 +166,49 @@
                                             <a href="{{ route('vehicle.section') }}">Vehicle</a>
                                         </li>
                                     @endcan
+
+                                    @can('published-vehicle')
+                                        <li>
+                                            <a href="{{ route('published.vehicle') }}">Published Vehicle</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('counter-list')
+                                        <li>
+                                            <a href="{{ route('counter.section') }}">Counter</a>
+                                        </li>                                 
+                                    @endcan
+
+                                    @can('route-manager-list')
+                                        <li>
+                                            <a href="{{ route('routeManager.section') }}">Route Manager</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('checker-list')
+                                        <li>
+                                            <a href="{{ route('checker.section') }}">Checker</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('owner-list')
+                                        <li>
+                                            <a href="{{ route('owner.section') }}">Owner</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('driver-list')
+                                        <li>
+                                            <a href="{{ route('driver.section') }}">Driver</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('supervisor-list')
+                                        <li>
+                                            <a href="{{ route('supervisor.section') }}">Supervisor</a>
+                                        </li>
+                                    @endcan
+
                                 </ul>
                             </div>
                         </li>
@@ -216,7 +259,6 @@
                                         <li>
                                             <a href="{{ route('booking.section') }}">Plane Booking</a>
                                         </li>
-
                                     @endcan
 
 
