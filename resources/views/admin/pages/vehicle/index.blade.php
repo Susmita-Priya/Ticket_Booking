@@ -193,7 +193,7 @@
                                                                 data-toggle="select2" multiple="multiple">
                                                                 @foreach ($amenities as $amenity)
                                                                     @php
-                                                                        $selectedAmenities = json_decode($vehicle->amenities_ids, true) ?? [];
+                                                                        $selectedAmenities = json_decode($vehicle->amenities_id, true) ?? [];
                                                                     @endphp
                                                                     <option value="{{ $amenity->id }}"
                                                                         {{ in_array($amenity->id, $selectedAmenities) ? 'selected' : '' }}>
