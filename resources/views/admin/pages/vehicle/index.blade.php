@@ -185,6 +185,7 @@
                                                         </div>
                                                     </div>
 
+                                                    {{--  Amenities --}}
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
                                                             <label for="amenities_id" class="form-label">Amenities</label>
