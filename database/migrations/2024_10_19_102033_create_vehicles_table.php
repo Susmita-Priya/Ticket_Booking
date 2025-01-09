@@ -23,7 +23,9 @@ return new class extends Migration
             $table->integer('total_seat'); 
             $table->json('amenities_id');
             $table->string('document')->nullable();
+            $table->string('is_booked')->default(0);
             $table->tinyInteger('status')->default(1);
+
             $table->timestamps();
         });
     }

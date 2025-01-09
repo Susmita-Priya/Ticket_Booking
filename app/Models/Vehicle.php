@@ -20,7 +20,9 @@ class Vehicle extends Model
         'total_seat',
         'amenities_id',
         'document',
+        'is_booked',
         'status',
+
     ];
 
     public function owner(){
