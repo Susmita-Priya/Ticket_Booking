@@ -23,7 +23,7 @@ class TypeController extends Controller
     }
     public function index()
     {
-        $type = Type::latest()->get();
+        $type = Type::where('company_id', auth()->user()->id)->latest()->get();
         return view('admin.pages.type.index', compact('type'));
     }
 

@@ -107,7 +107,7 @@ class VehicleController extends Controller
             }else{
                 $vehicle->document = $vehicle->document;
             }
-
+            $vehicle->is_booked = $request->is_booked;
             $vehicle->status = $request->status;
             $vehicle->save();
             Toastr::success('Vehicle Updated Successfully', 'Success');

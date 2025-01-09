@@ -49,7 +49,13 @@
                                 <td>{{ $driver->phone }}</td>
                                 <td>{{ $driver->address }}</td>
                                 <td>{{ $driver->nid }}</td>
-                                <td>{{ $driver->license }}</td>
+                                <td>
+                                    @if($driver->license)
+                                    <a href="{{ asset($driver->license) }}" target="_blank" class="btn btn-primary btn-sm">View License</a>
+                                    @else
+                                        No Document
+                                    @endif
+                                </td>
                                 <td>{{ $driver->status == 1 ? 'Active' : 'Inactive' }}</td>
                                 <td style="width: 100px;">
                                     <div class="d-flex justify-content-end gap-1">
@@ -130,9 +136,10 @@
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
                                                             <label for="license" class="form-label">License</label>
-                                                            <input type="text" id="license" name="license"
-                                                                value="{{ $driver->license }}" class="form-control"
-                                                                placeholder="Enter License" required>
+                                                            <input type="file" id="license" name="license" class="form-control">
+                                                            @if($driver->license)
+                                                                <a href="{{ asset($driver->license) }}" target="_blank" class="btn btn-primary btn-sm mt-2">View License</a>
+                                                            @endif
                                                         </div>
                                                     </div>
 
@@ -203,7 +210,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="{{ route('driver.store') }}">
+                    <form method="post" action="{{ route('driver.store') }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="row">
@@ -250,8 +257,7 @@
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="license" class="form-label">License</label>
-                                <input type="text" id="license" name="license" class="form-control"
-                                    placeholder="Enter License" required>
+                                <input type="file" id="license" name="license" class="form-control" >
                             </div>
                         </div>
 
