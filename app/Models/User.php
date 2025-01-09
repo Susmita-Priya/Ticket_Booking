@@ -28,7 +28,7 @@ class User extends Authenticatable
         'verification_code',
         'image',
         'status',
-        'role'
+        'is_registration_by',
     ];
 
     /**

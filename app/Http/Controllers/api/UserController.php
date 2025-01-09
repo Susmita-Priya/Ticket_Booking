@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Spatie\Permission\Models\Role;
 use Yoeunes\Toastr\Facades\Toastr;
 
 class UserController extends Controller
@@ -37,8 +38,11 @@ class UserController extends Controller
                 'password' => $input['password'],
                 'verification_code' => $verificationCode,
                 'status' => 0,
-                'role' => 'User',
+                'is_registration_by' => 'User',
             ]);
+
+            // Assign role to the user
+            $user->assignRole('User');
                                                                            
             // Send verification email
             Mail::to($request->email)->send(new VerifyMail($user));
@@ -124,5 +128,6 @@ class UserController extends Controller
                 'message' => 'User info',
                 'user' => $user, // Optionally return user data
             ], 200);
-        }
+    }
+
 }

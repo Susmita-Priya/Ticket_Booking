@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('verification_code')->nullable();
             $table->string('image')->nullable();
             $table->tinyInteger('status')->default(1);
-            $table->string('role')->nullable();
+            $table->string('is_registration_by')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

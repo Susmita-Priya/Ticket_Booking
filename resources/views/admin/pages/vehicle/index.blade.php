@@ -51,7 +51,7 @@
                                 Engine No : {{ $vehicle->engin_no }} <br>
                                 Chest No : {{ $vehicle->chest_no }}</td>
                                 <td>{{ $vehicle->type->name }}</td>
-                                <td>{{ $vehicle->owner->name }}</td>
+                                <td>{{ $vehicle->owner->name }}</td>  
                                 <td>{{ $vehicle->total_seat }}</td>
                                 <td>
                                     @php
