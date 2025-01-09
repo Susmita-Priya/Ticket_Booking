@@ -36,7 +36,7 @@
                             <th>Chest No</th>
                             <th>Type</th>
                             <th>Owner</th>
-                           
+
                             <th>Total Seat</th>
                             <th>Amenities</th>
                             <th>Document</th>
@@ -48,7 +48,7 @@
                     <tbody>
                         @foreach ($vehicles as $key => $vehicle)
                             <tr>
-                                <td>{{ ++$key }}</td> 
+                                <td>{{ ++$key }}</td>
                                 <td>{{ $vehicle->name }}</td>
                                 <td>{{ $vehicle->vehicle_no }}</td>
                                 <td>{{ $vehicle->engin_no }}</td>
@@ -67,21 +67,20 @@
                                     @endforeach
                                 </td>
                                 <td>
-                                    @if($vehicle->document)
-                                    <a href="{{ asset($vehicle->document) }}" target="_blank" >View Document</a>
+                                    @if ($vehicle->document)
+                                        <a href="{{ asset($vehicle->document) }}" target="_blank" class="btn btn-primary btn-sm">View Document</a>
                                     @else
                                         No Document
                                     @endif
                                 </td>
                                 <td>
                                     @can('seats-list')
-
-                                        <a href="{{route('seats.section', $vehicle->id)}}" class="btn btn-info btn-sm">
+                                        <a href="{{ route('seats.section', $vehicle->id) }}" class="btn btn-info btn-sm">
                                             <i class="ri-arrow-right-line"></i>
                                             <span> Seats </span>
                                         </a>
-                                @endcan
-                            </td>
+                                    @endcan
+                                </td>
                                 <td>{{ $vehicle->status == 1 ? 'Active' : 'Inactive' }}</td>
                                 <td style="width: 100px;">
                                     <div class="d-flex justify-content-end gap-1">
@@ -90,8 +89,8 @@
                                                 data-bs-target="#editNewModalId{{ $vehicle->id }}">Edit</button>
                                         @endcan
                                         @can('vehicle-delete')
-                                            <a href="{{ route('vehicle.destroy', $vehicle->id) }}" class="btn btn-danger btn-sm"
-                                                data-bs-toggle="modal"
+                                            <a href="{{ route('vehicle.destroy', $vehicle->id) }}"
+                                                class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#danger-header-modal{{ $vehicle->id }}">Delete</a>
                                         @endcan
                                     </div>
@@ -194,7 +193,9 @@
                                                                 data-toggle="select2" multiple="multiple">
                                                                 @foreach ($amenities as $amenity)
                                                                     @php
-                                                                        $selectedAmenities = json_decode($vehicle->amenities_id, true) ?? [];
+                                                                        $selectedAmenities =
+                                                                            json_decode($vehicle->amenities_id, true) ??
+                                                                            [];
                                                                     @endphp
                                                                     <option value="{{ $amenity->id }}"
                                                                         {{ in_array($amenity->id, $selectedAmenities) ? 'selected' : '' }}>
@@ -207,12 +208,14 @@
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
                                                             <label for="document" class="form-label">Document</label>
-                                                            <input type="file" id="document" name="document" class="form-control">
-                                                            @if($vehicle->document)
-                                    <a href="{{ asset($vehicle->document) }}" target="_blank" >View Document</a>
-                                    @else
-                                        No Document
-                                    @endif
+                                                            <input type="file" id="document" name="document"
+                                                                class="form-control">
+                                                            @if ($vehicle->document)
+                                                                <a href="{{ asset($vehicle->document) }}"
+                                                                    target="_blank" class="btn btn-primary btn-sm mt-2">View Document</a>
+                                                            @else
+                                                                No Document
+                                                            @endif
                                                         </div>
                                                     </div>
 

@@ -35,7 +35,6 @@ class DriverController extends Controller
                 'email' => 'required',
                 'phone' => 'required',
                 'address' => 'required',
-                'license' => 'required',
                 'nid' => 'required',
             ]);
 
@@ -45,7 +44,14 @@ class DriverController extends Controller
             $driver->email = $request->email;
             $driver->phone = $request->phone;
             $driver->address = $request->address;
-            $driver->license = $request->license;
+            if ($request->hasFile('license')) {
+                $file = $request->file('license');
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $path = 'uploads/driverLicense';
+                $file->move(public_path($path), $filename);
+                $fullpath = $path . '/' . $filename;
+                $driver->license = $fullpath;
+            }
             $driver->nid = $request->nid;
             $driver->save();
             
@@ -65,7 +71,6 @@ class DriverController extends Controller
                 'email' => 'required',
                 'phone' => 'required',
                 'address' => 'required',
-                'license' => 'required',
                 'nid' => 'required',
             ]);
             
@@ -75,7 +80,22 @@ class DriverController extends Controller
             $driver->phone = $request->phone;
             $driver->address = $request->address;
             $driver->nid = $request->nid;
-            $driver->license = $request->license;
+            if ($request->hasFile('license')) {
+                $file = $request->file('license');
+
+                if ($driver->license && file_exists(public_path($driver->license))) {
+                    unlink(public_path($driver->license));
+                }
+
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+                $path = 'uploads/driverLicense';
+                $file->move(public_path($path), $filename);
+                $fullpath = $path . '/' . $filename;
+            }
+            else{
+                $fullpath = $driver->license;
+            }
+            $driver->license = $fullpath;
             $driver->status = $request->status;
             $driver->save();
             Toastr::success('Driver Updated Successfully', 'Success');
@@ -89,6 +109,10 @@ class DriverController extends Controller
     {
         try {
             $driver = Driver::find($id);
+
+            if ($driver->license && file_exists(public_path($driver->license))) {
+                unlink(public_path($driver->license));
+            }
             $driver->delete();
             Toastr::success('Driver Deleted Successfully', 'Success');
             return redirect()->back();

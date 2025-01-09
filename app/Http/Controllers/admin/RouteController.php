@@ -61,9 +61,7 @@ class RouteController extends Controller
                 $fullpath = $path . '/' . $filename;
                 $route->document = $fullpath;
             }
-            
             $route->save();
-            
             Toastr::success('Route Added Successfully', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
@@ -100,6 +98,7 @@ class RouteController extends Controller
                 $path = 'uploads/pdfs';
                 $file->move(public_path($path), $filename);
                 $fullpath = $path . '/' . $filename;
+
             }
             else{
                 $fullpath = $route->document;

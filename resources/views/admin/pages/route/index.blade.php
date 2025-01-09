@@ -70,7 +70,7 @@
                                 </td>
                                 <td>
                                     @if($routedata->document)
-                                    <a href="{{ asset($routedata->document) }}" target="_blank" class="btn btn-primary btn-sm">View Document</a>
+                                    <a href="{{ asset($routedata->document) }}" target="_blank" class="btn btn-primary btn-sm">Route Permit Doc</a>
                                     @else
                                         No Document
                                     @endif
