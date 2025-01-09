@@ -48,7 +48,7 @@ class TripController extends Controller
                 'Time' => 'required|date_format:H:i',
                 'total_route_cost' => 'required|numeric',
             ]);
-            
+
             $trip = new Trip();
             $trip->company_id = auth()->user()->id;
             $trip->route_id = $request->route_id;
