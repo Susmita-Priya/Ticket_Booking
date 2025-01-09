@@ -29,7 +29,7 @@ class VehicleController extends Controller
     {
         $vehicles = Vehicle::with('owner','type')->where('company_id',auth()->user()->id)->latest()->get();
         $owners =Owner::where('company_id',auth()->user()->id)->latest()->get();
-        $types = Type::all();
+        $types = Type::where('company_id',auth()->user()->id)->latest()->get();
         $amenities = Amenities::where('company_id',auth()->user()->id)->latest()->get();
 
         return view('admin.pages.vehicle.index', compact('vehicles', 'owners', 'types', 'amenities'));
