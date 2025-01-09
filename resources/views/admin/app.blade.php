@@ -167,12 +167,6 @@
                                         </li>
                                     @endcan
 
-                                    @can('published-vehicle')
-                                        <li>
-                                            <a href="{{ route('published.vehicle') }}">Published Vehicle</a>
-                                        </li>
-                                    @endcan
-
                                     @can('counter-list')
                                         <li>
                                             <a href="{{ route('counter.section') }}">Counter</a>
@@ -212,6 +206,12 @@
                                     @can('route-list')
                                         <li>
                                             <a href="{{ route('route.section') }}">Route</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('trip-list')
+                                        <li>
+                                            <a href="{{ route('trip.section') }}">Trip</a>
                                         </li>
                                     @endcan
 

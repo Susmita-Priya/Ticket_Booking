@@ -163,11 +163,6 @@ class PermissionTableSeeder extends Seeder
             'district-edit',
             'district-delete',
 
-            //publishedVehicle
-            'published-vehicle',
-            'published-vehicle-delete',
-            'published-vehicle',
-
 
             //For Counter
             'counter-list',
@@ -217,6 +212,11 @@ class PermissionTableSeeder extends Seeder
             'route-edit',
             'route-delete',
 
+            //For Trip
+            'trip-list',
+            'trip-create',
+            'trip-edit',
+            'trip-delete',
 
 
         ];

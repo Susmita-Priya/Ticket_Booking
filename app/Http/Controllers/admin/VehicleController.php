@@ -79,7 +79,11 @@ class VehicleController extends Controller
     {
         try {
             $request->validate([
-                
+                'name' => 'required',
+                'vehicle_no' => 'required',
+                'engin_no' => 'required',
+                'chest_no' => 'required',
+                'total_seat' => 'required',
             ]);
             $vehicle = Vehicle::find($id);
             if (!$vehicle) {

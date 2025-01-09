@@ -27,6 +27,7 @@ use App\Http\Controllers\admin\SeatController;
 use App\Http\Controllers\admin\SiteSettingController;
 use App\Http\Controllers\admin\SupervisorController;
 use App\Http\Controllers\admin\TermsController;
+use App\Http\Controllers\admin\TripController;
 use App\Http\Controllers\admin\TypeController;
 use App\Http\Controllers\admin\VehicleController;
 use App\Http\Controllers\frontend\HomePageController;
@@ -184,11 +185,6 @@ Route::middleware('auth')->group(callback: function () {
     Route::put('/district-update/{id}', [DistrictController::class, 'update'])->name('district.update');
     Route::get('/district-delete/{id}', [DistrictController::class, 'destroy'])->name('district.destroy');
 
-    Route::get('/districts/{divisionId}', [PublishedVehicleController::class, 'getDistrictsByDivision']);
-    Route::get('/published-vehicle', [PublishedVehicleController::class, 'index'])->name('published.vehicle');
-    Route::post('/published-vehicle-store', [PublishedVehicleController::class, 'store'])->name('published.vehicle.store');
-    Route::get('/published-vehicle-delete/{id}', [PublishedVehicleController::class, 'destroy'])->name('published.vehicle.destroy');
-
 
     //counter
     Route::get('/counter-section', [CounterController::class, 'index'])->name('counter.section');
@@ -237,6 +233,14 @@ Route::middleware('auth')->group(callback: function () {
     Route::post('/route-store', [RouteController::class, 'store'])->name('route.store');
     Route::put('/route-update/{id}', [RouteController::class, 'update'])->name('route.update');
     Route::get('/route-delete/{id}', [RouteController::class, 'destroy'])->name('route.destroy');
+
+
+    //Trip
+    Route::get('/trip-section', [TripController::class, 'index'])->name('trip.section');
+    Route::post('/trip-store', [TripController::class, 'store'])->name('trip.store');
+    Route::put('/trip-update/{id}', [TripController::class, 'update'])->name('trip.update');
+    Route::get('/trip-delete/{id}', [TripController::class, 'destroy'])->name('trip.destroy');
+
     
 });
 
