@@ -29,7 +29,8 @@ class TripController extends Controller
     {
         $trips = Trip::with('route','vehicle','driver','supervisor')->where('company_id',auth()->user()->id)->latest()->get();
         $routes = Route::where('company_id',auth()->user()->id)->get();
-        $vehicles = Vehicle::where('company_id',auth()->user()->id)->get();
+        $vehicles = Vehicle::where('company_id',auth()->user()->id)
+                ->where('status',1)->where('is_booked',0)->get();
         $drivers = Driver::where('company_id',auth()->user()->id)->get();
         $supervisors = Supervisor::where('company_id',auth()->user()->id)->get();
 
@@ -59,6 +60,10 @@ class TripController extends Controller
             $trip->Time = $request->Time;
             $trip->total_route_cost = $request->total_route_cost;
             $trip->save();
+
+            $vehicle = Vehicle::find($request->vehicle_id);
+            $vehicle->is_booked = 1;
+            $vehicle->save();
            
             Toastr::success('Trip Added Successfully', 'Success');
             return redirect()->back();
@@ -103,7 +108,12 @@ class TripController extends Controller
     {
         try {
             $trip = Trip::find($id);
+
+            $vehicle = Vehicle::find($trip->vehicle_id);
+            $vehicle->is_booked = 0;
+            $vehicle->save();
             $trip->delete();
+            
             Toastr::success('Trip Deleted Successfully', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {

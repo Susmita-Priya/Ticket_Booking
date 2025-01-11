@@ -49,7 +49,7 @@
                                 <td>Name : {{ $vehicle->name }} <br>
                                 Vehicle No : {{ $vehicle->vehicle_no }} <br>
                                 Engine No : {{ $vehicle->engin_no }} <br>
-                                Chest No : {{ $vehicle->chest_no }}</td>
+                                Chassis No : {{ $vehicle->chest_no }}</td>
                                 <td>{{ $vehicle->type->name }}</td>
                                 <td>{{ $vehicle->owner->name }}</td>  
                                 <td>{{ $vehicle->total_seat }}</td>
@@ -59,7 +59,7 @@
                                     @endphp
                                     @foreach ($amenities as $amenity)
                                         @if (in_array($amenity->id, $vehicleAmenities))
-                                            <span class="badge bg-primary">{{ $amenity->name }}</span>
+                                            <span class="badge bg-primary">{{ $amenity->name }}</span> <br>
                                         @endif
                                     @endforeach
                                 </td>
@@ -78,14 +78,20 @@
                                         </a>
                                     @endcan
                                 </td>
-                                <td>{{ $vehicle->is_booked == 1 ? 'Yes' : 'No' }}</td>
+                                <td>
+                                    @if ($vehicle->is_booked == 1)
+                                        <span class="badge bg-success">Yes</span>
+                                    @else
+                                        <span class="badge bg-danger">No</span>
+                                    @endif
+                                </td>
                                 <td>
                                     @if ($vehicle->status == 1)
-                                        Active
+                                    <span class="badge bg-success">Active</span>
                                     @elseif ($vehicle->status == 0)
-                                        Inactive
+                                    <span class="badge bg-danger">Inactive</span>
                                     @else
-                                        Maintenance
+                                    <span class="badge bg-warning">Maintenance</span>
                                     @endif
                                 </td>
                                 <td style="width: 100px;">
@@ -174,7 +180,7 @@
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
-                                                            <label for="chest_no" class="form-label">Chest No</label>
+                                                            <label for="chest_no" class="form-label">Chassis No</label>
                                                             <input type="text" id="chest_no" name="chest_no"
                                                                 value="{{ $vehicle->chest_no }}" class="form-control"
                                                                 placeholder="Enter chest number" required>
@@ -361,7 +367,7 @@
 
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="chest_no" class="form-label">Chest No</label>
+                                <label for="chest_no" class="form-label">Chassis No</label>
                                 <input type="text" id="chest_no" name="chest_no" class="form-control"
                                     placeholder="Enter chest number" required>
                             </div>

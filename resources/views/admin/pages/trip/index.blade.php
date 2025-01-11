@@ -46,7 +46,8 @@
                             <tr>
                                 <td>{{ ++$key }}</td>
                                 <td>{{ $trip->route->name }}</td>
-                                <td>{{ $trip->vehicle->name }}</td>
+                                <td>{{ $trip->vehicle->name }} <br>
+                                    ({{ $trip->vehicle->vehicle_no }} )</td>
                                 <td>{{ $trip->driver->name }}</td>
                                 <td>{{ $trip->supervisor->name }}</td>
                                 <td>{{ $trip->Date }}</td>
@@ -54,11 +55,9 @@
                                 <td>{{ $trip->total_route_cost }} TK</td>
                                 <td>
                                     @if ($trip->status == 1)
-                                        Active
+                                    <span class="badge bg-success">Active</span>
                                     @elseif ($trip->status == 0)
-                                        Inactive
-                                    @else
-                                        Maintenance
+                                    <span class="badge bg-danger">Inactive</span>
                                     @endif
                                 </td>
                                 <td style="width: 100px;">
@@ -112,7 +111,7 @@
                                                                 @foreach ($vehicles as $vehicle)
                                                                     <option value="{{ $vehicle->id }}"
                                                                         {{ $trip->vehicle_id == $vehicle->id ? 'selected' : '' }}>
-                                                                        {{ $vehicle->name }}</option>
+                                                                        {{ $vehicle->name }} ({{ $vehicle->vehicle_no }})</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -257,7 +256,7 @@
                                 <select name="vehicle_id" class="form-select">
                                     <option selected value="">Select Vehicle</option>
                                     @foreach ($vehicles as $vehicle)
-                                        <option value="{{ $vehicle->id }}">{{ $vehicle->name }}</option>
+                                        <option value="{{ $vehicle->id }}">{{ $vehicle->name }} ({{ $vehicle->vehicle_no }} )</option>
                                     @endforeach
                                 </select>
                             </div>
