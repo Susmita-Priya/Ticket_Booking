@@ -44,6 +44,7 @@ class VehicleController extends Controller
                 'engin_no' => 'required',
                 'chest_no' => 'required',
                 'total_seat' => 'required',
+                'per_seat_price' => 'required',
             ]);
 
             $vehicle = new Vehicle();
@@ -64,7 +65,7 @@ class VehicleController extends Controller
                 $fullpath = $path . '/' . $filename;
                 $vehicle->document = $fullpath;
             }
-
+            $vehicle->per_seat_price = $request->per_seat_price;
             $vehicle->save();
            
             Toastr::success('Vehicle Added Successfully', 'Success');
@@ -84,6 +85,7 @@ class VehicleController extends Controller
                 'engin_no' => 'required',
                 'chest_no' => 'required',
                 'total_seat' => 'required',
+                'per_seat_price' => 'required',
             ]);
             $vehicle = Vehicle::find($id);
             if (!$vehicle) {
@@ -111,6 +113,7 @@ class VehicleController extends Controller
             }else{
                 $vehicle->document = $vehicle->document;
             }
+            $vehicle->per_seat_price = $request->per_seat_price;
             $vehicle->is_booked = $request->is_booked;
             $vehicle->status = $request->status;
             $vehicle->save();
@@ -125,6 +128,11 @@ class VehicleController extends Controller
     {
         try {
             $vehicle = Vehicle::find($id);
+            
+            if($vehicle->is_booked == 1){
+                Toastr::error('Vehicle is already booked, Check Trip', 'Error');
+                return redirect()->back();
+            }
             if ($vehicle->document && file_exists(public_path($vehicle->document))) {
                 unlink(public_path($vehicle->document));
             }
@@ -132,6 +140,7 @@ class VehicleController extends Controller
             foreach ($seats as $seat) {
                 $seat->delete();
             }
+            
             $vehicle->delete();
             Toastr::success('Vehicle Deleted Successfully', 'Success');
             return redirect()->back();

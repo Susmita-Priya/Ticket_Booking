@@ -19,6 +19,7 @@ class Vehicle extends Model
         'chest_no',
         'total_seat',
         'amenities_id',
+        'per_seat_price',
         'document',
         'is_booked',
         'status',

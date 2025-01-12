@@ -45,11 +45,11 @@
                         @foreach ($trips as $key => $trip)
                             <tr>
                                 <td>{{ ++$key }}</td>
-                                <td>{{ $trip->route->name }}</td>
-                                <td>{{ $trip->vehicle->name }} <br>
-                                    ({{ $trip->vehicle->vehicle_no }} )</td>
-                                <td>{{ $trip->driver->name }}</td>
-                                <td>{{ $trip->supervisor->name }}</td>
+                                <td>{{ $trip->route->name ?? "N/A"}}</td>
+                                <td>{{ $trip->vehicle->name ?? "N/A" }} <br>
+                                    ({{ $trip->vehicle->vehicle_no ?? "N/A"}} )</td>
+                                <td>{{ $trip->driver->name ?? "N/A" }}</td>
+                                <td>{{ $trip->supervisor->name ?? "N/A"}}</td>
                                 <td>{{ $trip->Date }}</td>
                                 <td>{{ $trip->Time }}</td>
                                 <td>{{ $trip->total_route_cost }} TK</td>

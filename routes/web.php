@@ -23,6 +23,7 @@ use App\Http\Controllers\admin\PlaneJourneyController;
 use App\Http\Controllers\admin\PublishedVehicleController;
 use App\Http\Controllers\admin\RouteController;
 use App\Http\Controllers\admin\RouteManagerController;
+use App\Http\Controllers\admin\SeatBookingController;
 use App\Http\Controllers\admin\SeatController;
 use App\Http\Controllers\admin\SiteSettingController;
 use App\Http\Controllers\admin\SupervisorController;
@@ -33,6 +34,7 @@ use App\Http\Controllers\admin\VehicleController;
 use App\Http\Controllers\frontend\HomePageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Models\SeatBooking;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Route;
 
@@ -109,6 +111,17 @@ Route::middleware('auth')->group(callback: function () {
     Route::post('/seats-store', [SeatController::class, 'store'])->name('seats.store');
     Route::put('/seats-update/{id}', [SeatController::class, 'update'])->name('seats.update');
     Route::get('/seats-delete/{id}', [SeatController::class, 'destroy'])->name('seats.destroy');
+
+    // reset seat
+    Route::get('/reset-seat/{vehicle_id}', [SeatController::class, 'resetSeat'])->name('reset.seat');
+
+
+    //Seat Booking Section
+    Route::get('/seat-booking-section/{vehicle_id}', [SeatBookingController::class, 'index'])->name('seat_booking.section');
+    Route::post('/seat-booking-store', [SeatBookingController::class, 'store'])->name('seat_booking.store');
+    Route::put('/seat-booking-update/{id}', [SeatBookingController::class, 'update'])->name('seat_booking.update');
+    Route::get('/seat-booking-delete/{id}', [SeatBookingController::class, 'destroy'])->name('seat_booking.destroy');
+
 
     //Country Section
     Route::get('/country-section', [CountryController::class, 'index'])->name('country.section');

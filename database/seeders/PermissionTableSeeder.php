@@ -112,6 +112,13 @@ class PermissionTableSeeder extends Seeder
             'seats-delete',
 
 
+            // For seat booking
+            'seat-booking-list',
+            'seat-booking-create',
+            'seat-booking-edit',
+            'seat-booking-delete',
+
+
             //Site Setting
             'site-setting',
             'cart-list',
@@ -122,6 +129,10 @@ class PermissionTableSeeder extends Seeder
             'booking-create',
             'booking-edit',
             'booking-delete',
+
+
+            //reset booking
+            'reset-seat-list',
 
 
             //For Cupon

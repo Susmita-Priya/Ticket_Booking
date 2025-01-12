@@ -19,7 +19,14 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <div class="d-flex justify-content-end">
+                <div class="d-flex justify-content-end gap-1">
+                    @can('reset-seat-list')
+                        <!-- Reset Button -->
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#resetSeatModal">Reset</button>
+                    @endcan
+                    @can('booking-list')
+                    <a href="{{ route('seat_booking.section', $vehicle->id) }}" class="btn btn-success">Booking List</a>
+                    @endcan
                     @can('seats-create')
                         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addNewModalId">Add New</button>
                     @endcan
@@ -48,18 +55,130 @@
                                 {{ $vehicle ? $vehicle->name : 'N/A' }} ({{ $vehicle ? $vehicle->engin_no : 'N/A' }})
                             </td>
                             <td>{{$seatData->seat_no}}</td>
-                            <td>{{$seatData->is_booked==1? 'Yes':'No'}}</td>
-                            <td>{{$seatData->status==1? 'Active':'Inactive'}}</td>
+                            <td>
+                                @if ($seatData->is_booked == 1)
+                                    <span class="badge bg-success">Yes</span>
+                                @else
+                                    <span class="badge bg-danger">No</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($seatData->status == 1)
+                                    <span class="badge bg-success">Active</span>
+                                @else
+                                    <span class="badge bg-danger">Inactive</span>
+                                @endif
+                            </td>
+
                             <td style="width: 100px;">
                                 <div class="d-flex justify-content-end gap-1">
+                                    @can('seat-booking-create')
+                                    @if($seatData->is_booked == 0)
+                                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#bookSeatModal{{$seatData->id}}">Book</button>
+                                    @endif
+                                    @endcan
                                     @can('seats-edit')
                                         <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#editNewModalId{{$seatData->id}}">Edit</button>
                                     @endcan
                                     @can('seats-delete')
                                         <a href="{{route('seats.destroy',$seatData->id)}}"class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#danger-header-modal{{$seatData->id}}">Delete</a>
                                     @endcan
+
                                 </div>
                             </td>
+
+                            <!-- Reset Confirmation Modal -->
+                        <div class="modal fade" id="resetSeatModal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="resetSeatModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="resetSeatModalLabel">Reset Seats</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to reset the seats?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                        <a href="{{ route('reset.seat', $vehicle->id) }}" class="btn btn-warning">Reset</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                            <!-- Book Seat Modal -->
+                            <div class="modal fade" id="bookSeatModal{{$seatData->id}}" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="bookSeatModalLabel{{$seatData->id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="bookSeatModalLabel{{$seatData->id}}">Book Seat</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="{{route('seat_booking.store', $seatData->id)}}">
+                                                @csrf
+                                                
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="mb-3">
+                                                            <label for="passenger_name" class="form-label">Passenger Name</label>
+                                                            <input type="text" id="passenger_name" name="passenger_name" class="form-control" placeholder="Enter Passenger Name">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="mb-3">
+                                                            <label for="passenger_phone" class="form-label">Passenger Phone</label>
+                                                            <input type="text" id="passenger_phone" name="passenger_phone" class="form-control" placeholder="Enter Phone Number" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="mb-3">
+                                                            <label for="vehicle_name" class="form-label">Vehicle</label>
+                                                            <input type="text" id="vehicle_name" name="vehicle_name" value="{{ $vehicle->name }} ({{ $vehicle->vehicle_no }})" class="form-control" readonly>
+                                                            <input type="hidden" name="vehicle_id" value="{{ $vehicle->id }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="mb-3">
+                                                            <label for="seat_no_display" class="form-label">Seat No</label>
+                                                            <input type="text" id="seat_no_display" name="seat_no_display" value="{{ $seatData->seat_no }}" class="form-control" readonly>
+                                                            <input type="hidden" name="seat_no" value="{{ $seatData->seat_no }}">
+                                                            <input type="hidden" name="seat_id" value="{{ $seatData->id }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="mb-3">
+                                                            <label for="payment_amount" class="form-label">Payment Amount</label>
+                                                            <input type="text" id="payment_amount" name="payment_amount" value="{{ $vehicle->per_seat_price }}" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="mb-3">
+                                                            <label for="booking_date" class="form-label">Date</label>
+                                                            <input type="date" id="booking_date" name="booking_date" value="{{ \Carbon\Carbon::today()->toDateString() }}" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-end">
+                                                    <button class="btn btn-primary" type="submit">Book</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!--Edit Modal -->
                             <div class="modal fade" id="editNewModalId{{$seatData->id}}" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="editNewModalLabel{{$seatData->id}}" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('chest_no');
             $table->integer('total_seat'); 
             $table->json('amenities_id');
+            $table->string('per_seat_price');
             $table->string('document')->nullable();
             $table->string('is_booked')->default(0);
             $table->tinyInteger('status')->default(1);

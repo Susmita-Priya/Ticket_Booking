@@ -34,6 +34,7 @@
                             <th>Type</th>
                             <th>Owner</th>
                             <th>Total Seat</th>
+                            <th>Per Seat Price</th>
                             <th>Amenities</th>
                             <th>Document</th>
                             <th>Seat</th>
@@ -53,6 +54,7 @@
                                 <td>{{ $vehicle->type->name }}</td>
                                 <td>{{ $vehicle->owner->name }}</td>  
                                 <td>{{ $vehicle->total_seat }}</td>
+                                <td>{{ $vehicle->per_seat_price }}</td>
                                 <td>
                                     @php
                                         $vehicleAmenities = json_decode($vehicle->amenities_id, true) ?? [];
@@ -196,6 +198,15 @@
                                                         </div>
                                                     </div>
 
+                                                    <div class="row">
+                                                        <div class="col-12 mb-3">
+                                                            <label for="per_seat_price" class="form-label">Per Seat Price</label>
+                                                            <input type="number" id="per_seat_price" name="per_seat_price"
+                                                                value="{{ $vehicle->per_seat_price }}" class="form-control"
+                                                                placeholder="Enter per seat price" required>
+                                                        </div>
+                                                    </div>
+
                                                     {{--  Amenities --}}
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
@@ -233,8 +244,7 @@
                                                    
                                                     <div class = "row">
                                                         <div class="col-12 mb-3">
-                                                            <label for="is_booked" class="form-label
-                                                            ">Is Booked</label>
+                                                            <label for="is_booked" class="form-label">Is Booked</label>
                                                             <select name="is_booked" class="form-select">
                                                                 <option value="1"
                                                                     {{ $vehicle->is_booked == 1 ? 'selected' : '' }}>Yes
@@ -378,6 +388,14 @@
                                 <label for="total_seat" class="form-label">Total Seat</label>
                                 <input type="number" id="total_seat" name="total_seat" class="form-control"
                                     placeholder="Enter total seat" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="per_seat_price" class="form-label">Per Seat Price</label>
+                                <input type="number" id="per_seat_price" name="per_seat_price" class="form-control"
+                                    placeholder="Enter per seat price" required>
                             </div>
                         </div>
 

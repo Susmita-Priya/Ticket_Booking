@@ -27,8 +27,8 @@ class SeatController extends Controller
     public function index(Request $request)
     {
 
-        $seats = Seat::where('vehicle_id', $request->vehicle_id)->latest()->get();
-        $vehicle = Vehicle::where('id', $request->vehicle_id)->first();
+        $seats = Seat::where('company_id',auth()->user()->id)->where('vehicle_id', $request->vehicle_id)->latest()->get();
+        $vehicle = Vehicle::where('company_id',auth()->user()->id)->where('id', $request->vehicle_id)->first();
 
         return view('admin.pages.seat.index', compact('vehicle', 'seats'));
     }
@@ -80,6 +80,22 @@ class SeatController extends Controller
             $seat = Seat::find($id);
             $seat->delete();
             Toastr::success('Seat Deleted Successfully', 'Success');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+        }
+    }
+
+    public function resetSeat($id)
+    {
+        try {
+            $seats = Seat::where('company_id',auth()->user()->id)->where('vehicle_id', $id)->get();
+            foreach ($seats as $seat) {
+                $seat->is_booked = 0;
+                $seat->save();
+            }
+          
+            Toastr::success('Seat Reset Successfully', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
