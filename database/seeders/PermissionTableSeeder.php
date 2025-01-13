@@ -106,6 +106,7 @@ class PermissionTableSeeder extends Seeder
 
 
             //For Seats
+            'vehicle-select',
             'seats-list',
             'seats-create',
             'seats-edit',
