@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Seat;
+use App\Models\Trip;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -29,8 +30,9 @@ class SeatController extends Controller
 
         $seats = Seat::where('company_id',auth()->user()->id)->where('vehicle_id', $request->vehicle_id)->latest()->get();
         $vehicle = Vehicle::where('company_id',auth()->user()->id)->where('id', $request->vehicle_id)->first();
+        $trip = Trip::where('company_id',auth()->user()->id)->where('vehicle_id', $request->vehicle_id)->first();
 
-        return view('admin.pages.seat.index', compact('vehicle', 'seats'));
+        return view('admin.pages.seat.index', compact('vehicle', 'seats', 'trip'));
     }
 
     public function store(Request $request)

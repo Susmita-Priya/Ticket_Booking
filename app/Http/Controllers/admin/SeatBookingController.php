@@ -26,11 +26,16 @@ class SeatBookingController extends Controller
 
     public function index(Request $request)
     {
-        $vehicle = Vehicle::where('company_id',auth()->user()->id)->where('id', $request->vehicle_id)->firstOrFail();
+        $vehicle = Vehicle::where('company_id', auth()->user()->id)->where('id', $request->vehicle_id)->firstOrFail();
         $vehicle_id = $request->vehicle_id;
-        $bookings = SeatBooking::where('company_id',auth()->user()->id)->where('vehicle_id', $vehicle_id)->latest()->get();
-        return view('admin.pages.seatBooking.index', compact('vehicle', 'bookings'));
+
+        $filter_date = $request->filter_date;
+        $bookings = SeatBooking::where('company_id', auth()->user()->id)->where('vehicle_id', $vehicle_id)->where('booking_date', $filter_date)->latest()->get();
+        $total_payment = $bookings->sum('payment_amount');
+
+        return view('admin.pages.seatBooking.index', compact('vehicle', 'bookings', 'total_payment'));
     }
+
 
     public function store(Request $request)
     {

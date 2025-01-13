@@ -121,6 +121,7 @@ Route::middleware('auth')->group(callback: function () {
     Route::post('/seat-booking-store', [SeatBookingController::class, 'store'])->name('seat_booking.store');
     Route::put('/seat-booking-update/{id}', [SeatBookingController::class, 'update'])->name('seat_booking.update');
     Route::get('/seat-booking-delete/{id}', [SeatBookingController::class, 'destroy'])->name('seat_booking.destroy');
+    
 
 
     //Country Section
