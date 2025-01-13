@@ -27,13 +27,21 @@ class SeatController extends Controller
 
     public function index(Request $request)
     {
-
-        $seats = Seat::where('company_id',auth()->user()->id)->where('vehicle_id', $request->vehicle_id)->latest()->get();
-        $vehicle = Vehicle::where('company_id',auth()->user()->id)->where('id', $request->vehicle_id)->first();
+        $vehicle_id = $request->vehicle_id;
+        $flag = $vehicle_id ? 1 : 0;
+    
+        $vehicles = Vehicle::where('company_id', auth()->user()->id)->where('status',1)->get();
+        $seats = Seat::where('company_id', auth()->user()->id)
+                     ->where('vehicle_id', $vehicle_id)
+                     ->latest()
+                     ->get();
+    
+        $vehicle = Vehicle::firstWhere('id', $vehicle_id);
         $trip = Trip::where('company_id',auth()->user()->id)->where('vehicle_id', $request->vehicle_id)->first();
-
-        return view('admin.pages.seat.index', compact('vehicle', 'seats', 'trip'));
+    
+        return view('admin.pages.seat.index', compact('vehicles', 'vehicle', 'seats', 'trip', 'flag'));
     }
+    
 
     public function store(Request $request)
     {

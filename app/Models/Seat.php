@@ -17,5 +17,15 @@ class Seat extends Model
         'status',
     ];
 
+    public function vehicle()
+    {
+        return $this->belongsTo(Vehicle::class);
+    }
+
+    public function trip()
+    {
+        return $this->belongsTo(Trip::class);
+    }
+
     
 }

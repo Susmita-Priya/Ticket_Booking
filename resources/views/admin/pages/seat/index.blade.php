@@ -16,15 +16,52 @@
         </div>
     </div>
 
+    <div class="d-flex justify-content-end mb-3">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
+            Filter by Vehicle
+        </button>
+    </div>
+
+    <!-- Filter Modal -->
+    <div class="modal fade" id="filterModal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="filterModalLabel">Filter by Vehicle</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="GET" action="{{ route('seats.section') }}">
+                        <div class="mb-3">
+                            <label for="vehicle_id" class="form-label">Vehicle</label>
+                            <select name="vehicle_id" id="vehicle_id" class="form-select">
+                                <option value="">Select Vehicle</option>
+                                @foreach ($vehicles as $vehi)
+                                    <option value="{{ $vehi->id }}" {{ isset($vehicle) && $vehi->id == $vehicle->id ? 'selected' : '' }}>
+                                        {{ $vehi->name }} ({{ $vehi->vehicle_no }})
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="col-12">
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-end gap-1">
+                    @if ($flag == 1)
                     @can('reset-seat-list')
                         <!-- Reset Button -->
                         <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                             data-bs-target="#resetSeatModal">Reset</button>
-                    @endcan
+                    @endcan 
                     @can('booking-list')
                         <a href="{{ route('seat_booking.section', $vehicle->id) }}" class="btn btn-success">Booking List</a>
                     @endcan
@@ -34,22 +71,26 @@
                             <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                 data-bs-target="#addNewModalId">Add New</button>
                         @endif
-                    @endcan
+                    @endcan 
+                    @endif
+                
                 </div>
             </div>
             <div class="card-body">
-                @if ($trip)
                     <div class="text-center mb-3">
                         {{-- <h1>Trip Details</h1> --}}
+                        @if ($trip)
                         <h3><strong>Route:</strong> {{ $trip->route->name }}</h3>
+                        <h5>{{ $vehicle->name }}</h5>
                         <p><strong></strong> {{ \Carbon\Carbon::parse($trip->Date)->format('d M Y') }} ,
                             {{ \Carbon\Carbon::parse($trip->Time)->format('h:i A') }}</p>
                         <p><strong>Driver:</strong> {{ $trip->driver->name }} <strong>, Supervisor:</strong>
                             {{ $trip->supervisor->name }}</p>
                         <p></p>
+                        @endif
 
                     </div>
-                @endif
+
                 <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
                     <thead>
                         <tr>
@@ -62,6 +103,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                    @if ($flag == 1)
                         @foreach ($seats as $key => $seatData)
                             <tr>
                                 <td>{{ ++$key }}</td>
@@ -338,11 +380,17 @@
 
                             </tr>
                         @endforeach
+                    @else
+                        <tr>
+                            <td colspan="6" class="text-center">No Data Found , Please Select Vehicle</td>
+                        </tr>
+                    @endif
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+    @if ($flag == 1)
     <!--Add Modal -->
     <div class="modal fade" id="addNewModalId" data-bs-backdrop="static" tabindex="-1" role="dialog"
         aria-labelledby="addNewModalLabel" aria-hidden="true">
@@ -377,4 +425,5 @@
             </div>
         </div>
     </div>
+  @endif
 @endsection

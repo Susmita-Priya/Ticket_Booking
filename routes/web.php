@@ -107,7 +107,7 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/vehicle-delete/{id}', [VehicleController::class, 'destroy'])->name('vehicle.destroy');
 
     //Seat Section
-    Route::get('/seats-section/{vehicle_id}', [SeatController::class, 'index'])->name('seats.section');
+    Route::get('/seats-section/{vehicle_id?}', [SeatController::class, 'index'])->name('seats.section');
     Route::post('/seats-store', [SeatController::class, 'store'])->name('seats.store');
     Route::put('/seats-update/{id}', [SeatController::class, 'update'])->name('seats.update');
     Route::get('/seats-delete/{id}', [SeatController::class, 'destroy'])->name('seats.destroy');
@@ -122,7 +122,6 @@ Route::middleware('auth')->group(callback: function () {
     Route::put('/seat-booking-update/{id}', [SeatBookingController::class, 'update'])->name('seat_booking.update');
     Route::get('/seat-booking-delete/{id}', [SeatBookingController::class, 'destroy'])->name('seat_booking.destroy');
     
-
 
     //Country Section
     Route::get('/country-section', [CountryController::class, 'index'])->name('country.section');
