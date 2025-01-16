@@ -18,6 +18,7 @@ class Trip extends Model
         'Date',
         'Time',
         'total_route_cost',
+        'ticket_price',
         'status',
     ];
 

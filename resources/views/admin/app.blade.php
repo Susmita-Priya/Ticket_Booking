@@ -168,7 +168,7 @@
                                     @endcan
                                     @can('seats-list')
                                         <li>
-                                            <a href="{{ route('seats.section') }}">Seats</a>
+                                            <a href="{{ route('seats.section') }}">Ticket Booking</a>
                                         </li>
                                     @endcan
                                     @can('counter-list')

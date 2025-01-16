@@ -36,6 +36,7 @@
                             <th>Supervisor</th>
                             <th>Date</th>
                             <th>Time</th>
+                            <th>Ticket Price</th>
                             <th>Total Route Cost</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -52,6 +53,7 @@
                                 <td>{{ $trip->supervisor->name ?? "N/A"}}</td>
                                 <td>{{ $trip->Date }}</td>
                                 <td>{{ $trip->Time }}</td>
+                                <td>{{ $trip->ticket_price }} TK</td>
                                 <td>{{ $trip->total_route_cost }} TK</td>
                                 <td>
                                     @if ($trip->status == 1)
@@ -157,6 +159,15 @@
                                                             <label for="time" class="form-label">Time</label>
                                                             <input type="time" id="time" name="Time"
                                                                 value="{{ $trip->time }}" class="form-control"
+                                                                required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-12 mb-3">
+                                                            <label for="ticket_price" class="form-label">Ticket Price</label>
+                                                            <input type="number" id="ticket_price" name="ticket_price"
+                                                                value="{{ $trip->ticket_price }}" class="form-control"
                                                                 required>
                                                         </div>
                                                     </div>
@@ -302,6 +313,14 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="ticket_price" class="form-label">Ticket Price</label>
+                                <input type="number" id="ticket_price" name="ticket_price" class="form-control"
+                                    required>
+                            </div>
+                        </div>
+                        
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="total_route_cost" class="form-label">Total Route Cost</label>

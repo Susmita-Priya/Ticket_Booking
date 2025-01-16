@@ -39,18 +39,17 @@ class RouteController extends Controller
         try {
             $request->validate([
                 'name' => 'required',
-                'route_no' => 'required',
-                'counters_id' => 'required',
+                'start_counter_id' => 'required',
+                'end_counter_id' => 'required',
                 'route_manager_id' => 'required',
                 'checkers_id' => 'required',
-
             ]);
 
             $route = new Route();
             $route->company_id = auth()->user()->id;
             $route->name = $request->name;
-            $route->route_no = $request->route_no;
-            $route->counters_id = json_encode($request->counters_id);
+            $route->start_counter_id = $request->start_counter_id;
+            $route->end_counter_id = $request->end_counter_id;
             $route->route_manager_id = $request->route_manager_id;
             $route->checkers_id = json_encode($request->checkers_id);
             if ($request->hasFile('document')) {
@@ -74,16 +73,18 @@ class RouteController extends Controller
         try {
             $request->validate([
                 'name' => 'required',
-                'route_no' => 'required',
-                'counters_id' => 'required',
+                'start_counter_id' => 'required',
+                'end_counter_id' => 'required',
                 'route_manager_id' => 'required',
                 'checkers_id' => 'required',
             ]);
 
             $route = Route::find($id);
             $route->name = $request->name;
-            $route->route_no = $request->route_no;
-            $route->counters_id = json_encode($request->counters_id);
+            // $route->route_no = $request->route_no;
+            // $route->counters_id = json_encode($request->counters_id);
+            $route->start_counter_id = $request->start_counter_id;
+            $route->end_counter_id = $request->end_counter_id;
             $route->route_manager_id = $request->route_manager_id;
             $route->checkers_id = json_encode($request->checkers_id);
             $fullpath = $route->document;

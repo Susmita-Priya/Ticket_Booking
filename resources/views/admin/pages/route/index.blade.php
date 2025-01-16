@@ -31,8 +31,9 @@
                         <tr>
                             <th>S/N</th>
                             <th>Route Name</th>
-                            <th>Route no</th>
-                            <th>Counters</th>
+                            {{-- <th>Route no</th> --}}
+                            <th>Start Counter</th>
+                            <th>End Counter</th>
                             <th>Route Manager</th>
                             <th>Checkers</th>
                             <th>Document</th>
@@ -45,8 +46,10 @@
                             <tr>
                                 <td>{{ ++$key }}</td>
                                 <td>{{ $routedata->name }}</td>
-                                <td>{{ $routedata->route_no }}</td>
-                                <td>
+                                {{-- <td>{{ $routedata->route_no }}</td> --}}
+                                <td>{{ $routedata->startCounter->name ?? "N/A" }}</td>
+                                <td>{{ $routedata->endCounter->name ?? "N/A" }}</td>
+                                {{-- <td>
                                     @php
                                         $routeCounters = json_decode($routedata->counters_id, true) ?? [];
                                     @endphp
@@ -55,7 +58,7 @@
                                             <span class="badge bg-primary">{{ $counter->name }}</span>
                                         @endif
                                     @endforeach
-                                </td>
+                                </td> --}}
                                 <td>{{ $routedata->routeManager->name?? "N/A" }}
                                 </td>
                                 <td>
@@ -122,28 +125,43 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="row">
+                                                    {{-- <div class="row">
                                                         <div class="col-12 mb-3">
                                                             <label for="route_no" class="form-label">Route No</label>
                                                             <input type="text" id="route_no" name="route_no"
                                                                 value="{{ $routedata->route_no }}" class="form-control"
                                                                 placeholder="Enter Route No" required>
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
-                                                            <label for="counters_id" class="form-label">Counters</label>
-                                                            <select name="counters_id[]" class="select2 form-control select2-multiple"
-                                                                data-toggle="select2" multiple="multiple">
+                                                            <label for="start_counter_id" class="form-label">Start Counter</label>
+                                                            <select name="start_counter_id" class="form-select">
+                                                                <option value="">Select Start Counter</option>
                                                                 @foreach ($counters as $counter)
                                                                     <option value="{{ $counter->id }}"
-                                                                        {{ in_array($counter->id, json_decode($routedata->counters_id, true) ?? []) ? 'selected' : '' }}>
+                                                                        {{ $counter->id == $routedata->start_counter_id ? 'selected' : '' }}>
                                                                         {{ $counter->name }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                     </div>
+
+                                                    <div class="row">
+                                                        <div class="col-12 mb-3">
+                                                            <label for="end_counter_id" class="form-label">End Counter</label>
+                                                            <select name="end_counter_id" class="form-select">
+                                                                <option value="">Select End Counter</option>
+                                                                @foreach ($counters as $counter)
+                                                                    <option value="{{ $counter->id }}"
+                                                                        {{ $counter->id == $routedata->end_counter_id ? 'selected' : '' }}>
+                                                                        {{ $counter->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
@@ -257,19 +275,31 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="route_no" class="form-label">Route No</label>
                                 <input type="text" id="route_no" name="route_no" class="form-control"
                                     placeholder="Enter Route No" required>
                             </div>
+                        </div> --}}
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="start_counter_id" class="form-label">Start Counter</label>
+                                <select name="start_counter_id" class="form-select">
+                                    <option value="">Select Start Counter</option>
+                                    @foreach ($counters as $counter)
+                                        <option value="{{ $counter->id }}">{{ $counter->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="counters_id" class="form-label">Counters</label>
-                                <select name="counters_id[]" class="select2 form-control select2-multiple"
-                                    data-toggle="select2" multiple="multiple">
+                                <label for="end_counter_id" class="form-label">End Counter</label>
+                                <select name="end_counter_id" class="form-select">
+                                    <option value="">Select End Counter</option>
                                     @foreach ($counters as $counter)
                                         <option value="{{ $counter->id }}">{{ $counter->name }}</option>
                                     @endforeach

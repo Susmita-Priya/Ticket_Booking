@@ -44,7 +44,6 @@ class VehicleController extends Controller
                 'engin_no' => 'required',
                 'chest_no' => 'required',
                 'total_seat' => 'required',
-                'per_seat_price' => 'required',
             ]);
 
             $vehicle = new Vehicle();
@@ -65,7 +64,6 @@ class VehicleController extends Controller
                 $fullpath = $path . '/' . $filename;
                 $vehicle->document = $fullpath;
             }
-            $vehicle->per_seat_price = $request->per_seat_price;
             $vehicle->save();
            
             Toastr::success('Vehicle Added Successfully', 'Success');
@@ -85,7 +83,6 @@ class VehicleController extends Controller
                 'engin_no' => 'required',
                 'chest_no' => 'required',
                 'total_seat' => 'required',
-                'per_seat_price' => 'required',
             ]);
             $vehicle = Vehicle::find($id);
             if (!$vehicle) {
@@ -113,7 +110,6 @@ class VehicleController extends Controller
             }else{
                 $vehicle->document = $vehicle->document;
             }
-            $vehicle->per_seat_price = $request->per_seat_price;
             $vehicle->is_booked = $request->is_booked;
             $vehicle->status = $request->status;
             $vehicle->save();

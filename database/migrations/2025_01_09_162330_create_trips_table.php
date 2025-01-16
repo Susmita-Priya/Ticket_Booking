@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('Date');
             $table->time('Time');
             $table->string('total_route_cost');
+            $table->string('ticket_price');
             $table->string('status')->default(1);
             $table->timestamps();
         });

@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('company_id');
             $table->string('name');
-            $table->string('route_no');
-            $table->json('counters_id');
+            $table->integer('start_counter_id');
+            $table->integer('end_counter_id');
             $table->integer('route_manager_id');
             $table->json('checkers_id');
             $table->string('document')->nullable();

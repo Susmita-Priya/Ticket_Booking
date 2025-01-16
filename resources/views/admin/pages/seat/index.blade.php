@@ -22,7 +22,6 @@
             Filter by Vehicle
         </button>
         @endcan
-        
     </div>
 
     <!-- Filter Modal -->

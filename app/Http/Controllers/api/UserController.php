@@ -25,6 +25,7 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
+
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
         $verificationCode = rand(100000, 999999);
@@ -43,6 +44,7 @@ class UserController extends Controller
 
             // Assign role to the user
             $user->assignRole('User');
+                                                                        
                                                                            
             // Send verification email
             Mail::to($request->email)->send(new VerifyMail($user));

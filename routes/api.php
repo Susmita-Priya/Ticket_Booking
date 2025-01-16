@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\TypeController;
 use App\Http\Controllers\api\BookingController;
 use App\Http\Controllers\api\CuponController;
 use App\Http\Controllers\api\LocationController;
@@ -37,8 +38,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Booking routes
     Route::post('/store-booking', [BookingController::class, 'storeBooking']);
+    
 
     Route::get('/booking', [BookingController::class, 'booking']);
+
+    //type 
+    Route::get('/type', [TypeController::class, 'type']);
 });
 
 
