@@ -1,4 +1,79 @@
 @extends('admin.app')
+<style>
+    .seat-section {
+        padding: 130px 0;
+    }
+
+    .seat-box {
+        max-width: 320px;
+        /* height: 100vh; */
+        margin: auto;
+        border-radius: 15px;
+    }
+
+    .seat {
+        display: grid;
+        place-content: center;
+        width: 47px;
+        height: 47px;
+        border: 1px solid #dee0f0;
+        border-radius: 16px;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 11px;
+        line-height: 11px;
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    .seat-selected {
+        background: #e0115f;
+        border-color: #e0115f;
+        color: #fff;
+    }
+
+    .seat-available {
+        background: #fff;
+        color: #000;
+        border-color: #c8c8c8;
+    }
+
+    .seat-booked {
+        background: #d7d7d7 !important;
+        color: #9b9b9b !important;
+        cursor: not-allowed !important;
+        border: 1px solid #d7d7d7 !important;
+    }
+
+    .seat-means {
+        width: 15px;
+        height: 15px;
+        margin-right: 5px;
+        border-radius: 4px;
+    }
+
+    .legend-label {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 15px;
+        color: #202020;
+    }
+
+    .available-example {
+        background: white;
+        border: 1px solid #000000;
+    }
+
+    .sold-example {
+        background: #d7d7d7;
+        border: 1px solid #d7d7d7;
+    }
+
+    .selected-example {
+        background: #e0115f;
+        border: 1px solid #e0115f;
+    }
+</style>
 @section('admin_content')
     {{-- CKEditor CDN --}}
     <div class="row">
@@ -19,13 +94,14 @@
     <div class="d-flex justify-content-end mb-3">
         @can('vehicle-select')
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
-            Filter by Vehicle
-        </button>
+                Filter by Vehicle
+            </button>
         @endcan
     </div>
 
     <!-- Filter Modal -->
-    <div class="modal fade" id="filterModal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal fade" id="filterModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="filterModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -39,7 +115,8 @@
                             <select name="vehicle_id" id="vehicle_id" class="form-select">
                                 <option value="">Select Vehicle</option>
                                 @foreach ($vehicles as $vehi)
-                                    <option value="{{ $vehi->id }}" {{ isset($vehicle) && $vehi->id == $vehicle->id ? 'selected' : '' }}>
+                                    <option value="{{ $vehi->id }}"
+                                        {{ isset($vehicle) && $vehi->id == $vehicle->id ? 'selected' : '' }}>
                                         {{ $vehi->name }} ({{ $vehi->vehicle_no }})
                                     </option>
                                 @endforeach
@@ -59,29 +136,29 @@
             <div class="card-header">
                 <div class="d-flex justify-content-end gap-1">
                     @if ($flag == 1)
-                    @can('reset-seat-list')
-                        <!-- Reset Button -->
-                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                            data-bs-target="#resetSeatModal">Reset</button>
-                    @endcan 
-                    @can('booking-list')
-                        <a href="{{ route('seat_booking.section', $vehicle->id) }}" class="btn btn-success">Booking List</a>
-                    @endcan
-                    @can('seats-create')
-                        {{-- <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addNewModalId">Add New</button> --}}
-                        @if ($vehicle->total_seat > $seats->count())
-                            <button type="button" class="btn btn-info" data-bs-toggle="modal"
-                                data-bs-target="#addNewModalId">Add New</button>
-                        @endif
-                    @endcan 
+                        @can('reset-seat-list')
+                            <!-- Reset Button -->
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                data-bs-target="#resetSeatModal">Reset</button>
+                        @endcan
+                        @can('booking-list')
+                            <a href="{{ route('seat_booking.section', $vehicle->id) }}" class="btn btn-success">Booking List</a>
+                        @endcan
+                        @can('seats-create')
+                            {{-- <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addNewModalId">Add New</button> --}}
+                            @if ($vehicle->total_seat > $seats->count())
+                                <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                                    data-bs-target="#addNewModalId">Add New</button>
+                            @endif
+                        @endcan
                     @endif
-                
+
                 </div>
             </div>
             <div class="card-body">
-                    <div class="text-center mb-3">
-                        {{-- <h1>Trip Details</h1> --}}
-                        @if ($trip)
+                <div class="text-center mb-3">
+                    {{-- <h1>Trip Details</h1> --}}
+                    @if ($trip)
                         <h3><strong>Route:</strong> {{ $trip->route->name }}</h3>
                         <h5>{{ $vehicle->name }}</h5>
                         <p><strong></strong> {{ \Carbon\Carbon::parse($trip->Date)->format('d M Y') }} ,
@@ -89,9 +166,97 @@
                         <p><strong>Driver:</strong> {{ $trip->driver->name }} <strong>, Supervisor:</strong>
                             {{ $trip->supervisor->name }}</p>
                         <p></p>
-                        @endif
+                    @endif
 
-                    </div>
+                </div>
+
+                    @if ($flag == 1)
+                        <div class="container">
+                            <div class="seat-box p-4 bg-white">
+                                <div class="seat-wrapper">
+                                    <div class="d-flex justify-content-around mb-4">
+                                        <ul class="d-flex list-unstyled align-items-center">
+                                            <li class="seat-means available-example"></li>
+                                            <li class="legend-label">Available</li>
+                                        </ul>
+                                        <ul class="d-flex list-unstyled align-items-center">
+                                            <li class="seat-means sold-example"></li>
+                                            <li class="legend-label">Sold</li>
+                                        </ul>
+                                        <ul class="d-flex list-unstyled align-items-center">
+                                            <li class="seat-means selected-example"></li>
+                                            <li class="legend-label">Selected</li>
+                                        </ul>
+                                    </div>
+                                    <div class="row g-5">
+                                        <div class="col-6">
+                                            <div class="row g-3">
+                                                @foreach ($seats as $seatData)
+                                                    @if (in_array(substr($seatData->seat_no, -1), ['1', '2']))
+                                                        <div class="col-6">
+                                                            <form method="POST"
+                                                                action="{{ route('seats.select', [$seatData->id, 'seat_count' => $seat_count]) }}">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <input type="hidden" name="is_booked" value="1">
+                                                                <button type="submit"
+                                                                    class="seat 
+                                                                        @if ($seatData->is_booked == 0) seat-available 
+                                                                        @elseif ($seatData->is_booked == 1) seat-selected 
+                                                                        @elseif ($seatData->is_booked == 2) seat-booked @endif">
+                                                                    {{ $seatData->seat_no }}
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row g-3">
+                                                @foreach ($seats as $seatData)
+                                                    @if (in_array(substr($seatData->seat_no, -1), ['3', '4']))
+                                                        <div class="col-6">
+                                                            <form method="POST"
+                                                                action="{{ route('seats.select', [$seatData->id, 'seat_count' => $seat_count]) }}">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <input type="hidden" name="is_booked" value="1">
+                                                                <button type="submit"
+                                                                    class="seat 
+                                                                        @if ($seatData->is_booked == 0) seat-available 
+                                                                        @elseif ($seatData->is_booked == 1) seat-selected 
+                                                                        @elseif ($seatData->is_booked == 2) seat-booked @endif">
+                                                                    {{ $seatData->seat_no }}
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        {{-- <p class="h5">Total: {{ $total_price }}</p> --}}
+                                        @php
+                                            $seat_count = session('selected_seats');
+                                        @endphp
+                                            <div class=" d-flex justify-content-between">
+                                                <p class="h5">{{ session('selected_seats') ?? '0'}} ticket(s) selected </p>
+                                                <p class="h5">৳ {{ session('total_price') ?? '0'}}</p>
+                                            </div>
+                                 
+                                        <button class="btn btn-primary w-100 mt-2"
+                                            style = "background-color: #E0115F; border-color: #E0115F">
+                                            Continue
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    @endif
+
 
                 <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
                     <thead>
@@ -105,195 +270,202 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @if ($flag == 1)
-                        @foreach ($seats as $key => $seatData)
-                            <tr>
-                                <td>{{ ++$key }}</td>
-                                <td>
-                                    @php
-                                        $vehicle = $vehicle->firstWhere('id', $seatData->vehicle_id);
-                                    @endphp
-                                    {{ $vehicle ? $vehicle->name : 'N/A' }} ({{ $vehicle ? $vehicle->engin_no : 'N/A' }})
-                                </td>
-                                <td>{{ $seatData->seat_no }}</td>
-                                <td>
-                                    @if ($seatData->is_booked == 1)
-                                        <span class="badge bg-success">Yes</span>
-                                    @else
-                                        <span class="badge bg-danger">No</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($seatData->status == 1)
-                                        <span class="badge bg-success">Active</span>
-                                    @else
-                                        <span class="badge bg-danger">Inactive</span>
-                                    @endif
-                                </td>
+                        @if ($flag == 1)
+                            @foreach ($seats as $key => $seatData)
+                                <tr>
+                                    <td>{{ ++$key }}</td>
+                                    <td>
+                                        @php
+                                            $vehicle = $vehicle->firstWhere('id', $seatData->vehicle_id);
+                                        @endphp
+                                        {{ $vehicle ? $vehicle->name : 'N/A' }}
+                                        ({{ $vehicle ? $vehicle->engin_no : 'N/A' }})
+                                    </td>
+                                    <td>{{ $seatData->seat_no }}</td>
+                                    <td>
+                                        @if ($seatData->is_booked == 1)
+                                            <span class="badge bg-success">Yes</span>
+                                        @else
+                                            <span class="badge bg-danger">No</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($seatData->status == 1)
+                                            <span class="badge bg-success">Active</span>
+                                        @else
+                                            <span class="badge bg-danger">Inactive</span>
+                                        @endif
+                                    </td>
 
-                                <td style="width: 100px;">
-                                    <div class="d-flex justify-content-end gap-1">
-                                        @can('seat-booking-create')
-                                            @if ($seatData->is_booked == 0 && $vehicle->is_booked == 1)
-                                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                                    data-bs-target="#bookSeatModal{{ $seatData->id }}">Book</button>
-                                            @endif
-                                        @endcan
-                                        @can('seats-edit')
-                                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#editNewModalId{{ $seatData->id }}">Edit</button>
-                                        @endcan
-                                        @can('seats-delete')
-                                            <a href="{{ route('seats.destroy', $seatData->id) }}"class="btn btn-danger btn-sm"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#danger-header-modal{{ $seatData->id }}">Delete</a>
-                                        @endcan
-                                    </div>
-                                </td>
+                                    <td style="width: 100px;">
+                                        <div class="d-flex justify-content-end gap-1">
+                                            @can('seat-booking-create')
+                                                @if ($seatData->is_booked == 0 && $vehicle->is_booked == 1)
+                                                    <button type="button" class="btn btn-success btn-sm"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#bookSeatModal{{ $seatData->id }}">Book</button>
+                                                @endif
+                                            @endcan
+                                            @can('seats-edit')
+                                                <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#editNewModalId{{ $seatData->id }}">Edit</button>
+                                            @endcan
+                                            @can('seats-delete')
+                                                <a href="{{ route('seats.destroy', $seatData->id) }}"class="btn btn-danger btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#danger-header-modal{{ $seatData->id }}">Delete</a>
+                                            @endcan
+                                        </div>
+                                    </td>
 
-                                <!-- Reset Confirmation Modal -->
-                                <div class="modal fade" id="resetSeatModal" data-bs-backdrop="static" tabindex="-1"
-                                    role="dialog" aria-labelledby="resetSeatModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title" id="resetSeatModalLabel">Reset Seats</h4>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Are you sure you want to reset the seats?</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-light"
-                                                    data-bs-dismiss="modal">Close</button>
-                                                <a href="{{ route('reset.seat', $vehicle->id) }}"
-                                                    class="btn btn-warning">Reset</a>
+                                    <!-- Reset Confirmation Modal -->
+                                    <div class="modal fade" id="resetSeatModal" data-bs-backdrop="static" tabindex="-1"
+                                        role="dialog" aria-labelledby="resetSeatModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="resetSeatModalLabel">Reset Seats</h4>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are you sure you want to reset the seats?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <a href="{{ route('reset.seat', $vehicle->id) }}"
+                                                        class="btn btn-warning">Reset</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- Book Seat Modal -->
-                                <div class="modal fade" id="bookSeatModal{{ $seatData->id }}" data-bs-backdrop="static"
-                                    tabindex="-1" role="dialog" aria-labelledby="bookSeatModalLabel{{ $seatData->id }}"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title" id="bookSeatModalLabel{{ $seatData->id }}">Book
-                                                    Seat</h4>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form method="post"
-                                                    action="{{ route('seat_booking.store', $seatData->id) }}">
-                                                    @csrf
+                                    <!-- Book Seat Modal -->
+                                    <div class="modal fade" id="bookSeatModal{{ $seatData->id }}"
+                                        data-bs-backdrop="static" tabindex="-1" role="dialog"
+                                        aria-labelledby="bookSeatModalLabel{{ $seatData->id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="bookSeatModalLabel{{ $seatData->id }}">
+                                                        Book
+                                                        Seat</h4>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form method="post"
+                                                        action="{{ route('seat_booking.store', $seatData->id) }}">
+                                                        @csrf
 
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="mb-3">
-                                                                <label for="passenger_name" class="form-label">Passenger
-                                                                    Name</label>
-                                                                <input type="text" id="passenger_name"
-                                                                    name="passenger_name" class="form-control"
-                                                                    placeholder="Enter Passenger Name">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="mb-3">
+                                                                    <label for="passenger_name"
+                                                                        class="form-label">Passenger
+                                                                        Name</label>
+                                                                    <input type="text" id="passenger_name"
+                                                                        name="passenger_name" class="form-control"
+                                                                        placeholder="Enter Passenger Name">
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="mb-3">
-                                                                <label for="passenger_phone" class="form-label">Passenger
-                                                                    Phone</label>
-                                                                <input type="text" id="passenger_phone"
-                                                                    name="passenger_phone" class="form-control"
-                                                                    placeholder="Enter Phone Number" required>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="mb-3">
+                                                                    <label for="passenger_phone"
+                                                                        class="form-label">Passenger
+                                                                        Phone</label>
+                                                                    <input type="text" id="passenger_phone"
+                                                                        name="passenger_phone" class="form-control"
+                                                                        placeholder="Enter Phone Number" required>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="mb-3">
-                                                                <label for="vehicle_name"
-                                                                    class="form-label">Vehicle</label>
-                                                                <input type="text" id="vehicle_name"
-                                                                    name="vehicle_name"
-                                                                    value="{{ $vehicle->name }} ({{ $vehicle->vehicle_no }})"
-                                                                    class="form-control" readonly>
-                                                                <input type="hidden" name="vehicle_id"
-                                                                    value="{{ $vehicle->id }}">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="mb-3">
+                                                                    <label for="vehicle_name"
+                                                                        class="form-label">Vehicle</label>
+                                                                    <input type="text" id="vehicle_name"
+                                                                        name="vehicle_name"
+                                                                        value="{{ $vehicle->name }} ({{ $vehicle->vehicle_no }})"
+                                                                        class="form-control" readonly>
+                                                                    <input type="hidden" name="vehicle_id"
+                                                                        value="{{ $vehicle->id }}">
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="mb-3">
-                                                                <label for="seat_no_display" class="form-label">Seat
-                                                                    No</label>
-                                                                <input type="text" id="seat_no_display"
-                                                                    name="seat_no_display"
-                                                                    value="{{ $seatData->seat_no }}" class="form-control"
-                                                                    readonly>
-                                                                <input type="hidden" name="seat_no"
-                                                                    value="{{ $seatData->seat_no }}">
-                                                                <input type="hidden" name="seat_id"
-                                                                    value="{{ $seatData->id }}">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="mb-3">
+                                                                    <label for="seat_no_display" class="form-label">Seat
+                                                                        No</label>
+                                                                    <input type="text" id="seat_no_display"
+                                                                        name="seat_no_display"
+                                                                        value="{{ $seatData->seat_no }}"
+                                                                        class="form-control" readonly>
+                                                                    <input type="hidden" name="seat_no"
+                                                                        value="{{ $seatData->seat_no }}">
+                                                                    <input type="hidden" name="seat_id"
+                                                                        value="{{ $seatData->id }}">
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="mb-3">
-                                                                <label for="payment_amount" class="form-label">Payment
-                                                                    Amount</label>
-                                                                <input type="text" id="payment_amount"
-                                                                    name="payment_amount"
-                                                                    value="{{ $vehicle->per_seat_price }}"
-                                                                    class="form-control" readonly>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="mb-3">
+                                                                    <label for="payment_amount" class="form-label">Payment
+                                                                        Amount</label>
+                                                                    <input type="text" id="payment_amount"
+                                                                        name="payment_amount"
+                                                                        value="{{ $vehicle->per_seat_price }}"
+                                                                        class="form-control" readonly>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="mb-3">
-                                                                <label for="booking_date" class="form-label">Date</label>
-                                                                <input type="date" id="booking_date"
-                                                                    name="booking_date"
-                                                                    value="{{ \Carbon\Carbon::today()->toDateString() }}"
-                                                                    class="form-control">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="mb-3">
+                                                                    <label for="booking_date"
+                                                                        class="form-label">Date</label>
+                                                                    <input type="date" id="booking_date"
+                                                                        name="booking_date"
+                                                                        value="{{ \Carbon\Carbon::today()->toDateString() }}"
+                                                                        class="form-control">
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="d-flex justify-content-end">
-                                                        <button class="btn btn-primary" type="submit">Book</button>
-                                                    </div>
-                                                </form>
+                                                        <div class="d-flex justify-content-end">
+                                                            <button class="btn btn-primary" type="submit">Book</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <!--Edit Modal -->
-                                <div class="modal fade" id="editNewModalId{{ $seatData->id }}" data-bs-backdrop="static"
-                                    tabindex="-1" role="dialog" aria-labelledby="editNewModalLabel{{ $seatData->id }}"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title" id="addNewModalLabel{{ $seatData->id }}">Edit
-                                                </h4>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form method="post" action="{{ route('seats.update', $seatData->id) }}"
-                                                    enctype="multipart/form-data">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    {{-- <div class="row">
+                                    <!--Edit Modal -->
+                                    <div class="modal fade" id="editNewModalId{{ $seatData->id }}"
+                                        data-bs-backdrop="static" tabindex="-1" role="dialog"
+                                        aria-labelledby="editNewModalLabel{{ $seatData->id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="addNewModalLabel{{ $seatData->id }}">Edit
+                                                    </h4>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form method="post"
+                                                        action="{{ route('seats.update', $seatData->id) }}"
+                                                        enctype="multipart/form-data">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        {{-- <div class="row">
                                                     <div class="col-12 mb-3">
                                                         <label for="vehicle_id" class="form-label">Vehicle</label>
                                                         <select name="vehicle_id" class="form-select">
@@ -305,127 +477,184 @@
                                                         </select>
                                                     </div>
                                                 </div> --}}
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="mb-3">
-                                                                <label for="seat_no" class="form-label">Seat No</label>
-                                                                <input type="text" id="seat_no" name="seat_no"
-                                                                    value="{{ $seatData->seat_no }}" class="form-control"
-                                                                    placeholder="Enter Seat No" required>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="mb-3">
+                                                                    <label for="seat_no" class="form-label">Seat
+                                                                        No</label>
+                                                                    <input type="text" id="seat_no" name="seat_no"
+                                                                        value="{{ $seatData->seat_no }}"
+                                                                        class="form-control" placeholder="Enter Seat No"
+                                                                        required>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="mb-3">
-                                                                <label for="example-select" class="form-label">Is
-                                                                    Booked</label>
-                                                                <select name="is_booked" class="form-select">
-                                                                    <option value="1"
-                                                                        {{ $seatData->is_booked === 1 ? 'selected' : '' }}>
-                                                                        Yes</option>
-                                                                    <option value="0"
-                                                                        {{ $seatData->is_booked === 0 ? 'selected' : '' }}>
-                                                                        No</option>
-                                                                </select>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="mb-3">
+                                                                    <label for="example-select" class="form-label">Is
+                                                                        Booked</label>
+                                                                    <select name="is_booked" class="form-select">
+                                                                        <option value="1"
+                                                                            {{ $seatData->is_booked === 1 ? 'selected' : '' }}>
+                                                                            Yes</option>
+                                                                        <option value="0"
+                                                                            {{ $seatData->is_booked === 0 ? 'selected' : '' }}>
+                                                                            No</option>
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="mb-3">
-                                                                <label for="example-select"
-                                                                    class="form-label">Status</label>
-                                                                <select name="status" class="form-select">
-                                                                    <option value="1"
-                                                                        {{ $seatData->status === 1 ? 'selected' : '' }}>
-                                                                        Active</option>
-                                                                    <option value="0"
-                                                                        {{ $seatData->status === 0 ? 'selected' : '' }}>
-                                                                        Inactive</option>
-                                                                </select>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="mb-3">
+                                                                    <label for="example-select"
+                                                                        class="form-label">Status</label>
+                                                                    <select name="status" class="form-select">
+                                                                        <option value="1"
+                                                                            {{ $seatData->status === 1 ? 'selected' : '' }}>
+                                                                            Active</option>
+                                                                        <option value="0"
+                                                                            {{ $seatData->status === 0 ? 'selected' : '' }}>
+                                                                            Inactive</option>
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="d-flex justify-content-end">
-                                                        <button class="btn btn-primary" type="submit">Update</button>
-                                                    </div>
-                                                </form>
+                                                        <div class="d-flex justify-content-end">
+                                                            <button class="btn btn-primary" type="submit">Update</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Delete Modal -->
-                                <div id="danger-header-modal{{ $seatData->id }}" class="modal fade" tabindex="-1"
-                                    role="dialog" aria-labelledby="danger-header-modalLabel{{ $seatData->id }}"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header modal-colored-header bg-danger">
-                                                <h4 class="modal-title" id="danger-header-modalLabe{{ $seatData->id }}l">
-                                                    Delete</h4>
-                                                <button type="button" class="btn-close btn-close-white"
-                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <h5 class="mt-0">Are You Went to Delete this ? </h5>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-light"
-                                                    data-bs-dismiss="modal">Close</button>
-                                                <a href="{{ route('seats.destroy', $seatData->id) }}"
-                                                    class="btn btn-danger">Delete</a>
+                                    <!-- Delete Modal -->
+                                    <div id="danger-header-modal{{ $seatData->id }}" class="modal fade" tabindex="-1"
+                                        role="dialog" aria-labelledby="danger-header-modalLabel{{ $seatData->id }}"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header modal-colored-header bg-danger">
+                                                    <h4 class="modal-title"
+                                                        id="danger-header-modalLabe{{ $seatData->id }}l">
+                                                        Delete</h4>
+                                                    <button type="button" class="btn-close btn-close-white"
+                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h5 class="mt-0">Are You Went to Delete this ? </h5>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <a href="{{ route('seats.destroy', $seatData->id) }}"
+                                                        class="btn btn-danger">Delete</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="6" class="text-center">No Data Found , Please Select Vehicle</td>
                             </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="6" class="text-center">No Data Found , Please Select Vehicle</td>
-                        </tr>
-                    @endif
+                        @endif
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
     @if ($flag == 1)
-    <!--Add Modal -->
-    <div class="modal fade" id="addNewModalId" data-bs-backdrop="static" tabindex="-1" role="dialog"
-        aria-labelledby="addNewModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="addNewModalLabel">Add</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="post" action="{{ route('seats.store') }}">
-                        @csrf
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <input type="hidden" name="vehicle_id" value="{{ $vehicle->id }}">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label for="seat_no" class="form-label">Seat No</label>
-                                    <input type="text" id="seat_no" name="seat_no" class="form-control"
-                                        placeholder="Enter Seat No" required>
+        <!--Add Modal -->
+        <div class="modal fade" id="addNewModalId" data-bs-backdrop="static" tabindex="-1" role="dialog"
+            aria-labelledby="addNewModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="addNewModalLabel">Add</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="{{ route('seats.store') }}">
+                            @csrf
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <input type="hidden" name="vehicle_id" value="{{ $vehicle->id }}">
                                 </div>
                             </div>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button class="btn btn-primary" type="submit">Submit</button>
-                        </div>
-                    </form>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="seat_no" class="form-label">Seat No</label>
+                                        <input type="text" id="seat_no" name="seat_no" class="form-control"
+                                            placeholder="Enter Seat No" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-  @endif
+    @endif
+
+    
+    {{-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const seats = document.querySelectorAll(".seat");
+            const selectedSeatsElement = document.querySelector(".selected-seats");
+            const totalPriceElement = document.querySelector(".total-price");
+            const ticketPrice = {{ $trip->ticket_price ?? 0 }}; // Pass ticket price from the server.
+    
+            let selectedSeatsCount = {{ session('selected_seats', 0) }};
+            let totalPrice = {{ session('total_price', 0) }};
+    
+            seats.forEach((seat) => {
+                seat.addEventListener("click", function (e) {
+                    e.preventDefault();
+    
+                    const seatId = this.dataset.seatId;
+                    const isBooked = this.classList.contains("seat-selected");
+    
+                    // Toggle seat status
+                    if (isBooked) {
+                        this.classList.remove("seat-selected");
+                        this.classList.add("seat-available");
+                        selectedSeatsCount--;
+                    } else {
+                        this.classList.add("seat-selected");
+                        this.classList.remove("seat-available");
+                        selectedSeatsCount++;
+                    }
+    
+                    // Update total price
+                    totalPrice = ticketPrice * selectedSeatsCount;
+    
+                    // Update UI
+                    selectedSeatsElement.textContent = `${selectedSeatsCount} ticket(s) selected`;
+                    totalPriceElement.textContent = `৳ ${totalPrice}`;
+    
+                    // Send AJAX request to update the server
+                    fetch("{{ route('seats.select') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                        },
+                        body: JSON.stringify({
+                            seat_id: seatId,
+                            is_booked: isBooked ? 0 : 1, // Toggle booking status
+                        }),
+                    }).catch((error) => console.error("Error:", error));
+                });
+            });
+        });
+    </script> --}}
+    
 @endsection

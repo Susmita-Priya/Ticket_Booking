@@ -110,6 +110,7 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/seats-section/{vehicle_id?}', [SeatController::class, 'index'])->name('seats.section');
     Route::post('/seats-store', [SeatController::class, 'store'])->name('seats.store');
     Route::put('/seats-update/{id}', [SeatController::class, 'update'])->name('seats.update');
+    Route::put('/seat-select/{id}/{seat_count}', [SeatController::class, 'selectSeat'])->name('seats.select');
     Route::get('/seats-delete/{id}', [SeatController::class, 'destroy'])->name('seats.destroy');
 
     // reset seat

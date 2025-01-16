@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Seat;
+use App\Models\SeatBooking;
 use App\Models\Trip;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
@@ -29,19 +30,20 @@ class SeatController extends Controller
     {
         $vehicle_id = $request->vehicle_id;
         $flag = $vehicle_id ? 1 : 0;
-    
-        $vehicles = Vehicle::where('company_id', auth()->user()->id)->where('status',1)->get();
+        $seat_count = 0;
+
+        $vehicles = Vehicle::where('company_id', auth()->user()->id)->where('status', 1)->get();
         $seats = Seat::where('company_id', auth()->user()->id)
-                     ->where('vehicle_id', $vehicle_id)
-                     ->latest()
-                     ->get();
-    
+            ->where('vehicle_id', $vehicle_id)
+            ->orderBy('seat_no', 'asc')
+            ->get();
+
         $vehicle = Vehicle::firstWhere('id', $vehicle_id);
-        $trip = Trip::where('company_id',auth()->user()->id)->where('vehicle_id', $request->vehicle_id)->first();
-    
-        return view('admin.pages.seat.index', compact('vehicles', 'vehicle', 'seats', 'trip', 'flag'));
+        $trip = Trip::where('company_id', auth()->user()->id)->where('vehicle_id', $request->vehicle_id)->first();
+
+        return view('admin.pages.seat.index', compact('vehicles', 'vehicle', 'seats', 'trip', 'flag', 'seat_count'));
     }
-    
+
 
     public function store(Request $request)
     {
@@ -61,6 +63,69 @@ class SeatController extends Controller
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
+
+    // seat select
+    public function selectSeat(Request $request)
+    {
+        try {
+            // Retrieve the current seat count from the session or default to 0
+            $seat_count = session('selected_seats', 0);
+
+            $seat = Seat::find($request->id);
+
+            if ($seat->is_booked == 1) {
+                $seat->is_booked = 0;
+                $seat_count--;
+            } elseif ($seat->is_booked == 0) {
+                $seat->is_booked = 1;
+                $seat_count++;
+            }
+
+            
+            $trip = Trip::where('vehicle_id', $seat->vehicle_id)->first();
+            $total_price = $trip ? (int)$trip->ticket_price * $seat_count : 0;
+
+            // Update the session with the new values
+            $request->session()->put('selected_seats', $seat_count);
+            $request->session()->put('total_price', $total_price);
+
+            $seat->save();
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()]);
+        }
+    }
+
+//     public function selectSeat(Request $request)
+// {
+//     try {
+//         $seat = Seat::find($request->seat_id);
+
+//         if (!$seat) {
+//             return response()->json(['error' => 'Seat not found'], 404);
+//         }
+
+//         // Toggle the seat booking status
+//         $seat->is_booked = $request->is_booked;
+//         $seat->save();
+
+//         // Update session values
+//         $seat_count = session('selected_seats', 0);
+//         $seat_count += $request->is_booked ? 1 : -1;
+
+//         $trip = Trip::where('vehicle_id', $seat->vehicle_id)->first();
+//         $total_price = $trip ? (int)$trip->ticket_price * $seat_count : 0;
+
+//         session(['selected_seats' => $seat_count, 'total_price' => $total_price]);
+
+//         return response()->json(['seat_count' => $seat_count, 'total_price' => $total_price]);
+//     } catch (\Exception $e) {
+//         return response()->json(['error' => 'An error occurred: ' . $e->getMessage()]);
+//     }
+// }
+
+
 
     public function update(Request $request, $id)
     {
@@ -99,18 +164,19 @@ class SeatController extends Controller
     public function resetSeat($id)
     {
         try {
-            $seats = Seat::where('company_id',auth()->user()->id)->where('vehicle_id', $id)->get();
+            $seats = Seat::where('company_id', auth()->user()->id)->where('vehicle_id', $id)->get();
             foreach ($seats as $seat) {
                 $seat->is_booked = 0;
                 $seat->save();
             }
-          
+            
+            session()->forget('selected_seats');
+            session()->forget('total_price');
+            
             Toastr::success('Seat Reset Successfully', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
-
-
 }
