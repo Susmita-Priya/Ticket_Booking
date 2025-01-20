@@ -39,6 +39,7 @@ class SeatBookingController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->all());
         try {
             $request->validate([
                 'vehicle_id' => 'required|integer',

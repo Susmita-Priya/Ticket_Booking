@@ -44,8 +44,8 @@ class UserController extends Controller
 
             // Assign role to the user
             $user->assignRole('User');
-                                                                        
-                                                                           
+
+
             // Send verification email
             Mail::to($request->email)->send(new VerifyMail($user));
 
@@ -98,39 +98,48 @@ class UserController extends Controller
     }
 
     public function login(Request $request)
-    {
-        // Validate input
-        $this->validate($request, [
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-        // Attempt to log in the user
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $user = Auth::user();
-            // Generate a new token
-            $token = $user->createToken('YourAppName')->plainTextToken;
-            // Return a success response with the token
+{
+    // Validate input
+    $this->validate($request, [
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
+
+    // Attempt to authenticate the user
+    if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        $user = Auth::user();
+
+        // Check if the email is verified
+        if (empty($user->email_verified_at)) {
             return response()->json([
-                'message' => 'Login successful.',
-                'token' => $token,
-                'user' => $user, // Optionally return user data
-            ], 200);
-        } else {
-            // Return error response for invalid credentials
-            return response()->json([
-                'message' => 'Invalid email or password.',
+                'message' => 'Please verify your email first.',
             ], 401); // 401 Unauthorized
         }
+
+        // Generate a new token
+        $token = $user->createToken('YourAppName')->plainTextToken;
+
+        // Return a success response with the token
+        return response()->json([
+            'message' => 'Login successful.',
+            'token' => $token,
+            'user' => $user, // Optionally return user data
+        ], 200);
     }
+
+    // Return error response for invalid credentials
+    return response()->json([
+        'message' => 'Invalid email or password.',
+    ], 401); // 401 Unauthorized
+}
+
 
     public function userInfo()
     {
         $user = Auth::user();
-            return response()->json([
-                'message' => 'User info',
-                'user' => $user, // Optionally return user data
-            ], 200);
+        return response()->json([
+            'message' => 'User info',
+            'user' => $user, // Optionally return user data
+        ], 200);
     }
-
-
 }
