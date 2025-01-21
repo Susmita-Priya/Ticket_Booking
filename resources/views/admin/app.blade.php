@@ -120,11 +120,6 @@
                         </li>
                     @endcan
 
-
-
-
-
-
                     @can('cupon-list')
                         <li class="side-nav-item">
                             <a href="{{ route('cupon.section') }}" class="side-nav-link">
@@ -164,11 +159,6 @@
                                     @can('vehicle-list')
                                         <li>
                                             <a href="{{ route('vehicle.section') }}">Vehicle</a>
-                                        </li>
-                                    @endcan
-                                    @can('seats-list')
-                                        <li>
-                                            <a href="{{ route('seats.section') }}">Ticket Booking</a>
                                         </li>
                                     @endcan
                                     @can('counter-list')
@@ -216,6 +206,12 @@
                                     @can('trip-list')
                                         <li>
                                             <a href="{{ route('trip.section') }}">Trip</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('ticket-booking-list')
+                                        <li>
+                                            <a href="{{ route('ticket_booking.section') }}">Ticket Booking</a>
                                         </li>
                                     @endcan
 

@@ -110,10 +110,10 @@
                                                         <div class="col-12 mb-3">
                                                             <label for="vehicle_id" class="form-label">Vehicle</label>
                                                             <select name="vehicle_id" class="form-select">
-                                                                @foreach ($vehicles as $vehicle)
-                                                                    <option value="{{ $vehicle->id }}"
-                                                                        {{ $trip->vehicle_id == $vehicle->id ? 'selected' : '' }}>
-                                                                        {{ $vehicle->name }} ({{ $vehicle->vehicle_no }})</option>
+                                                                @foreach ($vehicles as $vhcl)
+                                                                    <option value="{{ $vhcl->id }}"
+                                                                        {{ $trip->vehicle_id === $vhcl->id ? 'selected' : '' }}>
+                                                                        {{ $vhcl->name }} ({{ $vhcl->vehicle_no }})</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -149,7 +149,7 @@
                                                         <div class="col-12 mb-3">
                                                             <label for="date" class="form-label">Date</label>
                                                             <input type="date" id="date" name="Date"
-                                                                value="{{ $trip->date }}" class="form-control"
+                                                                value="{{ $trip->Date }}" class="form-control"
                                                                 required>
                                                         </div>
                                                     </div>
@@ -158,7 +158,7 @@
                                                         <div class="col-12 mb-3">
                                                             <label for="time" class="form-label">Time</label>
                                                             <input type="time" id="time" name="Time"
-                                                                value="{{ $trip->time }}" class="form-control"
+                                                                value="{{ $trip->Time }}" class="form-control"
                                                                 required>
                                                         </div>
                                                     </div>

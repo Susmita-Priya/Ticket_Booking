@@ -28,6 +28,7 @@ use App\Http\Controllers\admin\SeatController;
 use App\Http\Controllers\admin\SiteSettingController;
 use App\Http\Controllers\admin\SupervisorController;
 use App\Http\Controllers\admin\TermsController;
+use App\Http\Controllers\admin\TicketBookingController;
 use App\Http\Controllers\admin\TripController;
 use App\Http\Controllers\admin\TypeController;
 use App\Http\Controllers\admin\VehicleController;
@@ -116,12 +117,16 @@ Route::middleware('auth')->group(callback: function () {
     // reset seat
     Route::get('/reset-seat/{vehicle_id}', [SeatController::class, 'resetSeat'])->name('reset.seat');
 
-
     //Seat Booking Section
     Route::get('/seat-booking-section/{vehicle_id}', [SeatBookingController::class, 'index'])->name('seat_booking.section');
     Route::post('/seat-booking-store', [SeatBookingController::class, 'store'])->name('seat_booking.store');
     Route::put('/seat-booking-update/{id}', [SeatBookingController::class, 'update'])->name('seat_booking.update');
     Route::get('/seat-booking-delete/{id}', [SeatBookingController::class, 'destroy'])->name('seat_booking.destroy');
+
+
+    // Ticket booking
+    Route::get('/ticket-booking-section', [TicketBookingController::class, 'index'])->name('ticket_booking.section');
+    Route::post('/ticket-booking-store', [TicketBookingController::class, 'store'])->name('ticket_booking.store');
     
 
     //Country Section

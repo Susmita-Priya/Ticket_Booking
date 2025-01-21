@@ -119,6 +119,10 @@ class PermissionTableSeeder extends Seeder
             'seat-booking-edit',
             'seat-booking-delete',
 
+            //For Ticket Booking
+            'ticket-booking',
+            'ticket-booking-list',
+
 
             //Site Setting
             'site-setting',

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Seat;
 use App\Models\SeatBooking;
+use App\Models\TicketBooking;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +31,7 @@ class SeatBookingController extends Controller
         $vehicle_id = $request->vehicle_id;
 
         $filter_date = $request->filter_date;
-        $bookings = SeatBooking::where('company_id', auth()->user()->id)->where('vehicle_id', $vehicle_id)->where('booking_date', $filter_date)->latest()->get();
+        $bookings = TicketBooking::where('company_id', auth()->user()->id)->where('vehicle_id', $vehicle_id)->where('booking_date', $filter_date)->latest()->get();
         $total_payment = $bookings->sum('payment_amount');
 
         return view('admin.pages.seatBooking.index', compact('vehicle', 'bookings', 'total_payment'));

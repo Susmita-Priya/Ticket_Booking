@@ -37,7 +37,7 @@
                             <th>Amenities</th>
                             <th>Document</th>
                             <th>Seat</th>
-                            <th>Is Booked?</th>
+                            <th>Assign trip?</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>

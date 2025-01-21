@@ -29,8 +29,10 @@ class TripController extends Controller
     {
         $trips = Trip::with('route','vehicle','driver','supervisor')->where('company_id',auth()->user()->id)->latest()->get();
         $routes = Route::where('company_id',auth()->user()->id)->get();
+        // $vehicles = Vehicle::where('company_id',auth()->user()->id)
+        //         ->where('status',1)->where('is_booked',0)->get();
         $vehicles = Vehicle::where('company_id',auth()->user()->id)
-                ->where('status',1)->where('is_booked',0)->get();
+                ->where('status',1)->get();
         $drivers = Driver::where('company_id',auth()->user()->id)->get();
         $supervisors = Supervisor::where('company_id',auth()->user()->id)->get();
 

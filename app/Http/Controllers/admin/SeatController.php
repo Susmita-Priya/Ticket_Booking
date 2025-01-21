@@ -64,69 +64,6 @@ class SeatController extends Controller
         }
     }
 
-    // seat select
-    public function selectSeat(Request $request)
-    {
-        try {
-            // Retrieve the current seat count from the session or default to 0
-            $seat_count = session('selected_seats', 0);
-
-            $seat = Seat::find($request->id);
-
-            if ($seat->is_booked == 1) {
-                $seat->is_booked = 0;
-                $seat_count--;
-            } elseif ($seat->is_booked == 0) {
-                $seat->is_booked = 1;
-                $seat_count++;
-            }
-
-            
-            $trip = Trip::where('vehicle_id', $seat->vehicle_id)->first();
-            $total_price = $trip ? (int)$trip->ticket_price * $seat_count : 0;
-
-            // Update the session with the new values
-            $request->session()->put('selected_seats', $seat_count);
-            $request->session()->put('total_price', $total_price);
-
-            $seat->save();
-
-            return redirect()->back();
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()]);
-        }
-    }
-
-//     public function selectSeat(Request $request)
-// {
-//     try {
-//         $seat = Seat::find($request->seat_id);
-
-//         if (!$seat) {
-//             return response()->json(['error' => 'Seat not found'], 404);
-//         }
-
-//         // Toggle the seat booking status
-//         $seat->is_booked = $request->is_booked;
-//         $seat->save();
-
-//         // Update session values
-//         $seat_count = session('selected_seats', 0);
-//         $seat_count += $request->is_booked ? 1 : -1;
-
-//         $trip = Trip::where('vehicle_id', $seat->vehicle_id)->first();
-//         $total_price = $trip ? (int)$trip->ticket_price * $seat_count : 0;
-
-//         session(['selected_seats' => $seat_count, 'total_price' => $total_price]);
-
-//         return response()->json(['seat_count' => $seat_count, 'total_price' => $total_price]);
-//     } catch (\Exception $e) {
-//         return response()->json(['error' => 'An error occurred: ' . $e->getMessage()]);
-//     }
-// }
-
-
-
     public function update(Request $request, $id)
     {
         try {
@@ -160,6 +97,74 @@ class SeatController extends Controller
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
+
+
+    
+
+    // seat select
+    // public function selectSeat(Request $request)
+    // {
+    //     try {
+    //         // Retrieve the current seat count from the session or default to 0
+    //         $seat_count = session('selected_seats', 0);
+
+    //         $seat = Seat::find($request->id);
+
+    //         if ($seat->is_booked == 1) {
+    //             $seat->is_booked = 0;
+    //             $seat_count--;
+    //         } elseif ($seat->is_booked == 0) {
+    //             $seat->is_booked = 1;
+    //             $seat_count++;
+    //         }
+
+            
+    //         $trip = Trip::where('vehicle_id', $seat->vehicle_id)->first();
+    //         $total_price = $trip ? (int)$trip->ticket_price * $seat_count : 0;
+
+    //         // Update the session with the new values
+    //         $request->session()->put('selected_seats', $seat_count);
+    //         $request->session()->put('total_price', $total_price);
+
+    //         $seat->save();
+
+    //         return redirect()->back();
+    //     } catch (\Exception $e) {
+    //         return response()->json(['error' => 'An error occurred: ' . $e->getMessage()]);
+    //     }
+    // }
+
+//     public function selectSeat(Request $request)
+// {
+//     try {
+//         $seat = Seat::find($request->seat_id);
+
+//         if (!$seat) {
+//             return response()->json(['error' => 'Seat not found'], 404);
+//         }
+
+//         // Toggle the seat booking status
+//         $seat->is_booked = $request->is_booked;
+//         $seat->save();
+
+//         // Update session values
+//         $seat_count = session('selected_seats', 0);
+//         $seat_count += $request->is_booked ? 1 : -1;
+
+//         $trip = Trip::where('vehicle_id', $seat->vehicle_id)->first();
+//         $total_price = $trip ? (int)$trip->ticket_price * $seat_count : 0;
+
+//         session(['selected_seats' => $seat_count, 'total_price' => $total_price]);
+
+//         return response()->json(['seat_count' => $seat_count, 'total_price' => $total_price]);
+//     } catch (\Exception $e) {
+//         return response()->json(['error' => 'An error occurred: ' . $e->getMessage()]);
+//     }
+// }
+
+
+
+    
 
     public function resetSeat($id)
     {

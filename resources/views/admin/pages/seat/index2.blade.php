@@ -75,7 +75,6 @@
     }
 </style>
 @section('admin_content')
-    {{-- CKEditor CDN --}}
     <div class="row">
         <div class="col-12">
             <div class="page-title-box">
@@ -93,42 +92,28 @@
 
     <div class="d-flex justify-content-end mb-3">
         @can('vehicle-select')
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
-                Filter by Vehicle
-            </button>
+            <form method="GET" action="{{ route('seats.section') }}" class="d-flex gap-2">
+                <div>
+                    <label for="route_id" class="form-label">Route</label>
+                    <select name="route_id" id="route_id" class="form-select">
+                        <option value="">Select Route</option>
+                        {{-- @foreach ($routes as $route)
+                            <option value="{{ $route->id }}"
+                                {{ isset($trip) && $route->id == $trip->route_id ? 'selected' : '' }}>
+                                {{ $route->name }}
+                            </option>
+                        @endforeach --}}
+                    </select>
+                </div>
+                <div>
+                    <label for="trip_date" class="form-label">Date</label>
+                    <input type="date" id="trip_date" name="trip_date" class="form-control" value="{{ request('trip_date') }}">
+                </div>
+                <div class="align-self-end">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </form>
         @endcan
-    </div>
-
-    <!-- Filter Modal -->
-    <div class="modal fade" id="filterModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
-        aria-labelledby="filterModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="filterModalLabel">Filter by Vehicle</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="GET" action="{{ route('seats.section') }}">
-                        <div class="mb-3">
-                            <label for="vehicle_id" class="form-label">Vehicle</label>
-                            <select name="vehicle_id" id="vehicle_id" class="form-select">
-                                <option value="">Select Vehicle</option>
-                                @foreach ($vehicles as $vehi)
-                                    <option value="{{ $vehi->id }}"
-                                        {{ isset($vehicle) && $vehi->id == $vehicle->id ? 'selected' : '' }}>
-                                        {{ $vehi->name }} ({{ $vehi->vehicle_no }})
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary">Filter</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="col-12">
@@ -426,7 +411,7 @@
             .catch(error => console.error('Error:', error));
         });
     });
-    </script>
+</script>
     @endif
 
 
