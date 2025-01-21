@@ -89,7 +89,7 @@ class TicketBookingController extends Controller
                 $seat->is_booked = 0;
                 $seat->save();
             }
-            
+
             Toastr::success('Seat Reset Successfully', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
