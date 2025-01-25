@@ -38,43 +38,41 @@ class SeatBookingController extends Controller
     }
 
 
-    public function store(Request $request)
-    {
-        dd($request->all());
-        try {
-            $request->validate([
-                'vehicle_id' => 'required|integer',
-                'seat_id' => 'required|integer',
-                'seat_no' => 'required|string|max:255',
-                'booking_date' => 'required|date',
-                'payment_amount' => 'required|numeric',
-                'passenger_phone' => 'required|string|max:15',
-            ]);
+    // public function store(Request $request)
+    // {
+    //     dd($request->all());
+    //     try {
+    //         $request->validate([
+    //             'vehicle_id' => 'required|integer',
+    //             'seat_id' => 'required|integer',
+    //             'seat_no' => 'required|string|max:255',
+    //             'booking_date' => 'required|date',
+    //             'payment_amount' => 'required|numeric',
+    //             'passenger_phone' => 'required|string|max:15',
+    //         ]);
 
-            $seat_booking = new SeatBooking();
-            $seat_booking->company_id = auth()->user()->id;
-            $seat_booking->vehicle_id = $request->vehicle_id;
-            $seat_booking->seat_id = $request->seat_id;
-            $seat_booking->seat_no = $request->seat_no;
-            $seat_booking->booking_date = $request->booking_date;
-            $seat_booking->payment_amount = $request->payment_amount;
-            $seat_booking->passenger_name = $request->passenger_name;
-            $seat_booking->passenger_phone = $request->passenger_phone;
-            $seat_booking->save();
+    //         $seat_booking = new SeatBooking();
+    //         $seat_booking->company_id = auth()->user()->id;
+    //         $seat_booking->vehicle_id = $request->vehicle_id;
+    //         $seat_booking->seat_id = $request->seat_id;
+    //         $seat_booking->seat_no = $request->seat_no;
+    //         $seat_booking->booking_date = $request->booking_date;
+    //         $seat_booking->payment_amount = $request->payment_amount;
+    //         $seat_booking->passenger_name = $request->passenger_name;
+    //         $seat_booking->passenger_phone = $request->passenger_phone;
+    //         $seat_booking->save();
 
-            $seat = Seat::where('id', $request->seat_id)->first();
-            $seat->is_booked = 1;
-            $seat->save();
+    //         $seat = Seat::where('id', $request->seat_id)->first();
+    //         $seat->is_booked = 1;
+    //         $seat->save();
 
-            Toastr::success('Seat Booking Successfully', 'Success');
-            return redirect()->back();
-        } catch (\Exception $e) {
-            // Handle the exception here
-            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
-        }
-    }
-
-
+    //         Toastr::success('Seat Booking Successfully', 'Success');
+    //         return redirect()->back();
+    //     } catch (\Exception $e) {
+    //         // Handle the exception here
+    //         return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+    //     }
+    // }
 
 
     // public function update(Request $request, $id)
@@ -102,7 +100,7 @@ class SeatBookingController extends Controller
     public function destroy($id)
     {
         try {
-            $seat_booking = SeatBooking::find($id);
+            $seat_booking = TicketBooking::find($id);
             $seat = Seat::where('id', $seat_booking->seat_id)->first();
             $seat->is_booked = 0;
             $seat->save();
