@@ -27,6 +27,9 @@ use App\Http\Controllers\admin\SeatBookingController;
 use App\Http\Controllers\admin\SeatController;
 use App\Http\Controllers\admin\SiteSettingController;
 use App\Http\Controllers\admin\SupervisorController;
+use App\Http\Controllers\admin\SliderController;
+use App\Http\Controllers\admin\BlogController;
+use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\admin\TermsController;
 use App\Http\Controllers\admin\TicketBookingController;
 use App\Http\Controllers\admin\TripController;
@@ -260,7 +263,24 @@ Route::middleware('auth')->group(callback: function () {
     Route::put('/trip-update/{id}', [TripController::class, 'update'])->name('trip.update');
     Route::get('/trip-delete/{id}', [TripController::class, 'destroy'])->name('trip.destroy');
 
-    
+    //slider
+    Route::get('/slider-section', [SliderController::class, 'index'])->name('slider.section');
+    Route::post('/slider-store', [SliderController::class, 'store'])->name('slider.store');
+    Route::put('/slider-update/{id}', [SliderController::class, 'update'])->name('slider.update');
+    Route::get('/slider-delete/{id}', [SliderController::class, 'destroy'])->name('slider.destroy');
+
+
+    //Blog
+    Route::get('/blog-section', [BlogController::class, 'index'])->name('blog.section');
+    Route::post('/blog-store', [BlogController::class, 'store'])->name('blog.store');
+    Route::put('/blog-update/{id}', [BlogController::class, 'update'])->name('blog.update');
+    Route::get('/blog-delete/{id}', [BlogController::class, 'destroy'])->name('blog.destroy');
+
+    //service
+    Route::get('/service-section', [ServiceController::class, 'index'])->name('service.section');
+    Route::post('/service-store', [ServiceController::class, 'store'])->name('service.store');
+    Route::put('/service-update/{id}', [ServiceController::class, 'update'])->name('service.update');
+    Route::get('/service-delete/{id}', [ServiceController::class, 'destroy'])->name('service.destroy');
 });
 
 require __DIR__ . '/auth.php';

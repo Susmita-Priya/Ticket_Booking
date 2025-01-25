@@ -14,6 +14,24 @@ class PermissionTableSeeder extends Seeder
     public function run(): void
     {
         $permissions = [
+            //slider
+            'slider-list',
+            'slider-create',
+            'slider-edit',
+            'slider-delete',
+
+            //blog
+            'blog-list',
+            'blog-create',
+            'blog-edit',
+            'blog-delete',
+
+            //service
+            'service-list',
+            'service-create',
+            'service-edit',
+            'service-delete',
+            
             //For roll and permission
             'role-list',
             'role-create',
