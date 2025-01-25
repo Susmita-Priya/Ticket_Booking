@@ -109,10 +109,16 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-4 me-3">
+                    {{-- <div class="col-md-4 me-3">
                         <label for="filter_date" class="form-label">Date</label>
                         <input type="date" id="filter_date" name="filter_date" class="form-control"
                             value="{{ request('filter_date') }}">
+                    </div> --}}
+
+                    <div class="col-md-4 me-3">
+                        <label for="filter_date" class="form-label">Date</label>
+                        <input type="date" id="filter_date" name="filter_date" class="form-control"
+                            value="{{ request('filter_date') ?: date('Y-m-d') }}">
                     </div>
 
                     <div class="col-md-2 me-3 d-flex align-items-end">
