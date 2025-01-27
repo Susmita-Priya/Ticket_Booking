@@ -123,6 +123,8 @@
         </div>
     </div>
 
+    
+
     @if (empty($trips))
         <h4 class="text-muted text-center">No trips found</h4>
     @else
