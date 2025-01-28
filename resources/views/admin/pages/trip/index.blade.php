@@ -261,7 +261,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="vehicle_id" class="form-label">Vehicle</label>
                                 <select name="vehicle_id" class="form-select">
@@ -271,8 +271,36 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
+                        </div> --}}
 
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="vehicle_id" class="form-label">Vehicle</label>
+                                <div class="dropdown">
+                                    <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center" 
+                                            type="button" 
+                                            id="dropdownMenuButton1" 
+                                            data-bs-toggle="dropdown" 
+                                            aria-expanded="false" 
+                                            style="text-align: left; padding-left: 10px;">
+                                        <span id="selected-vehicle">Select Vehicle</span>
+                                    </button>
+                                    <ul class="dropdown-menu pt-0" aria-labelledby="dropdownMenuButton1" style="width: 100%;">
+                                        <input type="text" 
+                                               class="form-control border-0 border-bottom shadow-none mb-2" 
+                                               placeholder="Search..." 
+                                               id="vehicle-search" 
+                                               oninput="handleVehicleSearch()" 
+                                               style="width: 100%; padding-left: 10px;">
+                                        @foreach ($vehicles as $vehicle)
+                                            <li><a class="dropdown-item" href="#" data-id="{{ $vehicle->id }}" data-name="{{ $vehicle->name }} ({{ $vehicle->vehicle_no }})">{{ $vehicle->name }} ({{ $vehicle->vehicle_no }})</a></li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                <input type="hidden" id="vehicle_id" name="vehicle_id">
+                            </div>
+                        </div>
+                        
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="driver_id" class="form-label">Driver</label>
@@ -337,4 +365,27 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function handleVehicleSearch() {
+            const searchInput = document.getElementById('vehicle-search');
+            const filter = searchInput.value.toLowerCase();
+            const items = document.querySelectorAll('.dropdown-item');
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(filter) ? "block" : "none";
+            });
+        }
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', function(event) {
+                event.preventDefault();
+                const selectedVehicle = event.target;
+                const vehicleName = selectedVehicle.getAttribute('data-name');
+                const vehicleId = selectedVehicle.getAttribute('data-id');
+                document.getElementById('selected-vehicle').textContent = vehicleName;
+                document.getElementById('vehicle_id').value = vehicleId;
+                document.getElementById('dropdownMenuButton1').click();
+            });
+        });
+    </script>
 @endsection
