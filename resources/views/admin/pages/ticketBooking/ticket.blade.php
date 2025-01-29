@@ -13,7 +13,8 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    
+                    @if ($vehicle)  
+                   
                     <div class="row">
                         <div class="col-md-8 offset-md-2">
                             <div class="card">
@@ -58,6 +59,7 @@
     <div class="row mt-3">
         <div class="col-12 text-center">
             <button onclick="window.print()" class="btn btn-primary">Print Ticket</button>
+            @endif
             <a href="{{ route('ticket_booking.section') }}" class="btn btn-secondary">Back</a>
         </div>
     </div>
