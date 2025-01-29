@@ -11,27 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trips', function (Blueprint $table) {
+        Schema::create('sliders', function (Blueprint $table) {
             $table->id();
             $table->integer('company_id');
-            $table->integer('route_id');
-            $table->integer('vehicle_id');
-            $table->integer('driver_id');
-            $table->integer('supervisor_id');
-            $table->date('date');
-            $table->time('time');
-            $table->string('total_route_cost');
-            $table->string('ticket_price');
+            $table->string('title');
+            $table->mediumText('description')->nullable();
+            $table->string('image')->nullable();
             $table->string('status')->default(1);
             $table->timestamps();
         });
     }
- 
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('trips');
+        Schema::dropIfExists('sliders');
     }
 };

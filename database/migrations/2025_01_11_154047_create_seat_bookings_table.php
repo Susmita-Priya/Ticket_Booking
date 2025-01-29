@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('booking_date');
             $table->string('payment_amount');
             $table->string('passenger_name')->nullable();
-            $table->string('passenger_phone');
+            $table->string('passenger_phone')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

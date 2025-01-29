@@ -40,6 +40,7 @@ class VehicleController extends Controller
         try {
             $request->validate([
                 'name' => 'required',
+                'category' => 'required',
                 'vehicle_no' => 'required',
                 'engin_no' => 'required',
                 'chest_no' => 'required',
@@ -50,6 +51,7 @@ class VehicleController extends Controller
             $vehicle->company_id = auth()->user()->id;
             $vehicle->owner_id = $request->owner_id;
             $vehicle->type_id = $request->type_id;
+            $vehicle->category = $request->category;
             $vehicle->name = $request->name;
             $vehicle->vehicle_no = $request->vehicle_no;
             $vehicle->engin_no = $request->engin_no;
@@ -79,6 +81,7 @@ class VehicleController extends Controller
         try {
             $request->validate([
                 'name' => 'required',
+                'category' => 'required',
                 'vehicle_no' => 'required',
                 'engin_no' => 'required',
                 'chest_no' => 'required',
@@ -90,6 +93,7 @@ class VehicleController extends Controller
             }
             $vehicle->owner_id = $request->owner_id;
             $vehicle->type_id = $request->type_id;
+            $vehicle->category = $request->category;
             $vehicle->name = $request->name;
             $vehicle->vehicle_no = $request->vehicle_no;
             $vehicle->engin_no = $request->engin_no;

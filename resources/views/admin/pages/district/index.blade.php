@@ -145,7 +145,7 @@
                     <form method="post" action="{{route('district.store')}}">
                         @csrf
                         <div class="row">
-                            <div class="col-12">
+                            {{-- <div class="col-12">
                                 <div class="mb-3">
                                     <label for="example-select" class="form-label">Division</label>
                                     <select name="division_id" class="form-select">
@@ -155,7 +155,35 @@
                                         @endforeach
                                     </select>
                                 </div>
+                            </div> --}}
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="example-select" class="form-label">Division</label>
+                                    <div class="dropdown">
+                                        <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center" 
+                                                type="button" 
+                                                id="dropdownMenuButton1" 
+                                                data-bs-toggle="dropdown" 
+                                                aria-expanded="false" 
+                                                style="text-align: left; padding-left: 10px;">
+                                            <span id="selected-division">Select Division</span>
+                                        </button>
+                                        <ul class="dropdown-menu pt-0" aria-labelledby="dropdownMenuButton1" style="width: 100%;">
+                                            <input type="text" 
+                                                   class="form-control border-0 border-bottom shadow-none mb-2" 
+                                                   placeholder="Search..." 
+                                                   id="division-search" 
+                                                   oninput="handleInput()" 
+                                                   style="width: 100%; padding-left: 10px;">
+                                            @foreach($division as $divisionData)
+                                                <li><a class="dropdown-item" href="#" data-id="{{$divisionData->id}}" data-name="{{$divisionData->name}}">{{$divisionData->name}}</a></li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    <input type="hidden" id="division_id" name="division_id">
+                                </div>
                             </div>
+                                                                                   
                             <div class="col-12">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Name</label>
@@ -172,4 +200,38 @@
             </div>
         </div>
     </div>
+    <script>
+        // Function to handle input search functionality
+        function handleInput() {
+            const searchValue = document.getElementById("division-search").value.toLowerCase();
+            const items = document.querySelectorAll(".dropdown-menu .dropdown-item");
+    
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(searchValue)) {
+                    item.style.display = "block";  // Show item if it matches search
+                } else {
+                    item.style.display = "none";   // Hide item if it doesn't match
+                }
+            });
+        }
+    
+        // Function to handle the selection of an item from the dropdown
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const selectedValue = item.textContent;
+                const divisionId = item.getAttribute('data-id');  // Get the division ID
+    
+                // Update the text inside the button
+                document.getElementById("selected-division").textContent = selectedValue;
+    
+                // Set the division_id in the hidden input for form submission
+                document.getElementById("division_id").value = divisionId;
+    
+                // Optionally, you can close the dropdown after selection (this depends on your preference)
+                document.getElementById("dropdownMenuButton1").click();  // This will toggle the dropdown
+            });
+        });
+    </script>
+    
 @endsection

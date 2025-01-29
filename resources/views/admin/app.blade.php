@@ -28,6 +28,10 @@
     <script src="{{ asset('backend/js/config.js') }}"></script>
     <link href="{{ asset('backend/css/app.min.css') }}" rel="stylesheet" type="text/css" id="app-style" />
     <link href="{{ asset('backend/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+
+    {{-- datepicker --}}
+    <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    
     {{-- Custom Css File here --}}
     <script src="{{ asset('backend/js/chart.js') }}"></script>
     <script src="{{ asset('backend/js/echarts.min.js') }}"></script>
@@ -292,9 +296,28 @@
                             </a>
                             <div class="collapse" id="sidebarPages101">
                                 <ul class="side-nav-second-level">
+
+                                    @can('slider-list')
+                                        <li>
+                                            <a href="{{ route('slider.section') }}" class="side-nav-link">Slider</a>
+                                        </li>
+                                    @endcan
+
                                     @can('about-list')
                                         <li>
                                             <a href="{{ route('about.section') }}">About</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('blog-list')
+                                        <li>
+                                            <a href="{{ route('blog.section') }}">Blog</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('service-list')
+                                        <li>
+                                            <a href="{{ route('service.section') }}">Service</a>
                                         </li>
                                     @endcan
 

@@ -13,6 +13,7 @@ class Vehicle extends Model
         'company_id',
         'owner_id',
         'type_id',
+        'category',
         'name',
         'vehicle_no',
         'engin_no',

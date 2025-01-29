@@ -74,6 +74,7 @@
         border: 1px solid #e0115f;
     }
 </style>
+
 @section('admin_content')
     <div class="row">
         <div class="col-12">
@@ -109,10 +110,11 @@
                             @endforeach
                         </select>
                     </div>
+
                     <div class="col-md-4 me-3">
-                        <label for="filter_date" class="form-label">Date</label>
+                        <label for="filter_date" class="form-label">date</label>
                         <input type="date" id="filter_date" name="filter_date" class="form-control"
-                            value="{{ request('filter_date') }}">
+                            value="{{ request('filter_date') ?: date('Y-m-d') }}">
                     </div>
 
                     <div class="col-md-2 me-3 d-flex align-items-end">
@@ -123,7 +125,7 @@
         </div>
     </div>
 
-    
+
 
     @if (empty($trips))
         <h4 class="text-muted text-center">No trips found</h4>
@@ -136,10 +138,11 @@
                     <tr>
                         <th>S/N</th>
                         <th>Vehicle</th>
+                        <th>Category</th>
                         <th>Start Counter</th>
                         <th>End Counter</th>
-                        <th>Date</th>
-                        <th>Time</th>
+                        <th>date</th>
+                        <th>time</th>
                         <th>Ticket Price</th>
                         <th>Action</th>
                     </tr>
@@ -151,10 +154,19 @@
                             <td>{{ $trip->vehicle->name ?? 'N/A' }} <br>
                                 ({{ $trip->vehicle->vehicle_no ?? 'N/A' }})
                             </td>
+                            <td>
+                                @if ($trip->vehicle->category == '0')
+                                    Economy Class
+                                @elseif ($trip->vehicle->category == '1')
+                                    Business Class
+                                @elseif ($trip->vehicle->category == '2')
+                                    Sleeping Coach
+                                @endif
+                            </td>
                             <td>{{ $trip->route->startCounter->name }}</td>
                             <td>{{ $trip->route->endCounter->name }}</td>
-                            <td>{{ $trip->Date }}</td>
-                            <td>{{ $trip->Time }}</td>
+                            <td>{{ $trip->date }}</td>
+                            <td>{{ $trip->time }}</td>
                             <td>{{ $trip->ticket_price }} TK</td>
                             <td style="width: 100px;">
                                 <div class="d-flex justify-content-end gap-1">
@@ -186,9 +198,8 @@
                                             <h3>{{ $trip->vehicle->name }}</h3>
                                             <h5> {{ $trip->route->name }}</h5>
 
-                                            <p><strong></strong> {{ \Carbon\Carbon::parse($trip->Date)->format('d M Y') }}
-                                                ,
-                                                {{ \Carbon\Carbon::parse($trip->Time)->format('h:i A') }}</p>
+                                            <p><strong></strong> {{ \Carbon\Carbon::parse($trip->date)->format('d M Y') }},
+                                                {{ \Carbon\Carbon::parse($trip->time)->format('h:i A') }}</p>
                                             <p><strong>Driver:</strong> {{ $trip->driver->name }} <strong>,
                                                     Supervisor:</strong>
                                                 {{ $trip->supervisor->name }}</p>
@@ -211,67 +222,247 @@
                                         </div>
 
                                         @php
+                                            $vehicle_category = $trip->vehicle->category;
                                             $seats = $trip->vehicle->seats->sortBy('seat_no');
                                         @endphp
 
-                                        <!-- Seat Layout -->
-                                        <div class="row g-5">
-                                            <div class="col-6">
-                                                <div class="row g-3">
-                                                    @foreach ($seats as $seatData)
-                                                        @if (in_array(substr($seatData->seat_no, -1), ['1', '2']))
-                                                            <div class="col-6">
-                                                                <button
-                                                                    class="seat 
+                                        @if ($vehicle_category == 0)
+                                            <!-- Seat Layout -->
+                                            <div class="row g-5">
+                                                <div class="col-6">
+                                                    <div class="row g-3">
+                                                        @foreach ($seats as $seatData)
+                                                            @if (in_array(substr($seatData->seat_no, -1), ['1', '2']))
+                                                                <div class="col-6">
+                                                                    <button
+                                                                        class="seat 
                                                             @if ($seatData->is_booked == 0) seat-available 
                                                             @elseif ($seatData->is_booked == 1) seat-selected 
                                                             @elseif ($seatData->is_booked == 2) seat-booked @endif"
-                                                                    data-seat-id="{{ $seatData->id }}"
-                                                                    data-seat-price="{{ $trip->ticket_price ?? 0 }}"
-                                                                    data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
-                                                                    data-seat-no="{{ $seatData->seat_no }}">
-                                                                    {{ $seatData->seat_no }}
-                                                                </button>
-                                                            </div>
-                                                        @endif
-                                                    @endforeach
+                                                                        data-seat-id="{{ $seatData->id }}"
+                                                                        data-seat-price="{{ $trip->ticket_price ?? 0 }}"
+                                                                        data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
+                                                                        data-seat-no="{{ $seatData->seat_no }}">
+                                                                        {{ $seatData->seat_no }}
+                                                                    </button>
+                                                                </div>
+                                                            @endif
+                                                        @endforeach
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="row g-3">
-                                                    @foreach ($seats as $seatData)
-                                                        @if (in_array(substr($seatData->seat_no, -1), ['3', '4']))
-                                                            <div class="col-6">
-                                                                <button
-                                                                    class="seat 
+                                                <div class="col-6">
+                                                    <div class="row g-3">
+                                                        @foreach ($seats as $seatData)
+                                                            @if (in_array(substr($seatData->seat_no, -1), ['3', '4']))
+                                                                <div class="col-6">
+                                                                    <button
+                                                                        class="seat 
                                                             @if ($seatData->is_booked == 0) seat-available 
                                                             @elseif ($seatData->is_booked == 1) seat-selected 
                                                             @elseif ($seatData->is_booked == 2) seat-booked @endif"
-                                                                    data-seat-id="{{ $seatData->id }}"
-                                                                    data-seat-price="{{ $trip->ticket_price ?? 0 }}"
-                                                                    data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
-                                                                    data-seat-no="{{ $seatData->seat_no }}">
-                                                                    {{ $seatData->seat_no }}
-                                                                </button>
-                                                            </div>
-                                                        @endif
-                                                    @endforeach
+                                                                        data-seat-id="{{ $seatData->id }}"
+                                                                        data-seat-price="{{ $trip->ticket_price ?? 0 }}"
+                                                                        data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
+                                                                        data-seat-no="{{ $seatData->seat_no }}">
+                                                                        {{ $seatData->seat_no }}
+                                                                    </button>
+                                                                </div>
+                                                            @endif
+                                                        @endforeach
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @elseif($vehicle_category == 1)
+                                            <!-- Seat Layout -->
+                                            <div class="row g-5">
+                                                <div class="col-6">
+                                                    <div class="row g-3">
+                                                        @foreach ($seats as $seatData)
+                                                            @if (in_array(substr($seatData->seat_no, -1), ['1']))
+                                                                <div class="col-6">
+                                                                    <button
+                                                                        class="seat 
+                                                            @if ($seatData->is_booked == 0) seat-available 
+                                                            @elseif ($seatData->is_booked == 1) seat-selected 
+                                                            @elseif ($seatData->is_booked == 2) seat-booked @endif"
+                                                                        data-seat-id="{{ $seatData->id }}"
+                                                                        data-seat-price="{{ $trip->ticket_price ?? 0 }}"
+                                                                        data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
+                                                                        data-seat-no="{{ $seatData->seat_no }}">
+                                                                        {{ $seatData->seat_no }}
+                                                                    </button>
+                                                                </div>
+                                                            @endif
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="row g-3">
+                                                        @foreach ($seats as $seatData)
+                                                            @if (in_array(substr($seatData->seat_no, -1), ['2', '3']))
+                                                                <div class="col-6">
+                                                                    <button
+                                                                        class="seat 
+                                                            @if ($seatData->is_booked == 0) seat-available 
+                                                            @elseif ($seatData->is_booked == 1) seat-selected 
+                                                            @elseif ($seatData->is_booked == 2) seat-booked @endif"
+                                                                        data-seat-id="{{ $seatData->id }}"
+                                                                        data-seat-price="{{ $trip->ticket_price ?? 0 }}"
+                                                                        data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
+                                                                        data-seat-no="{{ $seatData->seat_no }}">
+                                                                        {{ $seatData->seat_no }}
+                                                                    </button>
+                                                                </div>
+                                                            @endif
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @elseif($vehicle_category == 2)
+                                            <!--   tab section     -->
+                                            <ul class="nav nav-pills border nav-justified mb-4" id="pills-tab"
+                                                role="tablist">
+                                                <!--single tab  -->
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link active" id="pills-lower-tab"
+                                                        data-toggle="pill" data-target="#pills-lower" type="button"
+                                                        role="tab" aria-controls="pills-lower"
+                                                        aria-selected="true">Lower</button>
+                                                </li>
+                                                <!--   single tab     -->
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link" id="pills-upper-tab" data-toggle="pill"
+                                                        data-target="#pills-upper" type="button" role="tab"
+                                                        aria-controls="pills-upper" aria-selected="false">Upper</button>
+                                                </li>
+                                            </ul>
+
+                                            <div class="tab-content" id="pills-tabContent">
+                                                <!--    lower content      -->
+                                                <div class="tab-pane fade show active" id="pills-lower" role="tabpanel"
+                                                    aria-labelledby="pills-lower-tab">
+                                                    <div class="seat-wrapper">
+                                                        <div class="row g-5">
+                                                            <div class="col-6">
+                                                                <div class="row g-3">
+                                                                    @foreach ($seats as $seatData)
+                                                                        @if (in_array(substr($seatData->seat_no, -1), ['1']))
+                                                                            <div class="col-6">
+                                                                                <button
+                                                                                    class="seat 
+                                                                    @if ($seatData->is_booked == 0) seat-available 
+                                                                    @elseif ($seatData->is_booked == 1) seat-selected 
+                                                                    @elseif ($seatData->is_booked == 2) seat-booked @endif"
+                                                                                    data-seat-id="{{ $seatData->id }}"
+                                                                                    data-seat-price="{{ $trip->ticket_price ?? 0 }}"
+                                                                                    data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
+                                                                                    data-seat-no="{{ $seatData->seat_no }}">
+                                                                                    {{ $seatData->seat_no }}
+                                                                                </button>
+                                                                            </div>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="row g-3">
+                                                                    @foreach ($seats as $seatData)
+                                                                        @if (in_array(substr($seatData->seat_no, -1), ['2', '3']))
+                                                                            <div class="col-6">
+                                                                                <button
+                                                                                    class="seat 
+                                                                    @if ($seatData->is_booked == 0) seat-available 
+                                                                    @elseif ($seatData->is_booked == 1) seat-selected 
+                                                                    @elseif ($seatData->is_booked == 2) seat-booked @endif"
+                                                                                    data-seat-id="{{ $seatData->id }}"
+                                                                                    data-seat-price="{{ $trip->ticket_price ?? 0 }}"
+                                                                                    data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
+                                                                                    data-seat-no="{{ $seatData->seat_no }}">
+                                                                                    {{ $seatData->seat_no }}
+                                                                                </button>
+                                                                            </div>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--     upper content     -->
+                                                <div class="tab-pane fade" id="pills-upper" role="tabpanel"
+                                                    aria-labelledby="pills-upper-tab">
+                                                    <div class="seat-wrapper">
+                                                        <div class="row g-5">
+                                                            <div class="col-6">
+                                                                <div class="row g-3">
+                                                                    @foreach ($seats as $seatData)
+                                                                        @if (in_array(substr($seatData->seat_no, -1), ['4']))
+                                                                            <div class="col-6">
+                                                                                <button
+                                                                                    class="seat 
+                                                                    @if ($seatData->is_booked == 0) seat-available 
+                                                                    @elseif ($seatData->is_booked == 1) seat-selected 
+                                                                    @elseif ($seatData->is_booked == 2) seat-booked @endif"
+                                                                                    data-seat-id="{{ $seatData->id }}"
+                                                                                    data-seat-price="{{ $trip->ticket_price ?? 0 }}"
+                                                                                    data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
+                                                                                    data-seat-no="{{ $seatData->seat_no }}">
+                                                                                    {{ $seatData->seat_no }}
+                                                                                </button>
+                                                                            </div>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="row g-3">
+                                                                    @foreach ($seats as $seatData)
+                                                                        @if (in_array(substr($seatData->seat_no, -1), ['5', '6']))
+                                                                            <div class="col-6">
+                                                                                <button
+                                                                                    class="seat 
+                                                                    @if ($seatData->is_booked == 0) seat-available 
+                                                                    @elseif ($seatData->is_booked == 1) seat-selected 
+                                                                    @elseif ($seatData->is_booked == 2) seat-booked @endif"
+                                                                                    data-seat-id="{{ $seatData->id }}"
+                                                                                    data-seat-price="{{ $trip->ticket_price ?? 0 }}"
+                                                                                    data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
+                                                                                    data-seat-no="{{ $seatData->seat_no }}">
+                                                                                    {{ $seatData->seat_no }}
+                                                                                </button>
+                                                                            </div>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
 
                                         <!-- Selected Seats and Total Price -->
                                         <div class="mt-4">
                                             <div class="d-flex justify-content-between">
-                                                <p class="h5" id="selected-seats-count-{{ $trip->id }}">0 ticket(s)
+                                                <p class="h5" id="selected-seats-count-{{ $trip->id }}">0
+                                                    ticket(s)
                                                     selected</p>
                                                 <p class="h5" id="total-price-{{ $trip->id }}">৳ 0</p>
                                             </div>
-                                            <button class="btn btn-primary w-100 mt-2"
+                                            
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <button class="btn btn-primary w-50 me-2"
                                                 id="continue-button-{{ $trip->id }}"
                                                 style="background-color: #E0115F; border-color: #E0115F">
-                                                Continue
+                                                Sell
                                             </button>
+                                            {{-- <button class="btn btn-success w-50 me-2" id="sell-button-{{ $trip->id }}" style="background-color: #28a745; border-color: #28a745">
+                                                Sell
+                                            </button> --}}
+                                            <button class="btn btn-primary w-50" id="book-button-{{ $trip->id }}" style="background-color: #28a745; border-color: #28a745">
+                                                Reserve
+                                            </button>
+                                        </div>
                                         </div>
 
                                         @can('reset-seat-list')
@@ -320,7 +511,7 @@
     @endif
 
     <!-- Passenger Modal -->
-    <div class="modal fade" id="passengerModal" tabindex="-1" aria-labelledby="passengerModalLabel"
+    {{-- <div class="modal fade" id="passengerModal" tabindex="-1" aria-labelledby="passengerModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -352,12 +543,12 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Iterate through each trip
-            document.querySelectorAll('.offcanvas').forEach(offcanvas => {
+                document.querySelectorAll('.offcanvas').forEach(offcanvas => {
                 const tripKey = offcanvas.id.replace('offcanvasRight', ''); // Extract trip key from ID
                 const seatButtons = offcanvas.querySelectorAll('.seat');
                 const selectedSeatsCount = offcanvas.querySelector(`#selected-seats-count-${tripKey}`);
@@ -379,8 +570,7 @@
                         if (this.classList.contains('seat-selected')) {
                             this.classList.remove('seat-selected');
                             this.classList.add('seat-available');
-                            selectedSeats = selectedSeats.filter(seat => seat.seatId !==
-                                seatId);
+                            selectedSeats = selectedSeats.filter(seat => seat.seatId !== seatId);
                             totalPrice -= seatPrice;
                         } else if (this.classList.contains('seat-available')) {
                             this.classList.add('seat-selected');
@@ -399,39 +589,35 @@
                     });
                 });
 
-                // Handle continue button click
-                continueButton.addEventListener('click', function() {
-                    if (selectedSeats.length === 0) {
-                        alert('No seats selected!');
-                        return;
-                    }
+            // Handle continue button click
+            continueButton.addEventListener('click', function() {
+                if (selectedSeats.length === 0) {
+                    alert('No seats selected!');
+                    return;
+                }
 
-                    // Extract trip data
-                    const tripId = tripKey;
-                    const vehicleId = offcanvas.querySelector('.seat').dataset.vehicleId || 'N/A';
-                    const bookingDate = "{{ request('filter_date') }}";
+                // Extract trip data
+                const tripId = tripKey;
+                const vehicleId = offcanvas.querySelector('.seat').dataset.vehicleId || 'N/A';
+                const bookingDate = "{{ request('filter_date') }}";
 
+                // Redirect to passenger detail route with necessary data
+                const seatsData = encodeURIComponent(JSON.stringify(selectedSeats));
+                const url = `{{ route('passenger.detail') }}?trip_id=${tripId}&vehicle_id=${vehicleId}&booking_date=${bookingDate}&seats_data=${seatsData}`;
+                window.location.href = url;
+            });
+            });
+            
+            $(".nav-link").on("click", function(e) {
+                e.preventDefault();
 
-                    // Populate and show the modal
-                    const modal = document.getElementById('passengerModal');
-                    const seatsInput = modal.querySelector('#seats-data');
-                    const tripIdInput = modal.querySelector('#trip-id');
-                    const vehicleIdInput = modal.querySelector('#vehicle-id');
-                    const bookingDateInput = modal.querySelector('#booking-date');
+                // Remove active class from all tab buttons and contents
+                $(".nav-link").removeClass("active");
+                $(".tab-pane").removeClass("show active");
 
-                    seatsInput.value = JSON.stringify(selectedSeats);
-                    tripIdInput.value = tripKey;
-                    vehicleIdInput.value = vehicleId;
-                    bookingDateInput.value = bookingDate;
-
-                    // Show modal
-                    const bootstrapModal = new bootstrap.Modal(modal);
-                    bootstrapModal.show();
-
-                    // Close offcanvas
-                    const bootstrapOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
-                    bootstrapOffcanvas.hide();
-                });
+                // Add active class to the clicked tab and its corresponding content
+                $(this).addClass("active");
+                $($(this).data("target")).addClass("show active");
             });
         });
     </script>

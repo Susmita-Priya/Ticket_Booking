@@ -47,8 +47,8 @@ class TripController extends Controller
                 'vehicle_id' => 'required|integer',
                 'driver_id' => 'required|integer',
                 'supervisor_id' => 'required|integer',
-                'Date' => 'required|date',
-                'Time' => 'required|date_format:H:i',
+                'date' => 'required|date',
+                'time' => 'required|date_format:H:i',
                 'ticket_price' => 'required|numeric',
                 'total_route_cost' => 'required|numeric',
             ]);
@@ -59,8 +59,8 @@ class TripController extends Controller
             $trip->vehicle_id = $request->vehicle_id;
             $trip->driver_id = $request->driver_id;
             $trip->supervisor_id = $request->supervisor_id;
-            $trip->Date = $request->Date;
-            $trip->Time = $request->Time;
+            $trip->date = $request->date;
+            $trip->time = $request->time;
             $trip->ticket_price = $request->ticket_price;
             $trip->total_route_cost = $request->total_route_cost;
             $trip->save();
@@ -84,8 +84,8 @@ class TripController extends Controller
                 'vehicle_id' => 'required|integer',
                 'driver_id' => 'required|integer',
                 'supervisor_id' => 'required|integer',
-                'Date' => 'required|date',
-                'Time' => 'required|date_format:H:i',
+                'date' => 'required|date',
+                'time' => 'required|date_format:H:i',
                 'ticket_price' => 'required|numeric',
                 'total_route_cost' => 'required|numeric',
             ]);
@@ -97,8 +97,8 @@ class TripController extends Controller
             $trip->vehicle_id = $request->vehicle_id;
             $trip->driver_id = $request->driver_id;
             $trip->supervisor_id = $request->supervisor_id;
-            $trip->Date = $request->Date;
-            $trip->Time = $request->Time;
+            $trip->date = $request->date;
+            $trip->time = $request->time;
             $trip->ticket_price = $request->ticket_price;
             $trip->total_route_cost = $request->total_route_cost;
             $trip->status = $request->status;

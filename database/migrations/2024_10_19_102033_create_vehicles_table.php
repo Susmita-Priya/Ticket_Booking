@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('company_id');
             $table->foreignId('owner_id');
             $table->foreignId('type_id');
+            $table->string('category');
             $table->string('name');
             $table->string('vehicle_no');
             $table->string('engin_no');

@@ -51,8 +51,8 @@
                                     ({{ $trip->vehicle->vehicle_no ?? "N/A"}} )</td>
                                 <td>{{ $trip->driver->name ?? "N/A" }}</td>
                                 <td>{{ $trip->supervisor->name ?? "N/A"}}</td>
-                                <td>{{ $trip->Date }}</td>
-                                <td>{{ $trip->Time }}</td>
+                                <td>{{ $trip->date }}</td>
+                                <td>{{ $trip->time }}</td>
                                 <td>{{ $trip->ticket_price }} TK</td>
                                 <td>{{ $trip->total_route_cost }} TK</td>
                                 <td>

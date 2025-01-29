@@ -32,6 +32,7 @@
                             <th>S/N</th>
                             <th>Vehicle</th>
                             <th>Type</th>
+                            <th>Category</th>
                             <th>Owner</th>
                             <th>Total Seat</th>
                             <th>Amenities</th>
@@ -51,6 +52,15 @@
                                 Engine No : {{ $vehicle->engin_no }} <br>
                                 Chassis No : {{ $vehicle->chest_no }}</td>
                                 <td>{{ $vehicle->type->name }}</td>
+                                <td>
+                                    @if ($vehicle->category == '0')
+                                        Economy Class
+                                    @elseif ($vehicle->category == '1')
+                                        Business Class
+                                    @elseif ($vehicle->category == '2')
+                                        Sleeping Coach
+                                    @endif
+                                </td>
                                 <td>{{ $vehicle->owner->name }}</td>  
                                 <td>{{ $vehicle->total_seat }}</td>
                                 <td>
@@ -147,6 +157,24 @@
                                                                         {{ $vehicle->type_id == $type->id ? 'selected' : '' }}>
                                                                         {{ $type->name }}</option>
                                                                 @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-12 mb-3">
+                                                            <label for="category" class="form-label">Category</label>
+                                                            <select name="category" class="form-select">
+                                                                <option >Select Category</option>
+                                                                <option value='0'
+                                                                    {{ $vehicle->category == '0' ? 'selected' : '' }}>
+                                                                    Economy Class</option>
+                                                                <option value='1'
+                                                                    {{ $vehicle->category == '1' ? 'selected' : '' }}>
+                                                                    Business Class</option>
+                                                                <option value='2'
+                                                                    {{ $vehicle->category == '2' ? 'selected' : '' }}>
+                                                                    Sleeping Coach</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -336,6 +364,18 @@
                                     @foreach ($types as $type)
                                         <option value="{{ $type->id }}">{{ $type->name }}</option>
                                     @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="category" class="form-label">Category</label>
+                                <select name="category" class="form-select">
+                                    <option >Select Category</option>
+                                    <option value='0'>Economy Class</option>
+                                    <option value='1'>Business Class</option>
+                                    <option value='2'>Sleeping Coach</option>
                                 </select>
                             </div>
                         </div>
