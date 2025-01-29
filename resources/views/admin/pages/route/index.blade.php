@@ -134,7 +134,7 @@
                                                         </div>
                                                     </div> --}}
 
-                                                    <div class="row">
+                                                    {{-- <div class="row">
                                                         <div class="col-12 mb-3">
                                                             <label for="start_counter_id" class="form-label">Start Counter</label>
                                                             <select name="start_counter_id" class="form-select">
@@ -145,6 +145,39 @@
                                                                         {{ $counter->name }}</option>
                                                                 @endforeach
                                                             </select>
+                                                        </div>
+                                                    </div> --}}
+
+                                                    <div class="row">
+                                                        <div class="col-12 mb-3">
+                                                            <label for="start_counter_id" class="form-label">Start Counter</label>
+                                                            <div class="dropdown">
+                                                                <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center" 
+                                                                        type="button" 
+                                                                        id="dropdownMenuButton2" 
+                                                                        data-bs-toggle="dropdown" 
+                                                                        aria-expanded="false" 
+                                                                        style="text-align: left; padding-left: 10px;">
+                                                                    <span id="selected-counter">
+                                                                        {{ $routedata->start_counter_id ? $routedata->startCounter->name : 'Select Start Counter' }}
+                                                                    </span>
+                                                                </button>
+                                                                <ul class="dropdown-menu pt-0" aria-labelledby="dropdownMenuButton2" style="width: 100%;">
+                                                                    <input type="text" 
+                                                                           class="form-control border-0 border-bottom shadow-none mb-2" 
+                                                                           placeholder="Search..." 
+                                                                           id="counter-search" 
+                                                                           oninput="handleCounterSearch()" 
+                                                                           style="width: 100%; padding-left: 10px;">
+                                                                    @foreach ($counters as $counter)
+                                                                        <li><a class="dropdown-item" href="#" data-id="{{ $counter->id }}" data-name="{{ $counter->name }}"
+                                                                            {{ $counter->id == $routedata->start_counter_id ? 'class=selected' : '' }}>
+                                                                            {{ $counter->name }}</a></li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                            <!-- Hidden Input for Start Counter ID -->
+                                                            <input type="hidden" id="start_counter_id" name="start_counter_id" value="{{ $routedata->start_counter_id }}">
                                                         </div>
                                                     </div>
 
@@ -283,7 +316,7 @@
                             </div>
                         </div> --}}
 
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="start_counter_id" class="form-label">Start Counter</label>
                                 <select name="start_counter_id" class="form-select">
@@ -292,6 +325,34 @@
                                         <option value="{{ $counter->id }}">{{ $counter->name }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                        </div> --}}
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="add-start-counter-id" class="form-label">Start Counter</label>
+                                <div class="dropdown">
+                                    <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center" 
+                                            type="button" 
+                                            id="add-dropdownMenuButton" 
+                                            data-bs-toggle="dropdown" 
+                                            aria-expanded="false" 
+                                            style="text-align: left; padding-left: 10px;">
+                                        <span id="add-selected-counter">Select Start Counter</span>
+                                    </button>
+                                    <ul class="dropdown-menu pt-0" id="add-dropdownMenu" aria-labelledby="add-dropdownMenuButton" style="width: 100%;">
+                                        <input type="text" 
+                                               class="form-control border-0 border-bottom shadow-none mb-2" 
+                                               placeholder="Search..." 
+                                               id="add-counter-search" 
+                                               oninput="handleAddCounterSearch()" 
+                                               style="width: 100%; padding-left: 10px;">
+                                        @foreach ($counters as $counter)
+                                            <li><a class="dropdown-item add-dropdown-item" href="#" data-id="{{ $counter->id }}" data-name="{{ $counter->name }}">{{ $counter->name }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                <input type="hidden" id="add-start-counter-id" name="start_counter_id">
                             </div>
                         </div>
 
@@ -346,5 +407,65 @@
             </div>
         </div>
     </div>
+    <script>
+        function handleAddCounterSearch() {
+            const searchInput = document.getElementById('add-counter-search');
+            const filter = searchInput.value.toLowerCase();
+            const items = document.querySelectorAll('#add-dropdownMenu .dropdown-item');
+            let visibleItems = [];
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(filter)) {
+                    item.style.display = "block";
+                    visibleItems.push(item);
+                } else {
+                    item.style.display = "none";
+                }
+            });
+            visibleItems.sort((a, b) => {
+                const textA = a.textContent.toLowerCase();
+                const textB = b.textContent.toLowerCase();
+                return textA.localeCompare(textB);
+            });
+            const dropdownMenu = document.getElementById('add-dropdownMenu');
+            visibleItems.forEach(item => dropdownMenu.appendChild(item));
+        }
+        document.querySelectorAll('.add-dropdown-item').forEach(item => {
+            item.addEventListener('click', function(event) {
+                
+                const selectedCounter = event.target;
+                const counterName = selectedCounter.getAttribute('data-name');
+                const counterId = selectedCounter.getAttribute('data-id');
+                document.getElementById('add-selected-counter').textContent = counterName;
+                document.getElementById('add-start-counter-id').value = counterId;
+                document.getElementById('add-dropdownMenuButton').click();
+            });
+        });
+    </script>
+    
 
+    {{-- EDIT --}}<script>
+        function handleCounterSearch() {
+            const searchInput = document.getElementById('counter-search');
+            const filter = searchInput.value.toLowerCase();
+            const items = document.querySelectorAll('.dropdown-item');
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(filter) ? "block" : "none";
+            });
+        }
+    
+        // Function to handle start counter selection
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', function(event) {
+                event.preventDefault();
+                const selectedCounter = event.target;
+                const counterName = selectedCounter.getAttribute('data-name');
+                const counterId = selectedCounter.getAttribute('data-id');
+                document.getElementById('selected-counter').textContent = counterName;
+                document.getElementById('start_counter_id').value = counterId;
+                document.getElementById('dropdownMenuButton2').click();
+            });
+        });
+    </script>
 @endsection

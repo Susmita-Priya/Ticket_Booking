@@ -74,7 +74,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-12">
+                                                    {{-- <div class="col-12">
                                                         <div class="mb-3">
                                                             <label for="example-select" class="form-label">Division</label>
                                                             <select name="division_id" class="form-select">
@@ -84,23 +84,59 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="row">
+                                                    </div> --}}
+                                                    
                                                     <div class="col-12">
                                                         <div class="mb-3">
-                                                            <label for="example-select" class="form-label">Status</label>
-                                                            <select name="status" class="form-select">
-                                                                <option value="1" {{ $districtData->status === 1 ? 'selected' : '' }}>Active</option>
-                                                                <option value="0" {{ $districtData->status === 0 ? 'selected' : '' }}>Inactive</option>
-                                                            </select>
+                                                            <label for="example-select" class="form-label">Division</label>
+                                                            <div class="dropdown division-dropdown">
+                                                                <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center" 
+                                                                        type="button" 
+                                                                        data-bs-toggle="dropdown" 
+                                                                        aria-expanded="false" 
+                                                                        style="text-align: left; padding-left: 10px;">
+                                                                    <span class="selected-division">
+                                                                        {{ $districtData->division->name ?? 'Select Division' }}
+                                                                    </span>
+                                                                </button>
+                                                                <ul class="dropdown-menu pt-0" style="width: 100%;">
+                                                                    <input type="text" 
+                                                                           class="form-control border-0 border-bottom shadow-none mb-2 division-search" 
+                                                                           placeholder="Search..."  
+                                                                           style="width: 100%; padding-left: 10px;">
+                                                                    @foreach($division as $divisionData)
+                                                                        <li>
+                                                                            <a class="dropdown-item division-option" href="#" 
+                                                                               data-id="{{ $divisionData->id }}" 
+                                                                               data-name="{{ $divisionData->name }}" 
+                                                                               @if(isset($districtData->division_id) && $districtData->division_id == $divisionData->id) 
+                                                                                   style="font-weight:bold;" 
+                                                                               @endif>
+                                                                                {{ $divisionData->name }}
+                                                                            </a>
+                                                                        </li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                            <input type="hidden" class="division-id" name="division_id" value="{{ $districtData->division_id }}">
                                                         </div>
                                                     </div>
+
                                                 </div>
-                                                <div class="d-flex justify-content-end">
-                                                    <button class="btn btn-primary" type="submit">Update</button>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="mb-3">
+                                                                <label for="example-select" class="form-label">Status</label>
+                                                                <select name="status" class="form-select">
+                                                                    <option value="1" {{ $districtData->status === 1 ? 'selected' : '' }}>Active</option>
+                                                                    <option value="0" {{ $districtData->status === 0 ? 'selected' : '' }}>Inactive</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex justify-content-end">
+                                                        <button class="btn btn-primary" type="submit">Update</button>
+                                                    </div>
                                                 </div>
                                             </form>
                                         </div>
@@ -201,7 +237,6 @@
         </div>
     </div>
     <script>
-        // Function to handle input search functionality
         function handleInput() {
             const searchValue = document.getElementById("division-search").value.toLowerCase();
             const items = document.querySelectorAll(".dropdown-menu .dropdown-item");
@@ -209,27 +244,45 @@
             items.forEach(item => {
                 const text = item.textContent.toLowerCase();
                 if (text.includes(searchValue)) {
-                    item.style.display = "block";  // Show item if it matches search
+                    item.style.display = "block";
                 } else {
-                    item.style.display = "none";   // Hide item if it doesn't match
+                    item.style.display = "none";
                 }
             });
         }
-    
-        // Function to handle the selection of an item from the dropdown
         document.querySelectorAll('.dropdown-item').forEach(item => {
             item.addEventListener('click', function() {
                 const selectedValue = item.textContent;
-                const divisionId = item.getAttribute('data-id');  // Get the division ID
-    
-                // Update the text inside the button
+                const divisionId = item.getAttribute('data-id');
                 document.getElementById("selected-division").textContent = selectedValue;
-    
-                // Set the division_id in the hidden input for form submission
                 document.getElementById("division_id").value = divisionId;
-    
-                // Optionally, you can close the dropdown after selection (this depends on your preference)
-                document.getElementById("dropdownMenuButton1").click();  // This will toggle the dropdown
+                document.getElementById("dropdownMenuButton1").click();
+            });
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('.division-dropdown').forEach(dropdown => {
+            const searchInput = dropdown.querySelector('.division-search');
+            const items = dropdown.querySelectorAll('.dropdown-item');
+
+            searchInput.addEventListener('input', function() {
+                const searchValue = searchInput.value.toLowerCase();
+                items.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    item.style.display = text.includes(searchValue) ? "block" : "none";
+                });
+            });
+            dropdown.addEventListener('click', function(event) {
+                if (event.target.classList.contains('division-option')) {
+                    event.preventDefault();
+                    
+                    const selectedValue = event.target.getAttribute('data-name');
+                    const divisionId = event.target.getAttribute('data-id');
+                    dropdown.querySelector('.selected-division').textContent = selectedValue;
+                    dropdown.nextElementSibling.value = divisionId;
+                    dropdown.querySelector('.dropdown-toggle').click();
+                }
             });
         });
     </script>
