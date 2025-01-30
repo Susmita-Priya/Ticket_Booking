@@ -59,7 +59,6 @@ public function store(Request $request)
             'trip_id' => 'required|exists:trips,id',
             'vehicle_id' => 'required|exists:vehicles,id',
             'booking_date' => 'required|date',
-            'passenger_name' => 'required|string',
             'passenger_phone' => 'required|string',
         ]);
 
@@ -113,7 +112,6 @@ public function showConfirmation(Request $request)
 if (!$request->session()->has('passenger_name') || !$request->session()->has('passenger_phone') || !$request->session()->has('trip') || !$request->session()->has('vehicle') || !$request->session()->has('route') || !$request->session()->has('bookingDate') || !$request->session()->has('seatsData')) {
    echo "Session data not found";
 }
-
     // Get data from the session
     $passenger_name = session('passenger_name');
     $passenger_phone = session('passenger_phone');
