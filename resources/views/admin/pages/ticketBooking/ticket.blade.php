@@ -82,7 +82,7 @@
                                             <tr>
                                                 <td class="col-6"><strong>Seat:</strong></td>
                                                 <td>@foreach ($seatsData as $seat)
-                                                   {{ $seat['seatNo'] }}, 
+                                                    {{ $loop->last ? $seat['seatNo'] : $seat['seatNo'] . ',' }}
                                                 @endforeach</td>
                                             </tr>
                                             <tr>
@@ -107,7 +107,9 @@
                                         <div class="py-1"><strong>To:</strong> {{ $route->endCounter->name }}</div>
                                         <div class="py-1"><strong>Travel Date:</strong>{{ \Carbon\Carbon::parse($bookingDate)->format('d M Y') }}</div>
                                         <div class="py-1"><strong>Departure Time:</strong> {{ \Carbon\Carbon::parse($trip->time)->format('h:i A') }}</div>
-                                        <div class="py-1"><strong>Seat:</strong> {{ $seat['seatNo'] }},</div>
+                                        <div class="py-1"><strong>Seat:</strong> @foreach ($seatsData as $seat)
+                                            {{ $loop->last ? $seat['seatNo'] : $seat['seatNo'] . ',' }}
+                                         @endforeach</div>
                                     </div>
                                     {{-- <div class="barcode">Ticket No: AA00123456 897 37</div> --}}
                                 </div>
