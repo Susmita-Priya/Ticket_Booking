@@ -20,4 +20,21 @@ class TicketBooking extends Model
         'passenger_name',
         'passenger_phone',
     ];
+
+    public function trip()
+    {
+        return $this->belongsTo(Trip::class);
+    }
+
+    public function vehicle()
+    {
+        return $this->belongsTo(Vehicle::class);
+    }
+
+    public function seat()
+    {
+        return $this->belongsTo(Seat::class);
+    }
+
+    
 }

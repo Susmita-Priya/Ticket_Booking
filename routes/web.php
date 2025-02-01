@@ -131,6 +131,7 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/seat-booking-section/{vehicle_id}', [SeatBookingController::class, 'index'])->name('seat_booking.section');
     Route::get('/seat-booking-delete/{id}', [SeatBookingController::class, 'destroy'])->name('seat_booking.destroy');
 
+    
     //Country Section
     Route::get('/country-section', [CountryController::class, 'index'])->name('country.section');
     Route::post('/country-store', [CountryController::class, 'store'])->name('country.store');

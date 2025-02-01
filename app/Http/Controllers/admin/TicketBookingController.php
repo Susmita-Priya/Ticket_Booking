@@ -91,9 +91,9 @@ public function store(Request $request)
         $vehicle = Vehicle::find($request->vehicle_id);
         $route = Route::find($trip->route_id);
 
-        // Redirect to the confirmation page with booking details
-        return redirect()->route('booking.confirmation')->with([
-            'passenger_name' => $request->passenger_name,
+        // Store data in the session (persist until explicitly removed)
+        session([
+            'passenger_name' => $request->passenger_name ?? null,
             'passenger_phone' => $request->passenger_phone,
             'trip' => $trip,
             'vehicle' => $vehicle,
@@ -102,6 +102,9 @@ public function store(Request $request)
             'seatsData' => $selectedSeats,
         ]);
 
+        // Redirect to the confirmation page
+        return redirect()->route('booking.confirmation');
+
     } catch (\Exception $e) {
         return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
     }
@@ -109,9 +112,11 @@ public function store(Request $request)
 
 public function showConfirmation(Request $request)
 {
-if (!$request->session()->has('passenger_name') || !$request->session()->has('passenger_phone') || !$request->session()->has('trip') || !$request->session()->has('vehicle') || !$request->session()->has('route') || !$request->session()->has('bookingDate') || !$request->session()->has('seatsData')) {
-   echo "Session data not found";
-}
+    // Check if session data exists
+    if ( !session()->has('passenger_phone') || !session()->has('trip') || !session()->has('vehicle') || !session()->has('route') || !session()->has('bookingDate') || !session()->has('seatsData')) {
+        return redirect()->route('ticket_booking.section')->with('error', 'No booking data found. Please book a ticket first.');
+    }
+
     // Get data from the session
     $passenger_name = session('passenger_name');
     $passenger_phone = session('passenger_phone');

@@ -603,7 +603,7 @@
 
                 // Redirect to passenger detail route with necessary data
                 const seatsData = encodeURIComponent(JSON.stringify(selectedSeats));
-                const url = `{{ route('passenger.detail') }}?trip_id=${tripId}&vehicle_id=${vehicleId}&booking_date=${bookingDate}&seats_data=${seatsData}`;
+                const url = `{{ route('passenger.detail') }}?trip_id=${tripId}&seats_data=${seatsData}`;
                 window.location.href = url;
             });
             });
