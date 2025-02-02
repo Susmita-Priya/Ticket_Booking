@@ -45,6 +45,12 @@
         border: 1px solid #d7d7d7 !important;
     }
 
+    .seat-reserved{
+        background: #28a745;
+        color: #fff;
+        border-color: #28a745;
+    }
+
     .seat-means {
         width: 15px;
         height: 15px;
@@ -72,6 +78,11 @@
     .selected-example {
         background: #e0115f;
         border: 1px solid #e0115f;
+    }
+
+    .reserved-example {
+        background: #28a745;
+        border: 1px solid #28a745;
     }
 </style>
 
@@ -156,11 +167,11 @@
                             </td>
                             <td>
                                 @if ($trip->vehicle->category == '0')
-                                    Economy Class
+                                    <span class="badge bg-info">Economy Class</span>
                                 @elseif ($trip->vehicle->category == '1')
-                                    Business Class
+                                    <span class="badge bg-info">Business Class</span>
                                 @elseif ($trip->vehicle->category == '2')
-                                    Sleeping Coach
+                                    <span class="badge bg-info">Sleeping Coach</span>
                                 @endif
                             </td>
                             <td>{{ $trip->route->startCounter->name }}</td>
@@ -206,18 +217,24 @@
                                             <br>
                                         </div>
                                         <!-- Seat Legend -->
-                                        <div class="d-flex justify-content-around mb-4">
+                                        <div class="d-flex justify-content-around mb-0">
                                             <ul class="d-flex list-unstyled align-items-center">
                                                 <li class="seat-means available-example"></li>
                                                 <li class="legend-label">Available</li>
                                             </ul>
                                             <ul class="d-flex list-unstyled align-items-center">
+                                                <li class="seat-means selected-example"></li>
+                                                <li class="legend-label">Selected</li>
+                                            </ul>
+                                        </div>
+                                        <div class="d-flex justify-content-around mb-4">
+                                            <ul class="d-flex list-unstyled align-items-center">
                                                 <li class="seat-means sold-example"></li>
                                                 <li class="legend-label">Sold</li>
                                             </ul>
                                             <ul class="d-flex list-unstyled align-items-center">
-                                                <li class="seat-means selected-example"></li>
-                                                <li class="legend-label">Selected</li>
+                                                <li class="seat-means reserved-example"></li>
+                                                <li class="legend-label">Reserved</li>
                                             </ul>
                                         </div>
 
@@ -238,7 +255,8 @@
                                                                         class="seat 
                                                             @if ($seatData->is_booked == 0) seat-available 
                                                             @elseif ($seatData->is_booked == 1) seat-selected 
-                                                            @elseif ($seatData->is_booked == 2) seat-booked @endif"
+                                                            @elseif ($seatData->is_booked == 2) seat-booked 
+                                                            @elseif ($seatData->is_booked == 3) seat-reserved @endif"
                                                                         data-seat-id="{{ $seatData->id }}"
                                                                         data-seat-price="{{ $trip->ticket_price ?? 0 }}"
                                                                         data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
@@ -259,7 +277,8 @@
                                                                         class="seat 
                                                             @if ($seatData->is_booked == 0) seat-available 
                                                             @elseif ($seatData->is_booked == 1) seat-selected 
-                                                            @elseif ($seatData->is_booked == 2) seat-booked @endif"
+                                                            @elseif ($seatData->is_booked == 2) seat-booked 
+                                                            @elseif ($seatData->is_booked == 3) seat-reserved @endif"
                                                                         data-seat-id="{{ $seatData->id }}"
                                                                         data-seat-price="{{ $trip->ticket_price ?? 0 }}"
                                                                         data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
@@ -275,7 +294,7 @@
                                         @elseif($vehicle_category == 1)
                                             <!-- Seat Layout -->
                                             <div class="row g-5">
-                                                <div class="col-6">
+                                                <div class="col-3">
                                                     <div class="row g-3">
                                                         @foreach ($seats as $seatData)
                                                             @if (in_array(substr($seatData->seat_no, -1), ['1']))
@@ -284,7 +303,8 @@
                                                                         class="seat 
                                                             @if ($seatData->is_booked == 0) seat-available 
                                                             @elseif ($seatData->is_booked == 1) seat-selected 
-                                                            @elseif ($seatData->is_booked == 2) seat-booked @endif"
+                                                            @elseif ($seatData->is_booked == 2) seat-booked 
+                                                            @elseif ($seatData->is_booked == 3) seat-reserved @endif"
                                                                         data-seat-id="{{ $seatData->id }}"
                                                                         data-seat-price="{{ $trip->ticket_price ?? 0 }}"
                                                                         data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
@@ -296,6 +316,8 @@
                                                         @endforeach
                                                     </div>
                                                 </div>
+                                                <div class="col-3">
+                                                </div>
                                                 <div class="col-6">
                                                     <div class="row g-3">
                                                         @foreach ($seats as $seatData)
@@ -305,7 +327,8 @@
                                                                         class="seat 
                                                             @if ($seatData->is_booked == 0) seat-available 
                                                             @elseif ($seatData->is_booked == 1) seat-selected 
-                                                            @elseif ($seatData->is_booked == 2) seat-booked @endif"
+                                                            @elseif ($seatData->is_booked == 2) seat-booked 
+                                                            @elseif ($seatData->is_booked == 3) seat-reserved @endif"
                                                                         data-seat-id="{{ $seatData->id }}"
                                                                         data-seat-price="{{ $trip->ticket_price ?? 0 }}"
                                                                         data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
@@ -343,7 +366,7 @@
                                                     aria-labelledby="pills-lower-tab">
                                                     <div class="seat-wrapper">
                                                         <div class="row g-5">
-                                                            <div class="col-6">
+                                                            <div class="col-3">
                                                                 <div class="row g-3">
                                                                     @foreach ($seats as $seatData)
                                                                         @if (in_array(substr($seatData->seat_no, -1), ['1']))
@@ -352,7 +375,8 @@
                                                                                     class="seat 
                                                                     @if ($seatData->is_booked == 0) seat-available 
                                                                     @elseif ($seatData->is_booked == 1) seat-selected 
-                                                                    @elseif ($seatData->is_booked == 2) seat-booked @endif"
+                                                                    @elseif ($seatData->is_booked == 2) seat-booked
+                                                                    @elseif ($seatData->is_booked == 3) seat-reserved @endif"
                                                                                     data-seat-id="{{ $seatData->id }}"
                                                                                     data-seat-price="{{ $trip->ticket_price ?? 0 }}"
                                                                                     data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
@@ -364,6 +388,8 @@
                                                                     @endforeach
                                                                 </div>
                                                             </div>
+                                                            <div class="col-3">
+                                                            </div>
                                                             <div class="col-6">
                                                                 <div class="row g-3">
                                                                     @foreach ($seats as $seatData)
@@ -373,7 +399,8 @@
                                                                                     class="seat 
                                                                     @if ($seatData->is_booked == 0) seat-available 
                                                                     @elseif ($seatData->is_booked == 1) seat-selected 
-                                                                    @elseif ($seatData->is_booked == 2) seat-booked @endif"
+                                                                    @elseif ($seatData->is_booked == 2) seat-booked
+                                                                    @elseif ($seatData->is_booked == 3) seat-reserved @endif"
                                                                                     data-seat-id="{{ $seatData->id }}"
                                                                                     data-seat-price="{{ $trip->ticket_price ?? 0 }}"
                                                                                     data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
@@ -393,7 +420,7 @@
                                                     aria-labelledby="pills-upper-tab">
                                                     <div class="seat-wrapper">
                                                         <div class="row g-5">
-                                                            <div class="col-6">
+                                                            <div class="col-3">
                                                                 <div class="row g-3">
                                                                     @foreach ($seats as $seatData)
                                                                         @if (in_array(substr($seatData->seat_no, -1), ['4']))
@@ -402,7 +429,8 @@
                                                                                     class="seat 
                                                                     @if ($seatData->is_booked == 0) seat-available 
                                                                     @elseif ($seatData->is_booked == 1) seat-selected 
-                                                                    @elseif ($seatData->is_booked == 2) seat-booked @endif"
+                                                                    @elseif ($seatData->is_booked == 2) seat-booked
+                                                                    @elseif ($seatData->is_booked == 3) seat-reserved @endif"
                                                                                     data-seat-id="{{ $seatData->id }}"
                                                                                     data-seat-price="{{ $trip->ticket_price ?? 0 }}"
                                                                                     data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
@@ -414,6 +442,8 @@
                                                                     @endforeach
                                                                 </div>
                                                             </div>
+                                                            <div class="col-3">
+                                                            </div>
                                                             <div class="col-6">
                                                                 <div class="row g-3">
                                                                     @foreach ($seats as $seatData)
@@ -423,7 +453,8 @@
                                                                                     class="seat 
                                                                     @if ($seatData->is_booked == 0) seat-available 
                                                                     @elseif ($seatData->is_booked == 1) seat-selected 
-                                                                    @elseif ($seatData->is_booked == 2) seat-booked @endif"
+                                                                    @elseif ($seatData->is_booked == 2) seat-booked
+                                                                    @elseif ($seatData->is_booked == 3) seat-reserved @endif"
                                                                                     data-seat-id="{{ $seatData->id }}"
                                                                                     data-seat-price="{{ $trip->ticket_price ?? 0 }}"
                                                                                     data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
@@ -459,7 +490,7 @@
                                             {{-- <button class="btn btn-success w-50 me-2" id="sell-button-{{ $trip->id }}" style="background-color: #28a745; border-color: #28a745">
                                                 Sell
                                             </button> --}}
-                                            <button class="btn btn-primary w-50" id="book-button-{{ $trip->id }}" style="background-color: #28a745; border-color: #28a745">
+                                            <button class="btn btn-primary w-50" id="reserve-button-{{ $trip->id }}" style="background-color: #28a745; border-color: #28a745">
                                                 Reserve
                                             </button>
                                         </div>
@@ -510,41 +541,6 @@
         </div>
     @endif
 
-    <!-- Passenger Modal -->
-    {{-- <div class="modal fade" id="passengerModal" tabindex="-1" aria-labelledby="passengerModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="passengerModalLabel">Enter Passenger Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="passenger-form" method="POST" action="{{ route('ticket_booking.store') }}">
-                    @csrf
-                    <div class="modal-body">
-                        <input type="hidden" id="trip-id" name="trip_id">
-                        <input type="hidden" id="seats-data" name="seats_data">
-                        <input type="hidden" id="vehicle-id" name="vehicle_id">
-                        <input type="hidden" id="booking-date" name="booking_date">
-                        <div class="mb-3">
-                            <label for="passenger-name" class="form-label">Passenger Name</label>
-                            <input type="text" id="passenger-name" name="passenger_name" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="passenger-phone" class="form-label">Passenger Phone<span
-                                    style="color: red;">*</span></label>
-                            <input type="text" id="passenger-phone" name="passenger_phone" class="form-control"
-                                required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Book Tickets</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div> --}}
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Iterate through each trip
@@ -581,11 +577,62 @@
                                 seatPrice
                             });
                             totalPrice += seatPrice;
-                        }
+                        }else if (this.classList.contains('seat-reserved')) {
+                            this.classList.add('seat-selected');
+                            this.classList.remove('seat-reserved');
+                            selectedSeats.push({
+                                seatId,
+                                seatNo,
+                                seatPrice
+                            });
+                            totalPrice += seatPrice;
+                        } 
+
 
                         selectedSeatsCount.innerText =
                             `${selectedSeats.length} ticket(s) selected`;
                         totalPriceDisplay.innerText = `৳ ${totalPrice.toFixed(2)}`;
+                    });
+                });
+
+                // Handle reserve button click
+                const reserveButton = offcanvas.querySelector(`#reserve-button-${tripKey}`);
+                reserveButton.addEventListener('click', function() {
+                    if (selectedSeats.length === 0) {
+                        alert('No seats selected!');
+                        return;
+                    }
+
+                    fetch('{{ route('reserve.seats') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            seats: selectedSeats,
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            selectedSeats.forEach(seat => {
+                                const seatButton = offcanvas.querySelector(`[data-seat-id="${seat.seatId}"]`);
+                                seatButton.classList.remove('seat-selected');
+                                seatButton.classList.add('seat-reserved');
+                            });
+                            alert('Seats reserved successfully!');
+                            selectedSeats = [];
+                            totalPrice = 0;
+                            selectedSeatsCount.innerText = '0 ticket(s) selected';
+                            totalPriceDisplay.innerText = '৳ 0.00';
+                        } else {
+                            alert('Failed to reserve seats!');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while reserving seats!');
                     });
                 });
 

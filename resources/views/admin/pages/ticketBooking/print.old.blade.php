@@ -1,14 +1,74 @@
-@extends('admin.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <style>
+        .ticket {
+            background: white;
+            width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-@section('admin_content')
-    <div class="row">
-        <div class="col-12">
-            <div class="page-title-box">
-                <h4 class="page-title">Print Ticket</h4>
-            </div>
-        </div>
-    </div>
+        .operator {
+            width: 500px;
+        }
 
+        .passenger {
+            width: 300px;
+        }
+
+        .header {
+            background-color: #E91E63;
+            color: white;
+            padding: 16px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .details {
+            font-size: 14px;
+        }
+
+        .ticket-details {
+            gap: 5px;
+        }
+
+        .line{
+        border: 1px dotted #E91E63;
+        margin-left: 15px;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            .print-section,
+            .print-section * {
+                visibility: visible;
+            }
+
+            .print-section {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            .btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
     <div class="row">
         <div class="col-12">
             <div class="card print-section">
@@ -48,12 +108,14 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><strong>Ticket Price:</strong></td>
+                                                <td><strong>Price:</strong></td>
                                                 <td>{{ number_format(session('seatsData')[0]['seatPrice'], 2) }} BDT </td>
+                                           
                                             </tr>
                                             <tr>
                                                 <td><strong>Quantity:</strong></td>
                                                 <td> {{ count(session('seatsData')) }}</td>
+                                           
                                             </tr>
                                             <tr>
                                                 <td><strong>Total:</strong></td>
@@ -78,11 +140,8 @@
                                                 {{ $loop->last ? $seat['seatNo'] : $seat['seatNo'] . ',' }}
                                             @endforeach
                                         </div>
-                                        <div class="py-1" style="padding: 5px 0;"><strong>Price:</strong>
-                                            {{ number_format(session('seatsData')[0]['seatPrice'], 2) }} BDT x {{ count(session('seatsData')) }} </div>
-                                        <div class="py-1" style="padding: 5px 0;"><strong>Total: </strong>
-                                            {{ number_format(array_sum(array_column(session('seatsData'), 'seatPrice')), 2) }} BDT
-                                            </div>
+                                        <div class="py-1"><strong>Price:</strong> {{ number_format(session('seatsData')[0]['seatPrice'], 2) }} BDT</div>
+                                        <div class="py-1"><strong>Quantity:</strong> {{ count(session('seatsData')) }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -94,92 +153,7 @@
             </div>
         </div>
     </div>
-
-    <div class="row mt-3">
-        <div class="col-12 text-center">
-            <a href="{{ route('generate.pdf') }}" class="btn btn-primary">Download Ticket</a>
-            <a href="{{ route('ticket_booking.section') }}" class="btn btn-secondary">Back</a>
-        </div>
-    </div>
-
-    <style>
-        .ticket {
-            background: white;
-            width: 800px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            position: relative; /* Required for pseudo-element positioning */
-            overflow: hidden;
-        }
-
-        .operator {
-            width: 500px;
-        }
-
-        .passenger {
-            width: 300px;
-        }
-
-        .header {
-            background-color: #E91E63;
-            color: white;
-            padding: 16px;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-        }
-
-        .details {
-            font-size: 14px;
-        }
-
-        .ticket-details {
-            gap: 5px;
-        }
-
-        .line{
-        border: 1px dotted #E91E63;
-        margin-left: 15px;
-        }
-
-        .ticket::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url("{{ asset('images/ticket/city_bus_bro.png') }}") no-repeat center center;
-    background-size: cover;
-    opacity: 0.2; /* Adjust opacity here (0.5 = 50% opacity) */
-    z-index: -1; /* Ensures the pseudo-element stays behind the content */
-}
-
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-
-            .print-section,
-            .print-section * {
-                visibility: visible;
-                
-            }
-
-            .print-section {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
-
-            .btn {
-                display: none;
-            }
-        }
-    </style>
-
-    
-@endsection
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -29,6 +29,7 @@ use App\Http\Controllers\admin\SiteSettingController;
 use App\Http\Controllers\admin\SupervisorController;
 use App\Http\Controllers\admin\SliderController;
 use App\Http\Controllers\admin\BlogController;
+use App\Http\Controllers\admin\PDFController;
 use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\admin\TermsController;
 use App\Http\Controllers\admin\TicketBookingController;
@@ -124,7 +125,12 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/ticket-booking-section', [TicketBookingController::class, 'index'])->name('ticket_booking.section');
     Route::post('/ticket-booking-store', [TicketBookingController::class, 'store'])->name('ticket_booking.store');
     Route::get('/ticket-booking/passenger-details', [TicketBookingController::class, 'showDetails'])->name('passenger.detail');
+    Route::post('/reserve-seats', [TicketBookingController::class, 'reserveSeats'])->name('reserve.seats');
     Route::get('/booking-confirmation', [TicketBookingController::class, 'showConfirmation'])->name('booking.confirmation');
+    Route::get('/generate-pdf', [PDFController::class, 'generatePDF'])->name('generate.pdf');
+    // Route::get('/print', function () {
+    //     return view('admin.pages.ticketBooking.print');
+    // })->name('print');
 
 
     //Seat Booking Section after ticket booking done

@@ -148,7 +148,7 @@
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
                                                             <label for="date" class="form-label">Date</label>
-                                                            <input type="date" id="date" name="Date"
+                                                            <input type="date" id="date" name="date"
                                                                 value="{{ $trip->Date }}" class="form-control"
                                                                 required>
                                                         </div>
@@ -157,7 +157,7 @@
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
                                                             <label for="time" class="form-label">Time</label>
-                                                            <input type="time" id="time" name="Time"
+                                                            <input type="time" id="time" name="time"
                                                                 value="{{ $trip->Time }}" class="form-control"
                                                                 required>
                                                         </div>
@@ -328,7 +328,7 @@
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="date" class="form-label">Date</label>
-                                <input type="date" id="date" name="Date" class="form-control"
+                                <input type="date" id="date" name="date" class="form-control"
                                     required>
                             </div>
                         </div>
@@ -336,7 +336,7 @@
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="time" class="form-label">Time</label>
-                                <input type="time" id="time" name="Time" class="form-control"
+                                <input type="time" id="time" name="time" class="form-control"
                                     required>
                             </div>
                         </div>

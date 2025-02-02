@@ -137,5 +137,29 @@ public function showConfirmation(Request $request)
         'seatsData'
     ));
 }
+public function reserveSeats(Request $request)
+{
+    $request->validate([
+        'seats' => 'required|array',
+        'seats.*.seatId' => 'required|exists:seats,id',
+    ]);
 
+    $selectedSeats = $request->input('seats');
+
+    try {
+        foreach ($selectedSeats as $seat) {
+            $seatModel = Seat::find($seat['seatId']);
+            if ($seatModel->is_booked == 0) {
+                $seatModel->is_booked = 3; // Mark seat as reserved
+                $seatModel->save();
+            } else {
+                return response()->json(['success' => false, 'message' => 'Some seats are already reserved or booked.']);
+            }
+        }
+
+        return response()->json(['success' => true, 'message' => 'Seats reserved successfully!']);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => 'An error occurred: ' . $e->getMessage()]);
+    }
+}
 }
