@@ -45,10 +45,17 @@
         border: 1px solid #d7d7d7 !important;
     }
 
-    .seat-reserved{
+    .seat-reserved {
         background: #28a745;
         color: #fff;
         border-color: #28a745;
+    }
+
+    .seat-reserved-disable {
+        background: #28a745;
+        color: #fff;
+        border-color: #28a745;
+        cursor: not-allowed;
     }
 
     .seat-means {
@@ -104,39 +111,35 @@
 
     <div class="row" style="margin-bottom: 60px;">
         <div class="d-flex justify-content-between g-3 align-items-end">
-            @can('vehicle-select')
-                <form method="GET" action="{{ route('ticket_booking.section') }}" class="d-flex w-100">
-                    <div class="col-md-1">
-                        <label for="vehicle_id" class="form-label"></label>
-                    </div>
-                    <div class="col-md-4 me-3">
-                        <label for="route_id" class="form-label">Route</label>
-                        <select name="route_id" id="route_id" class="form-select">
-                            <option value="">Select Route</option>
-                            @foreach ($routes as $rte)
-                                <option value="{{ $rte->id }}"
-                                    {{ isset($route) && $route->id == $rte->id ? 'selected' : '' }}>
-                                    {{ $rte->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+            <form method="GET" action="{{ route('ticket_booking.section') }}" class="d-flex w-100">
+                <div class="col-md-1">
+                    <label for="vehicle_id" class="form-label"></label>
+                </div>
+                <div class="col-md-4 me-3">
+                    <label for="route_id" class="form-label">Route</label>
+                    <select name="route_id" id="route_id" class="form-select">
+                        <option value="">Select Route</option>
+                        @foreach ($routes as $rte)
+                            <option value="{{ $rte->id }}"
+                                {{ isset($route) && $route->id == $rte->id ? 'selected' : '' }}>
+                                {{ $rte->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-                    <div class="col-md-4 me-3">
-                        <label for="filter_date" class="form-label">date</label>
-                        <input type="date" id="filter_date" name="filter_date" class="form-control"
-                            value="{{ request('filter_date') ?: date('Y-m-d') }}">
-                    </div>
+                <div class="col-md-4 me-3">
+                    <label for="filter_date" class="form-label">date</label>
+                    <input type="date" id="filter_date" name="filter_date" class="form-control"
+                        value="{{ request('filter_date') ?: date('Y-m-d') }}">
+                </div>
 
-                    <div class="col-md-2 me-3 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary w-50">Filter</button>
-                    </div>
-                </form>
-            @endcan
+                <div class="col-md-2 me-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-50">Filter</button>
+                </div>
+            </form>
         </div>
     </div>
-
-
 
     @if (empty($trips))
         <h4 class="text-muted text-center">No trips found</h4>
@@ -152,8 +155,8 @@
                         <th>Category</th>
                         <th>Start Counter</th>
                         <th>End Counter</th>
-                        <th>date</th>
-                        <th>time</th>
+                        <th>Date</th>
+                        <th>Time</th>
                         <th>Ticket Price</th>
                         <th>Action</th>
                     </tr>
@@ -163,7 +166,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $trip->vehicle->name ?? 'N/A' }} <br>
-                                ({{ $trip->vehicle->vehicle_no ?? 'N/A' }})
+                                (Coach : {{ $trip->vehicle->vehicle_no ?? 'N/A' }})
                             </td>
                             <td>
                                 @if ($trip->vehicle->category == '0')
@@ -208,7 +211,6 @@
                                         <div class="text-center mb-3">
                                             <h3>{{ $trip->vehicle->name }}</h3>
                                             <h5> {{ $trip->route->name }}</h5>
-
                                             <p><strong></strong> {{ \Carbon\Carbon::parse($trip->date)->format('d M Y') }},
                                                 {{ \Carbon\Carbon::parse($trip->time)->format('h:i A') }}</p>
                                             <p><strong>Driver:</strong> {{ $trip->driver->name }} <strong>,
@@ -260,7 +262,8 @@
                                                                         data-seat-id="{{ $seatData->id }}"
                                                                         data-seat-price="{{ $trip->ticket_price ?? 0 }}"
                                                                         data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
-                                                                        data-seat-no="{{ $seatData->seat_no }}">
+                                                                        data-seat-no="{{ $seatData->seat_no }}"
+                                                                        data-is_reserved_by="{{ $seatData->is_reserved_by }}">
                                                                         {{ $seatData->seat_no }}
                                                                     </button>
                                                                 </div>
@@ -282,7 +285,8 @@
                                                                         data-seat-id="{{ $seatData->id }}"
                                                                         data-seat-price="{{ $trip->ticket_price ?? 0 }}"
                                                                         data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
-                                                                        data-seat-no="{{ $seatData->seat_no }}">
+                                                                        data-seat-no="{{ $seatData->seat_no }}"
+                                                                        data-is_reserved_by="{{ $seatData->is_reserved_by }}">
                                                                         {{ $seatData->seat_no }}
                                                                     </button>
                                                                 </div>
@@ -308,7 +312,8 @@
                                                                         data-seat-id="{{ $seatData->id }}"
                                                                         data-seat-price="{{ $trip->ticket_price ?? 0 }}"
                                                                         data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
-                                                                        data-seat-no="{{ $seatData->seat_no }}">
+                                                                        data-seat-no="{{ $seatData->seat_no }}"
+                                                                        data-is_reserved_by="{{ $seatData->is_reserved_by }}">
                                                                         {{ $seatData->seat_no }}
                                                                     </button>
                                                                 </div>
@@ -332,7 +337,8 @@
                                                                         data-seat-id="{{ $seatData->id }}"
                                                                         data-seat-price="{{ $trip->ticket_price ?? 0 }}"
                                                                         data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
-                                                                        data-seat-no="{{ $seatData->seat_no }}">
+                                                                        data-seat-no="{{ $seatData->seat_no }}"
+                                                                        data-is_reserved_by="{{ $seatData->is_reserved_by }}">
                                                                         {{ $seatData->seat_no }}
                                                                     </button>
                                                                 </div>
@@ -380,7 +386,8 @@
                                                                                     data-seat-id="{{ $seatData->id }}"
                                                                                     data-seat-price="{{ $trip->ticket_price ?? 0 }}"
                                                                                     data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
-                                                                                    data-seat-no="{{ $seatData->seat_no }}">
+                                                                                    data-seat-no="{{ $seatData->seat_no }}"
+                                                                                    data-is_reserved_by="{{ $seatData->is_reserved_by }}">
                                                                                     {{ $seatData->seat_no }}
                                                                                 </button>
                                                                             </div>
@@ -404,7 +411,8 @@
                                                                                     data-seat-id="{{ $seatData->id }}"
                                                                                     data-seat-price="{{ $trip->ticket_price ?? 0 }}"
                                                                                     data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
-                                                                                    data-seat-no="{{ $seatData->seat_no }}">
+                                                                                    data-seat-no="{{ $seatData->seat_no }}"
+                                                                                    data-is_reserved_by="{{ $seatData->is_reserved_by }}">
                                                                                     {{ $seatData->seat_no }}
                                                                                 </button>
                                                                             </div>
@@ -434,7 +442,8 @@
                                                                                     data-seat-id="{{ $seatData->id }}"
                                                                                     data-seat-price="{{ $trip->ticket_price ?? 0 }}"
                                                                                     data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
-                                                                                    data-seat-no="{{ $seatData->seat_no }}">
+                                                                                    data-seat-no="{{ $seatData->seat_no }}"
+                                                                                    data-is_reserved_by="{{ $seatData->is_reserved_by }}">
                                                                                     {{ $seatData->seat_no }}
                                                                                 </button>
                                                                             </div>
@@ -458,7 +467,8 @@
                                                                                     data-seat-id="{{ $seatData->id }}"
                                                                                     data-seat-price="{{ $trip->ticket_price ?? 0 }}"
                                                                                     data-vehicle-id="{{ $trip->vehicle_id ?? 'N/A' }}"
-                                                                                    data-seat-no="{{ $seatData->seat_no }}">
+                                                                                    data-seat-no="{{ $seatData->seat_no }}"
+                                                                                    data-is_reserved_by="{{ $seatData->is_reserved_by }}">
                                                                                     {{ $seatData->seat_no }}
                                                                                 </button>
                                                                             </div>
@@ -480,20 +490,22 @@
                                                     selected</p>
                                                 <p class="h5" id="total-price-{{ $trip->id }}">৳ 0</p>
                                             </div>
-                                            
-                                        <div class="d-flex justify-content-between mt-2">
-                                            <button class="btn btn-primary w-50 me-2"
-                                                id="continue-button-{{ $trip->id }}"
-                                                style="background-color: #E0115F; border-color: #E0115F">
-                                                Sell
-                                            </button>
-                                            {{-- <button class="btn btn-success w-50 me-2" id="sell-button-{{ $trip->id }}" style="background-color: #28a745; border-color: #28a745">
+
+                                            <div class="d-flex justify-content-between mt-2">
+                                                <button class="btn btn-primary w-50 me-2"
+                                                    id="continue-button-{{ $trip->id }}"
+                                                    style="background-color: #E0115F; border-color: #E0115F">
+                                                    Sell
+                                                </button>
+                                                {{-- <button class="btn btn-success w-50 me-2" id="sell-button-{{ $trip->id }}" style="background-color: #28a745; border-color: #28a745">
                                                 Sell
                                             </button> --}}
-                                            <button class="btn btn-primary w-50" id="reserve-button-{{ $trip->id }}" style="background-color: #28a745; border-color: #28a745">
-                                                Reserve
-                                            </button>
-                                        </div>
+                                                <button class="btn btn-primary w-50"
+                                                    id="reserve-button-{{ $trip->id }}"
+                                                    style="background-color: #28a745; border-color: #28a745">
+                                                    Reserve
+                                                </button>
+                                            </div>
                                         </div>
 
                                         @can('reset-seat-list')
@@ -507,7 +519,6 @@
                                         @endcan
                                     </div>
                                 </div>
-
                             </div>
                         </div>
 
@@ -540,132 +551,198 @@
             </table>
         </div>
     @endif
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Iterate through each trip
-                document.querySelectorAll('.offcanvas').forEach(offcanvas => {
-                const tripKey = offcanvas.id.replace('offcanvasRight', ''); // Extract trip key from ID
-                const seatButtons = offcanvas.querySelectorAll('.seat');
-                const selectedSeatsCount = offcanvas.querySelector(`#selected-seats-count-${tripKey}`);
-                const totalPriceDisplay = offcanvas.querySelector(`#total-price-${tripKey}`);
-                const continueButton = offcanvas.querySelector(`#continue-button-${tripKey}`);
+                    // Iterate through each trip
+                    document.querySelectorAll('.offcanvas').forEach(offcanvas => {
+                            const tripKey = offcanvas.id.replace('offcanvasRight', ''); // Extract trip key from ID
+                            const seatButtons = offcanvas.querySelectorAll('.seat');
+                            const selectedSeatsCount = offcanvas.querySelector(`#selected-seats-count-${tripKey}`);
+                            const totalPriceDisplay = offcanvas.querySelector(`#total-price-${tripKey}`);
+                            const continueButton = offcanvas.querySelector(`#continue-button-${tripKey}`);
+                            const authUserId = "{{ auth()->user()->id }}";
 
-                let selectedSeats = [];
-                let totalPrice = 0;
+                            let selectedSeats = [];
+                            let totalPrice = 0;
 
-                // Add click event listeners to seat buttons
-                seatButtons.forEach(button => {
-                    button.addEventListener('click', function() {
-                        if (this.classList.contains('seat-booked')) return;
+                            // Add click event listeners to seat buttons
+                            seatButtons.forEach(button => {
+                                    button.addEventListener('click', function() {
+                                            if (this.classList.contains('seat-booked')) return;
 
-                        const seatId = this.dataset.seatId;
-                        const seatPrice = parseFloat(this.dataset.seatPrice);
-                        const seatNo = this.dataset.seatNo;
+                                            const seatId = this.dataset.seatId;
+                                            const seatPrice = parseFloat(this.dataset.seatPrice);
+                                            const seatNo = this.dataset.seatNo;
+                                            const isReservedBy = this.dataset.is_reserved_by;
 
-                        if (this.classList.contains('seat-selected')) {
-                            this.classList.remove('seat-selected');
-                            this.classList.add('seat-available');
-                            selectedSeats = selectedSeats.filter(seat => seat.seatId !== seatId);
-                            totalPrice -= seatPrice;
-                        } else if (this.classList.contains('seat-available')) {
-                            this.classList.add('seat-selected');
-                            this.classList.remove('seat-available');
-                            selectedSeats.push({
-                                seatId,
-                                seatNo,
-                                seatPrice
+                                            if (this.classList.contains('seat-selected')) {
+                                                this.classList.remove('seat-selected');
+                                                this.classList.add('seat-available');
+                                                selectedSeats = selectedSeats.filter(seat => seat.seatId !==
+                                                    seatId);
+                                                totalPrice -= seatPrice;
+                                            } else if (this.classList.contains('seat-available')) {
+                                                this.classList.add('seat-selected');
+                                                this.classList.remove('seat-available');
+                                                selectedSeats.push({
+                                                    seatId,
+                                                    seatNo,
+                                                    seatPrice
+                                                });
+                                                totalPrice += seatPrice;
+                                                } else if (this.classList.contains('seat-reserved')) {
+                                                    if (isReservedBy == authUserId) {
+                                                        // Seat is reserved by the current user
+                                                        if (confirm('This seat is reserved by you. Are you sure you want to select this seat?')) {
+                                                            this.classList.add('seat-selected');
+                                                            this.classList.remove('seat-reserved');
+                                                            selectedSeats.push({
+                                                                seatId,
+                                                                seatNo,
+                                                                seatPrice
+                                                            });
+                                                            totalPrice += seatPrice;
+                                                        }
+                                                    }
+                                                }
+                                            // } else if (this.classList.contains('seat-reserved')) {
+                                            //     if (isReservedBy == authUserId) {
+                                            //         // Seat is reserved by the current user
+                                            //         Swal.fire({
+                                            //             title: 'This seat is reserved by you.',
+                                            //             text: 'Are you sure you want to select this seat?',
+                                            //             icon: 'warning',
+                                            //             showCancelButton: true,
+                                            //             confirmButtonText: 'Yes, select it!',
+                                            //             cancelButtonText: 'No, cancel'
+                                            //         }).then((result) => {
+                                            //             if (result.isConfirmed) {
+                                            //                 this.classList.add('seat-selected');
+                                            //                 this.classList.remove('seat-reserved');
+                                            //                 selectedSeats.push({
+                                            //                     seatId,
+                                            //                     seatNo,
+                                            //                     seatPrice
+                                            //                 });
+                                            //                 totalPrice += seatPrice;
+                                            //             }
+                                            //         });
+
+                                                    else {
+                                                        // Seat is reserved by another user
+                                                        button.style.cursor = 'not-allowed';
+
+                                                        fetch(`/show/users/${isReservedBy}`) // Replace with your API endpoint
+                                                            .then(response => {
+                                                                if (!response.ok) {
+                                                                    throw new Error(
+                                                                        'Failed to fetch user data');
+                                                                }
+                                                                return response.json();
+                                                            })
+                                                            .then(data => {
+                                                                // Set tooltip with the username of the user who reserved the seat
+                                                                button.setAttribute('title',
+                                                                    `Reserved by: ${data.username}`);
+                                                                toastr.warning(
+                                                                    `This seat is reserved by user: ${data.username}`
+                                                                    );
+                                                            })
+                                                            .catch(error => {
+                                                                console.error('Error fetching user data:',
+                                                                    error);
+                                                                // Fallback tooltip if fetching fails
+                                                                button.setAttribute('title',
+                                                                    `Reserved by user: ${isReservedBy}`);
+
+                                                            });
+                                                     
+                                                    }
+
+                                                } else {
+                                                    return; // Do nothing if the seat is neither available nor reserved
+                                                }
+
+                                                selectedSeatsCount.innerText =
+                                                    `${selectedSeats.length} ticket(s) selected`;
+                                                totalPriceDisplay.innerText = `৳ ${totalPrice.toFixed(2)}`;
+                                            });
+                                    });
+
+                                // Handle reserve button click
+                                const reserveButton = offcanvas.querySelector(
+                                `#reserve-button-${tripKey}`); reserveButton.addEventListener('click', function() {
+                                    if (selectedSeats.length === 0) {
+                                        toastr.error('No seats selected!');
+                                        return;
+                                    }
+
+                                    fetch('{{ route('reserve.seats') }}', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                            },
+                                            body: JSON.stringify({
+                                                seats: selectedSeats,
+                                            })
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.success) {
+                                                selectedSeats.forEach(seat => {
+                                                    const seatButton = offcanvas.querySelector(
+                                                        `[data-seat-id="${seat.seatId}"]`);
+                                                    seatButton.classList.remove('seat-selected');
+                                                    seatButton.classList.add('seat-reserved');
+                                                });
+                                                toastr.success('Seats reserved successfully!');
+                                                selectedSeats = [];
+                                                totalPrice = 0;
+                                                selectedSeatsCount.innerText = '0 ticket(s) selected';
+                                                totalPriceDisplay.innerText = '৳ 0.00';
+                                            } else {
+                                                toastr.error('Failed to reserve seats!');
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error('Error:', error);
+                                            toastr.error('An error occurred while reserving seats!');
+                                        });
+                                });
+
+                                // Handle continue button click
+                                continueButton.addEventListener('click', function() {
+                                    if (selectedSeats.length === 0) {
+                                        toastr.error('No seats selected!');
+                                        return;
+                                    }
+
+                                    // Extract trip data
+                                    const tripId = tripKey;
+                                    const vehicleId = offcanvas.querySelector('.seat').dataset.vehicleId ||
+                                        'N/A';
+                                    const bookingDate = "{{ request('filter_date') }}";
+
+                                    // Redirect to passenger detail route with necessary data
+                                    const seatsData = encodeURIComponent(JSON.stringify(selectedSeats));
+                                    const url =
+                                        `{{ route('passenger.detail') }}?trip_id=${tripId}&seats_data=${seatsData}`;
+                                    window.location.href = url;
+                                });
                             });
-                            totalPrice += seatPrice;
-                        }else if (this.classList.contains('seat-reserved')) {
-                            this.classList.add('seat-selected');
-                            this.classList.remove('seat-reserved');
-                            selectedSeats.push({
-                                seatId,
-                                seatNo,
-                                seatPrice
-                            });
-                            totalPrice += seatPrice;
-                        } 
 
+                        $(".nav-link").on("click", function(e) {
+                            e.preventDefault();
 
-                        selectedSeatsCount.innerText =
-                            `${selectedSeats.length} ticket(s) selected`;
-                        totalPriceDisplay.innerText = `৳ ${totalPrice.toFixed(2)}`;
+                            // Remove active class from all tab buttons and contents
+                            $(".nav-link").removeClass("active");
+                            $(".tab-pane").removeClass("show active");
+
+                            // Add active class to the clicked tab and its corresponding content
+                            $(this).addClass("active");
+                            $($(this).data("target")).addClass("show active");
+                        });
                     });
-                });
-
-                // Handle reserve button click
-                const reserveButton = offcanvas.querySelector(`#reserve-button-${tripKey}`);
-                reserveButton.addEventListener('click', function() {
-                    if (selectedSeats.length === 0) {
-                        alert('No seats selected!');
-                        return;
-                    }
-
-                    fetch('{{ route('reserve.seats') }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            seats: selectedSeats,
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            selectedSeats.forEach(seat => {
-                                const seatButton = offcanvas.querySelector(`[data-seat-id="${seat.seatId}"]`);
-                                seatButton.classList.remove('seat-selected');
-                                seatButton.classList.add('seat-reserved');
-                            });
-                            alert('Seats reserved successfully!');
-                            selectedSeats = [];
-                            totalPrice = 0;
-                            selectedSeatsCount.innerText = '0 ticket(s) selected';
-                            totalPriceDisplay.innerText = '৳ 0.00';
-                        } else {
-                            alert('Failed to reserve seats!');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('An error occurred while reserving seats!');
-                    });
-                });
-
-            // Handle continue button click
-            continueButton.addEventListener('click', function() {
-                if (selectedSeats.length === 0) {
-                    alert('No seats selected!');
-                    return;
-                }
-
-                // Extract trip data
-                const tripId = tripKey;
-                const vehicleId = offcanvas.querySelector('.seat').dataset.vehicleId || 'N/A';
-                const bookingDate = "{{ request('filter_date') }}";
-
-                // Redirect to passenger detail route with necessary data
-                const seatsData = encodeURIComponent(JSON.stringify(selectedSeats));
-                const url = `{{ route('passenger.detail') }}?trip_id=${tripId}&seats_data=${seatsData}`;
-                window.location.href = url;
-            });
-            });
-            
-            $(".nav-link").on("click", function(e) {
-                e.preventDefault();
-
-                // Remove active class from all tab buttons and contents
-                $(".nav-link").removeClass("active");
-                $(".tab-pane").removeClass("show active");
-
-                // Add active class to the clicked tab and its corresponding content
-                $(this).addClass("active");
-                $($(this).data("target")).addClass("show active");
-            });
-        });
     </script>
 @endsection

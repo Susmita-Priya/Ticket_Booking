@@ -67,7 +67,7 @@
                                     @endphp
                                     @foreach ($checkers as $checker)
                                         @if (in_array($checker->id, $routeCheckers))
-                                            <span class="badge bg-primary">{{ $checker->name }}</span>
+                                         {{ $checker->name }}
                                         @endif
                                     @endforeach
                                 </td>

@@ -195,6 +195,7 @@ Route::middleware('auth')->group(callback: function () {
     //Role and User Section
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
+    Route::get('/show/users/{id}', [UserController::class, 'fetch']);
 
     //Site Setting
     Route::get('/site-setting', [SiteSettingController::class, 'index'])->name('site.setting');

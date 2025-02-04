@@ -149,8 +149,8 @@
                                                         <div class="col-12 mb-3">
                                                             <label for="date" class="form-label">Date</label>
                                                             <input type="date" id="date" name="date"
-                                                                value="{{ $trip->Date }}" class="form-control"
-                                                                required>
+                                                                value="{{ $trip->date }}" class="form-control"
+                                                                required min="{{ date('Y-m-d') }}" required>
                                                         </div>
                                                     </div>
 
@@ -158,7 +158,7 @@
                                                         <div class="col-12 mb-3">
                                                             <label for="time" class="form-label">Time</label>
                                                             <input type="time" id="time" name="time"
-                                                                value="{{ $trip->Time }}" class="form-control"
+                                                                value="{{ $trip->time }}" class="form-control"
                                                                 required>
                                                         </div>
                                                     </div>
@@ -329,7 +329,7 @@
                             <div class="col-12 mb-3">
                                 <label for="date" class="form-label">Date</label>
                                 <input type="date" id="date" name="date" class="form-control"
-                                    required>
+                                    required min="{{ date('Y-m-d') }}">
                             </div>
                         </div>
 

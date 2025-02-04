@@ -27,14 +27,46 @@ class TicketBookingController extends Controller
 
     public function index(Request $request)
     {
-        $routes = Route::where('company_id', auth()->user()->id)->get();
+
+        $user = auth()->user();
+        $routes = collect();
+        // dd($user);
+        if ($user->hasRole('User')) {
+            $routes = Route::where('company_id', $user->id)
+            ->orWhere('company_id', $user->is_registration_by)
+            ->get();
+        } elseif ($user->hasRole('Company')) {
+            $routes = Route::where('company_id', $user->id)->get();
+        } else {
+            $routes = Route::where('company_id', $user->id)->get();
+        }
+
         $route = $routes->where('id', $request->route_id)->first();
         $filter_date = $request->filter_date;
 
         if ($request->route_id == null || $request->filter_date == null) {
             return view('admin.pages.ticketBooking.index', compact('routes'));
         }
-        $trips = Trip::where('company_id', auth()->user()->id)->where('route_id', $request->route_id)->where('Date', $filter_date)->latest()->get();
+        if ($user->hasRole('User')) {
+            $trips = Trip::where('company_id', $user->id)
+            ->orWhere('company_id', $user->is_registration_by)
+            ->where('route_id', $request->route_id)
+            ->where('date', $filter_date)
+            ->latest()
+            ->get();
+        } elseif ($user->hasRole('Company')) {
+            $trips = Trip::where('company_id', $user->id)
+            ->where('route_id', $request->route_id)
+            ->where('date', $filter_date)
+            ->latest()
+            ->get();
+        } elseif ($user->hasRole('Super Admin')) {
+            $trips = Trip::where('company_id', $user->id)
+            ->where('route_id', $request->route_id)
+            ->where('date', $filter_date)
+            ->latest()
+            ->get();
+        }
 
         return view('admin.pages.ticketBooking.index', compact('routes', 'route', 'trips', 'filter_date'));
     }
@@ -151,6 +183,7 @@ public function reserveSeats(Request $request)
             $seatModel = Seat::find($seat['seatId']);
             if ($seatModel->is_booked == 0) {
                 $seatModel->is_booked = 3; // Mark seat as reserved
+                $seatModel->is_reserved_by = auth()->user()->id;
                 $seatModel->save();
             } else {
                 return response()->json(['success' => false, 'message' => 'Some seats are already reserved or booked.']);
