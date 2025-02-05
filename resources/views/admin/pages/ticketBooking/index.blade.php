@@ -552,197 +552,365 @@
         </div>
     @endif
     <script>
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     // Iterate through each trip
+        //     document.querySelectorAll('.offcanvas').forEach(offcanvas => {
+        //         const tripKey = offcanvas.id.replace('offcanvasRight', ''); // Extract trip key from ID
+        //         const seatButtons = offcanvas.querySelectorAll('.seat');
+        //         const selectedSeatsCount = offcanvas.querySelector(`#selected-seats-count-${tripKey}`);
+        //         const totalPriceDisplay = offcanvas.querySelector(`#total-price-${tripKey}`);
+        //         const continueButton = offcanvas.querySelector(`#continue-button-${tripKey}`);
+        //         const authUserId = "{{ auth()->user()->id }}";
+
+        //         let selectedSeats = [];
+        //         let totalPrice = 0;
+
+        //         // Add click event listeners to seat buttons
+        //         seatButtons.forEach(button => {
+        //             button.addEventListener('click', function() {
+        //                 if (this.classList.contains('seat-booked')) return;
+
+        //                 const seatId = this.dataset.seatId;
+        //                 const seatPrice = parseFloat(this.dataset.seatPrice);
+        //                 const seatNo = this.dataset.seatNo;
+        //                 const isReservedBy = this.dataset.is_reserved_by;
+
+        //                 if (this.classList.contains('seat-selected')) {
+        //                     this.classList.remove('seat-selected');
+        //                     this.classList.add('seat-available');
+        //                     selectedSeats = selectedSeats.filter(seat => seat.seatId !==
+        //                         seatId);
+        //                     totalPrice -= seatPrice;
+        //                 } else if (this.classList.contains('seat-available')) {
+        //                     this.classList.add('seat-selected');
+        //                     this.classList.remove('seat-available');
+        //                     selectedSeats.push({
+        //                         seatId,
+        //                         seatNo,
+        //                         seatPrice
+        //                     });
+        //                     totalPrice += seatPrice;
+        //                 } else if (this.classList.contains('seat-reserved')) {
+        //                     if (isReservedBy == authUserId) {
+        //                         // Seat is reserved by the current user
+        //                         if (confirm(
+        //                                 'This seat is reserved by you. Are you sure you want to select this seat?'
+        //                                 )) {
+        //                             this.classList.add('seat-selected');
+        //                             this.classList.remove('seat-reserved');
+        //                             selectedSeats.push({
+        //                                 seatId,
+        //                                 seatNo,
+        //                                 seatPrice
+        //                             });
+        //                             totalPrice += seatPrice;
+        //                         }
+        //                     }
+        //                 } else {
+        //                     button.style.cursor = 'not-allowed';
+
+        //                     fetch(`/show/users/${isReservedBy}`)
+        //                         .then(response => {
+        //                             if (!response.ok) {
+        //                                 throw new Error(
+        //                                     'Failed to fetch user data');
+        //                             }
+        //                             return response.json();
+        //                         })
+        //                         .then(data => {
+        //                             // Set tooltip with the username of the user who reserved the seat
+        //                             button.setAttribute('title',
+        //                                 `Reserved by: ${data.username}`);
+        //                             toastr.warning(
+        //                                 `This seat is reserved by user: ${data.username}`
+        //                             );
+        //                         })
+        //                         .catch(error => {
+        //                             console.error('Error fetching user data:',
+        //                                 error);
+        //                             // Fallback tooltip if fetching fails
+        //                             button.setAttribute('title',
+        //                                 `Reserved by user: ${isReservedBy}`);
+
+        //                         });
+
+        //                 } else {
+        //                     return; // Do nothing if the seat is neither available nor reserved
+        //                 }
+
+        //                 selectedSeatsCount.innerText =
+        //                     `${selectedSeats.length} ticket(s) selected`;
+        //                 totalPriceDisplay.innerText = `৳ ${totalPrice.toFixed(2)}`;
+        //             });
+        //         });
+
+        //         // Handle reserve button click
+        //         const reserveButton = offcanvas.querySelector(
+        //             `#reserve-button-${tripKey}`);
+        //         reserveButton.addEventListener('click', function() {
+        //             if (selectedSeats.length === 0) {
+        //                 toastr.error('No seats selected!');
+        //                 return;
+        //             }
+
+        //             fetch('{{ route('reserve.seats') }}', {
+        //                     method: 'POST',
+        //                     headers: {
+        //                         'Content-Type': 'application/json',
+        //                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //                     },
+        //                     body: JSON.stringify({
+        //                         seats: selectedSeats,
+        //                     })
+        //                 })
+        //                 .then(response => response.json())
+        //                 .then(data => {
+        //                     if (data.success) {
+        //                         selectedSeats.forEach(seat => {
+        //                             const seatButton = offcanvas.querySelector(
+        //                                 `[data-seat-id="${seat.seatId}"]`);
+        //                             seatButton.classList.remove('seat-selected');
+        //                             seatButton.classList.add('seat-reserved');
+        //                         });
+        //                         toastr.success('Seats reserved successfully!');
+        //                         selectedSeats = [];
+        //                         totalPrice = 0;
+        //                         selectedSeatsCount.innerText = '0 ticket(s) selected';
+        //                         totalPriceDisplay.innerText = '৳ 0.00';
+        //                     } else {
+        //                         toastr.error('Failed to reserve seats!');
+        //                     }
+        //                 })
+        //                 .catch(error => {
+        //                     console.error('Error:', error);
+        //                     toastr.error('An error occurred while reserving seats!');
+        //                 });
+        //         });
+
+        //         // Handle continue button click
+        //         continueButton.addEventListener('click', function() {
+        //             if (selectedSeats.length === 0) {
+        //                 toastr.error('No seats selected!');
+        //                 return;
+        //             }
+
+        //             // Extract trip data
+        //             const tripId = tripKey;
+        //             const vehicleId = offcanvas.querySelector('.seat').dataset.vehicleId ||
+        //                 'N/A';
+        //             const bookingDate = "{{ request('filter_date') }}";
+
+        //             // Redirect to passenger detail route with necessary data
+        //             const seatsData = encodeURIComponent(JSON.stringify(selectedSeats));
+        //             const url =
+        //                 `{{ route('passenger.detail') }}?trip_id=${tripId}&seats_data=${seatsData}`;
+        //             window.location.href = url;
+        //         });
+        //     });
+
+        //     $(".nav-link").on("click", function(e) {
+        //         e.preventDefault();
+
+        //         // Remove active class from all tab buttons and contents
+        //         $(".nav-link").removeClass("active");
+        //         $(".tab-pane").removeClass("show active");
+
+        //         // Add active class to the clicked tab and its corresponding content
+        //         $(this).addClass("active");
+        //         $($(this).data("target")).addClass("show active");
+        //     });
+        // });
+
         document.addEventListener('DOMContentLoaded', function() {
-                    // Iterate through each trip
-                    document.querySelectorAll('.offcanvas').forEach(offcanvas => {
-                            const tripKey = offcanvas.id.replace('offcanvasRight', ''); // Extract trip key from ID
-                            const seatButtons = offcanvas.querySelectorAll('.seat');
-                            const selectedSeatsCount = offcanvas.querySelector(`#selected-seats-count-${tripKey}`);
-                            const totalPriceDisplay = offcanvas.querySelector(`#total-price-${tripKey}`);
-                            const continueButton = offcanvas.querySelector(`#continue-button-${tripKey}`);
-                            const authUserId = "{{ auth()->user()->id }}";
+            // Iterate through each trip
+            document.querySelectorAll('.offcanvas').forEach(offcanvas => {
+                const tripKey = offcanvas.id.replace('offcanvasRight', ''); // Extract trip key from ID
+                const seatButtons = offcanvas.querySelectorAll('.seat');
+                const selectedSeatsCount = offcanvas.querySelector(`#selected-seats-count-${tripKey}`);
+                const totalPriceDisplay = offcanvas.querySelector(`#total-price-${tripKey}`);
+                const continueButton = offcanvas.querySelector(`#continue-button-${tripKey}`);
+                const authUserId = "{{ auth()->user()->id }}";
 
-                            let selectedSeats = [];
-                            let totalPrice = 0;
+                let selectedSeats = [];
+                let totalPrice = 0;
 
-                            // Add click event listeners to seat buttons
-                            seatButtons.forEach(button => {
-                                    button.addEventListener('click', function() {
-                                            if (this.classList.contains('seat-booked')) return;
+                // Add click event listeners to seat buttons
+                seatButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        if (this.classList.contains('seat-booked')) return;
 
-                                            const seatId = this.dataset.seatId;
-                                            const seatPrice = parseFloat(this.dataset.seatPrice);
-                                            const seatNo = this.dataset.seatNo;
-                                            const isReservedBy = this.dataset.is_reserved_by;
+                        const seatId = this.dataset.seatId;
+                        const seatPrice = parseFloat(this.dataset.seatPrice);
+                        const seatNo = this.dataset.seatNo;
+                        const isReservedBy = this.dataset.is_reserved_by;
 
-                                            if (this.classList.contains('seat-selected')) {
-                                                this.classList.remove('seat-selected');
-                                                this.classList.add('seat-available');
-                                                selectedSeats = selectedSeats.filter(seat => seat.seatId !==
-                                                    seatId);
-                                                totalPrice -= seatPrice;
-                                            } else if (this.classList.contains('seat-available')) {
-                                                this.classList.add('seat-selected');
-                                                this.classList.remove('seat-available');
-                                                selectedSeats.push({
-                                                    seatId,
-                                                    seatNo,
-                                                    seatPrice
-                                                });
-                                                totalPrice += seatPrice;
-                                                } else if (this.classList.contains('seat-reserved')) {
-                                                    if (isReservedBy == authUserId) {
-                                                        // Seat is reserved by the current user
-                                                        if (confirm('This seat is reserved by you. Are you sure you want to select this seat?')) {
-                                                            this.classList.add('seat-selected');
-                                                            this.classList.remove('seat-reserved');
-                                                            selectedSeats.push({
-                                                                seatId,
-                                                                seatNo,
-                                                                seatPrice
-                                                            });
-                                                            totalPrice += seatPrice;
-                                                        }
-                                                    }
-                                                }
-                                            // } else if (this.classList.contains('seat-reserved')) {
-                                            //     if (isReservedBy == authUserId) {
-                                            //         // Seat is reserved by the current user
-                                            //         Swal.fire({
-                                            //             title: 'This seat is reserved by you.',
-                                            //             text: 'Are you sure you want to select this seat?',
-                                            //             icon: 'warning',
-                                            //             showCancelButton: true,
-                                            //             confirmButtonText: 'Yes, select it!',
-                                            //             cancelButtonText: 'No, cancel'
-                                            //         }).then((result) => {
-                                            //             if (result.isConfirmed) {
-                                            //                 this.classList.add('seat-selected');
-                                            //                 this.classList.remove('seat-reserved');
-                                            //                 selectedSeats.push({
-                                            //                     seatId,
-                                            //                     seatNo,
-                                            //                     seatPrice
-                                            //                 });
-                                            //                 totalPrice += seatPrice;
-                                            //             }
-                                            //         });
-
-                                                    else {
-                                                        // Seat is reserved by another user
-                                                        button.style.cursor = 'not-allowed';
-
-                                                        fetch(`/show/users/${isReservedBy}`) // Replace with your API endpoint
-                                                            .then(response => {
-                                                                if (!response.ok) {
-                                                                    throw new Error(
-                                                                        'Failed to fetch user data');
-                                                                }
-                                                                return response.json();
-                                                            })
-                                                            .then(data => {
-                                                                // Set tooltip with the username of the user who reserved the seat
-                                                                button.setAttribute('title',
-                                                                    `Reserved by: ${data.username}`);
-                                                                toastr.warning(
-                                                                    `This seat is reserved by user: ${data.username}`
-                                                                    );
-                                                            })
-                                                            .catch(error => {
-                                                                console.error('Error fetching user data:',
-                                                                    error);
-                                                                // Fallback tooltip if fetching fails
-                                                                button.setAttribute('title',
-                                                                    `Reserved by user: ${isReservedBy}`);
-
-                                                            });
-                                                     
-                                                    }
-
-                                                } else {
-                                                    return; // Do nothing if the seat is neither available nor reserved
-                                                }
-
-                                                selectedSeatsCount.innerText =
-                                                    `${selectedSeats.length} ticket(s) selected`;
-                                                totalPriceDisplay.innerText = `৳ ${totalPrice.toFixed(2)}`;
-                                            });
-                                    });
-
-                                // Handle reserve button click
-                                const reserveButton = offcanvas.querySelector(
-                                `#reserve-button-${tripKey}`); reserveButton.addEventListener('click', function() {
-                                    if (selectedSeats.length === 0) {
-                                        toastr.error('No seats selected!');
-                                        return;
-                                    }
-
-                                    fetch('{{ route('reserve.seats') }}', {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                            },
-                                            body: JSON.stringify({
-                                                seats: selectedSeats,
-                                            })
-                                        })
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            if (data.success) {
-                                                selectedSeats.forEach(seat => {
-                                                    const seatButton = offcanvas.querySelector(
-                                                        `[data-seat-id="${seat.seatId}"]`);
-                                                    seatButton.classList.remove('seat-selected');
-                                                    seatButton.classList.add('seat-reserved');
-                                                });
-                                                toastr.success('Seats reserved successfully!');
-                                                selectedSeats = [];
-                                                totalPrice = 0;
-                                                selectedSeatsCount.innerText = '0 ticket(s) selected';
-                                                totalPriceDisplay.innerText = '৳ 0.00';
-                                            } else {
-                                                toastr.error('Failed to reserve seats!');
-                                            }
-                                        })
-                                        .catch(error => {
-                                            console.error('Error:', error);
-                                            toastr.error('An error occurred while reserving seats!');
-                                        });
-                                });
-
-                                // Handle continue button click
-                                continueButton.addEventListener('click', function() {
-                                    if (selectedSeats.length === 0) {
-                                        toastr.error('No seats selected!');
-                                        return;
-                                    }
-
-                                    // Extract trip data
-                                    const tripId = tripKey;
-                                    const vehicleId = offcanvas.querySelector('.seat').dataset.vehicleId ||
-                                        'N/A';
-                                    const bookingDate = "{{ request('filter_date') }}";
-
-                                    // Redirect to passenger detail route with necessary data
-                                    const seatsData = encodeURIComponent(JSON.stringify(selectedSeats));
-                                    const url =
-                                        `{{ route('passenger.detail') }}?trip_id=${tripId}&seats_data=${seatsData}`;
-                                    window.location.href = url;
-                                });
+                        if (this.classList.contains('seat-selected')) {
+                            this.classList.remove('seat-selected');
+                            this.classList.add('seat-available');
+                            selectedSeats = selectedSeats.filter(seat => seat.seatId !==
+                                seatId);
+                            totalPrice -= seatPrice;
+                        } else if (this.classList.contains('seat-available')) {
+                            this.classList.add('seat-selected');
+                            this.classList.remove('seat-available');
+                            selectedSeats.push({
+                                seatId,
+                                seatNo,
+                                seatPrice
                             });
-
-                        $(".nav-link").on("click", function(e) {
-                            e.preventDefault();
-
-                            // Remove active class from all tab buttons and contents
-                            $(".nav-link").removeClass("active");
-                            $(".tab-pane").removeClass("show active");
-
-                            // Add active class to the clicked tab and its corresponding content
-                            $(this).addClass("active");
-                            $($(this).data("target")).addClass("show active");
+                            totalPrice += seatPrice;
+                        } else if (this.classList.contains('seat-reserved')) {
+                            if (isReservedBy == authUserId) {
+                                // Seat is reserved by the current user
+                                // if (confirm(
+                                //         'This seat is reserved by you. Are you sure you want to select this seat?'
+                                //         )) {
+                                //     this.classList.add('seat-selected');
+                                //     this.classList.remove('seat-reserved');
+                                //     selectedSeats.push({
+                                //         seatId,
+                                //         seatNo,
+                                //         seatPrice
+                                //     });
+                                //     totalPrice += seatPrice;
+                                // }
+                                Swal.fire({
+                            title: 'This seat is reserved by you.',
+                            text: 'Are you sure you want to select this seat?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Yes, select it!',
+                            cancelButtonText: 'No, cancel'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                this.classList.add('seat-selected');
+                                this.classList.remove('seat-reserved');
+                                selectedSeats.push({
+                                    seatId,
+                                    seatNo,
+                                    seatPrice
+                                });
+                                totalPrice += seatPrice;
+                            }
                         });
+                            } else {
+                                // Seat is reserved by another user
+                                button.style.cursor = 'not-allowed';
+
+                                fetch(
+                                    `/show/users/${isReservedBy}`) // Replace with your API endpoint
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error(
+                                            'Failed to fetch user data');
+                                        }
+                                        return response.json();
+                                    })
+                                    .then(data => {
+                                        // Set tooltip with the username of the user who reserved the seat
+                                        // button.setAttribute('title',
+                                        //     `Reserved by: ${data.username}`);
+                                        //     alert(`This seat is reserved by user: ${data.username}`);
+                                        button.setAttribute('title',
+                                        `Reserved by: ${data.username}`);
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Reserved Seat',
+                                        html: `This seat is reserved by user : <strong style="color: blue;">${data.username}</strong>`,
+                                    });
+                                    })
+                                    .catch(error => {
+                                        console.error('Error fetching user data:',
+                                            error);
+                                        // Fallback tooltip if fetching fails
+                                        button.setAttribute('title',
+                                            `Reserved by user: ${isReservedBy}`);
+                                    });
+                            }
+                        } else {
+                            return; 
+                        }
+
+                        selectedSeatsCount.innerText =
+                            `${selectedSeats.length} ticket(s) selected`;
+                        totalPriceDisplay.innerText = `৳ ${totalPrice.toFixed(2)}`;
                     });
+
+                });
+
+                // Handle reserve button click
+                const reserveButton = offcanvas.querySelector(`#reserve-button-${tripKey}`);
+                reserveButton.addEventListener('click', function() {
+                    if (selectedSeats.length === 0) {
+                        toastr.error('No seats selected!');
+                        return;
+                    }
+
+                    fetch('{{ route('reserve.seats') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                seats: selectedSeats,
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                selectedSeats.forEach(seat => {
+                                    const seatButton = offcanvas.querySelector(
+                                        `[data-seat-id="${seat.seatId}"]`);
+                                    seatButton.classList.remove('seat-selected');
+                                    seatButton.classList.add('seat-reserved');
+                                });
+                                toastr.success('Seats reserved successfully!');
+                                selectedSeats = [];
+                                totalPrice = 0;
+                                selectedSeatsCount.innerText = '0 ticket(s) selected';
+                                totalPriceDisplay.innerText = '৳ 0.00';
+                            } else {
+                                toastr.error('Failed to reserve seats!');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            toastr.error('An error occurred while reserving seats!');
+                        });
+                });
+
+                // Handle continue button click
+                continueButton.addEventListener('click', function() {
+                    if (selectedSeats.length === 0) {
+                        toastr.error('No seats selected!');
+                        return;
+                    }
+
+                    // Extract trip data
+                    const tripId = tripKey;
+                    const vehicleId = offcanvas.querySelector('.seat').dataset.vehicleId || 'N/A';
+                    const bookingDate = "{{ request('filter_date') }}";
+
+                    // Redirect to passenger detail route with necessary data
+                    const seatsData = encodeURIComponent(JSON.stringify(selectedSeats));
+                    const url =
+                        `{{ route('passenger.detail') }}?trip_id=${tripId}&seats_data=${seatsData}`;
+                    window.location.href = url;
+                });
+            });
+
+            $(".nav-link").on("click", function(e) {
+                e.preventDefault();
+
+                // Remove active class from all tab buttons and contents
+                $(".nav-link").removeClass("active");
+                $(".tab-pane").removeClass("show active");
+
+                // Add active class to the clicked tab and its corresponding content
+                $(this).addClass("active");
+                $($(this).data("target")).addClass("show active");
+            });
+        });
     </script>
 @endsection

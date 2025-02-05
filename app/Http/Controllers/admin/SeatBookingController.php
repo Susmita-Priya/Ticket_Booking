@@ -27,7 +27,8 @@ class SeatBookingController extends Controller
 
     public function index(Request $request)
     {
-        $vehicle = Vehicle::where('company_id', auth()->user()->id)->where('id', $request->vehicle_id)->firstOrFail();
+        $vehicle = Vehicle::where('company_id', auth()->user()->id)
+        ->where('id', $request->vehicle_id)->firstOrFail();
         $vehicle_id = $request->vehicle_id;
 
         $filter_date = $request->filter_date;
