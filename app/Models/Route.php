@@ -20,6 +20,11 @@ class Route extends Model
         'status',
     ];
 
+    public function company()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function routeManager()
     {
         return $this->belongsTo(RouteManager::class, 'route_manager_id');

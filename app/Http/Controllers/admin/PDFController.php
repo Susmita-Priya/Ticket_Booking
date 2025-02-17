@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 // use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Http\Request;
 use PDF;
@@ -25,7 +26,7 @@ class PDFController extends Controller
             'passenger_phone' => session('passenger_phone'),
         ];
 
-        $pdf = Pdf::loadView('admin.pages.ticketBooking.print', $data);
+        $pdf = FacadePdf::loadView('admin.pages.ticketBooking.print', $data);
         return $pdf->download('ticket.pdf');
     }
 }

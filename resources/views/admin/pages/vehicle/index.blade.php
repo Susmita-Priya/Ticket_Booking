@@ -25,11 +25,12 @@
                     @endcan
                 </div>
             </div>
-            <div class="card-body">
-                <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+            <div class="card-body table-responsive">
+                <table id="basic-datatable" class="table table-striped nowrap w-100">
                     <thead>
                         <tr>
                             <th>S/N</th>
+                            <th>Company Name</th>
                             <th>Vehicle</th>
                             <th>Type</th>
                             <th>Category</th>
@@ -47,6 +48,9 @@
                         @foreach ($vehicles as $key => $vehicle)
                             <tr>
                                 <td>{{ ++$key }}</td>
+                                <td class="text-wrap">
+                                    {{ $vehicle->company->name }}
+                                </td>
                                 <td>Name : {{ $vehicle->name }} <br>
                                 Vehicle No : {{ $vehicle->vehicle_no }} <br>
                                 Engine No : {{ $vehicle->engin_no }} <br>
@@ -105,7 +109,7 @@
                                     @endif
                                 </td>
                                 <td style="width: 100px;">
-                                    <div class="d-flex justify-content-end gap-1">
+                                    <div class="d-flex flex-column gap-2">
                                         @can('vehicle-edit')
                                             <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#editNewModalId{{ $vehicle->id }}">Edit</button>

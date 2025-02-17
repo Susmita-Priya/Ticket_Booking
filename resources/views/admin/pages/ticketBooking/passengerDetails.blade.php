@@ -1,4 +1,4 @@
-@extends('admin.app')
+{{-- @extends('admin.app')
 
 @section('admin_content')
     <div class="row">
@@ -21,11 +21,11 @@
                     @elseif ($trip->vehicle->category == '2')
                         Sleeping Coach
                     @endif </h4>
-                    </div>
-                    <div class="card-body">
+                </div>
+                <div class="card-body">
                     <div class="row">
                         <div class="col-md-8">
-                            <form method="POST" action="{{ route('ticket_booking.store') }}">
+                            <form method="POST" action="{{ route('ticket_booking.store') }}" id="booking-form">
                                 @csrf
                                 <input type="hidden" id="trip-id" name="trip_id" value="{{ $trip->id }}">
                                 <input type="hidden" id="seats-data" name="seats_data" value="{{ json_encode($seatsData) }}">
@@ -74,4 +74,42 @@
             </div>
         </div>
     </div>
-@endsection
+
+        <!-- Confirmation Modal -->
+        <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmationModalLabel">Download Ticket</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Do you want to download the ticket?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <a href="{{ route('generate.pdf') }}" id="download-link" class="btn btn-primary">Download</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endsection
+    
+    @section('scripts')
+    <script>
+        document.getElementById('booking-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
+    
+            // Show the confirmation modal
+            $('#confirmationModal').modal('show');
+        });
+    
+        document.getElementById('download-link').addEventListener('click', function(event) {
+            // Submit the form after the download link is clicked
+            document.getElementById('booking-form').submit();
+        });
+    </script>
+@endsection --}}

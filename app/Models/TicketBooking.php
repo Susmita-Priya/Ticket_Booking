@@ -13,13 +13,15 @@ class TicketBooking extends Model
         'company_id',
         'trip_id',
         'vehicle_id',
-        'seat_id',
-        'seat_no',
-        'booking_date',
-        'payment_amount',
+        'seat_data',
         'passenger_name',
         'passenger_phone',
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function trip()
     {

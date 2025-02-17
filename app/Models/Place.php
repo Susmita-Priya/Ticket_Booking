@@ -5,25 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Counter extends Model
+class Place extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'company_id',
+        'district_id',
         'name',
-        'counter_no',
-        'place_id',
         'status',
     ];
 
-    public function company()
+    public function district()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(District::class);
     }
 
-    public function location()
+    public function counters()
     {
-        return $this->belongsTo(Place::class);
+        return $this->hasMany(Counter::class);
     }
 }

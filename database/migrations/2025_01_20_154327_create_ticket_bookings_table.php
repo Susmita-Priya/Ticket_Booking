@@ -16,12 +16,11 @@ return new class extends Migration
             $table->integer('company_id');
             $table->integer('trip_id');
             $table->integer('vehicle_id');
-            $table->integer('seat_id');
-            $table->string('seat_no');
-            $table->string('booking_date');
-            $table->string('payment_amount');
+            $table->json('seat_data');
             $table->string('passenger_name')->nullable();
             $table->string('passenger_phone');
+            // $table->string('payment_method');
+            // $table->string('total_payment');
             $table->softDeletes();
             $table->timestamps();
         });

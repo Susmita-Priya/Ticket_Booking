@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('counters', function (Blueprint $table) {
+        Schema::create('places', function (Blueprint $table) {    // for bus module
             $table->id();
-            $table->foreignId('company_id');
+            $table->integer('district_id');
             $table->string('name');
-            $table->string('counter_no');
-            $table->integer('place_id');
-            $table->string('status')->default(1);
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('counters');
+        Schema::dropIfExists('places');
     }
 };

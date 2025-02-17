@@ -30,6 +30,7 @@
                     <thead>
                         <tr>
                             <th>S/N</th>
+                            <th>Company Name</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
@@ -43,6 +44,7 @@
                         @foreach ($owners as $key => $owner)
                             <tr>
                                 <td>{{ ++$key }}</td>
+                                <td>{{ $owner->company->name }}</td>
                                 <td>{{ $owner->name }}</td>
                                 <td>{{ $owner->email }}</td>
                                 <td>{{ $owner->phone }}</td>

@@ -27,10 +27,17 @@ class VehicleController extends Controller
 
     public function index()
     {
-        $vehicles = Vehicle::with('owner','type')->where('company_id',auth()->user()->id)->latest()->get();
-        $owners =Owner::where('company_id',auth()->user()->id)->latest()->get();
-        $types = Type::where('company_id',auth()->user()->id)->latest()->get();
-        $amenities = Amenities::where('company_id',auth()->user()->id)->latest()->get();
+        if (auth()->user()->hasRole('Super Admin')) {
+            $vehicles = Vehicle::with('owner', 'type')->latest()->get();
+            $owners = Owner::latest()->get();
+            $types = Type::latest()->get();
+            $amenities = Amenities::latest()->get();
+        } else {
+            $vehicles = Vehicle::with('owner', 'type')->where('company_id', auth()->user()->id)->latest()->get();
+            $owners = Owner::where('company_id', auth()->user()->id)->latest()->get();
+            $types = Type::where('company_id', auth()->user()->id)->latest()->get();
+            $amenities = Amenities::where('company_id', auth()->user()->id)->latest()->get();
+        }
 
         return view('admin.pages.vehicle.index', compact('vehicles', 'owners', 'types', 'amenities'));
     }

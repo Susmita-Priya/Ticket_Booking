@@ -30,6 +30,7 @@
                     <thead>
                         <tr>
                             <th>S/N</th>
+                            <th>Company Name</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
@@ -43,6 +44,7 @@
                         @foreach ($checkers as $key => $checker)
                             <tr>
                                 <td>{{ ++$key }}</td>
+                                <td>{{ $checker->company->name }}</td>
                                 <td>{{ $checker->name }}</td>
                                 <td>{{ $checker->email }}</td>
                                 <td>{{ $checker->phone }}</td>

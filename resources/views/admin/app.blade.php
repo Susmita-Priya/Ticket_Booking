@@ -157,6 +157,12 @@
                                         </li>
                                     @endcan
 
+                                    @can('place-list')
+                                        <li>
+                                            <a href="{{ route('place.section') }}">Location</a>
+                                        </li>
+                                    @endcan
+
                                     @can('counter-list')
                                         <li>
                                             <a href="{{ route('counter.section') }}">Counter</a>

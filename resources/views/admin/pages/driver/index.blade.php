@@ -30,6 +30,7 @@
                     <thead>
                         <tr>
                             <th>S/N</th>
+                            <th>Company Name</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
@@ -44,6 +45,7 @@
                         @foreach ($drivers as $key => $driver)
                             <tr>
                                 <td>{{ ++$key }}</td>
+                                <td>{{ $driver->company->name }}</td>
                                 <td>{{ $driver->name }}</td>
                                 <td>{{ $driver->email }}</td>
                                 <td>{{ $driver->phone }}</td>

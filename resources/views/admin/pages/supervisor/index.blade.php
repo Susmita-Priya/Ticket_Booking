@@ -30,6 +30,7 @@
                     <thead>
                         <tr>
                             <th>S/N</th>
+                            <th>Company Name</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
@@ -43,6 +44,7 @@
                         @foreach ($supervisors as $key => $supervisor)
                             <tr>
                                 <td>{{ ++$key }}</td>
+                                <td>{{ $supervisor->company->name }}</td>
                                 <td>{{ $supervisor->name }}</td>
                                 <td>{{ $supervisor->email }}</td>
                                 <td>{{ $supervisor->phone }}</td>

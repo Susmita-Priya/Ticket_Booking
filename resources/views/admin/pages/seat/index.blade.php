@@ -23,9 +23,9 @@
             <div class="card-header">
                 <div class="d-flex justify-content-end gap-1">
                     @if ($flag == 1)
-                        @can('booking-list')
+                        {{-- @can('booking-list')
                             <a href="{{ route('seat_booking.section', $vehicle->id) }}" class="btn btn-success">Booking List</a>
-                        @endcan
+                        @endcan --}}
                         @can('seats-create')
                             {{-- <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addNewModalId">Add New</button> --}}
                             @if ($vehicle->total_seat > $seats->count())
@@ -134,7 +134,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="row">
+                                                        
+                                                        {{-- <div class="row">
                                                             <div class="col-12">
                                                                 <div class="mb-3">
                                                                     <label for="example-select" class="form-label">Is
@@ -149,7 +150,8 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div> --}}
+
                                                         <div class="row">
                                                             <div class="col-12">
                                                                 <div class="mb-3">

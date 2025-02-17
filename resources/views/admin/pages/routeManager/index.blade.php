@@ -30,6 +30,7 @@
                     <thead>
                         <tr>
                             <th>S/N</th>
+                            <th>Company Name</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
@@ -43,6 +44,7 @@
                         @foreach ($routeManagers as $key => $routeManager)
                             <tr>
                                 <td>{{ ++$key }}</td>
+                                <td>{{ $routeManager->company->name }}</td>
                                 <td>{{ $routeManager->name }}</td>
                                 <td>{{ $routeManager->email }}</td>
                                 <td>{{ $routeManager->phone }}</td>

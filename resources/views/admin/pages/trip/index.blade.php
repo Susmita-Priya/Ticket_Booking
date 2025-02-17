@@ -30,12 +30,15 @@
                     <thead>
                         <tr>
                             <th>S/N</th>
+                            <th>Company Name</th>
                             <th>Route</th>
                             <th>Vehicle</th>
                             <th>Driver</th>
                             <th>Supervisor</th>
-                            <th>Date</th>
-                            <th>Time</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
                             <th>Ticket Price</th>
                             <th>Total Route Cost</th>
                             <th>Status</th>
@@ -46,13 +49,16 @@
                         @foreach ($trips as $key => $trip)
                             <tr>
                                 <td>{{ ++$key }}</td>
+                                <td class="text-wrap">{{ $trip->company->name ?? "N/A" }}</td>
                                 <td>{{ $trip->route->name ?? "N/A"}}</td>
                                 <td>{{ $trip->vehicle->name ?? "N/A" }} <br>
                                     ({{ $trip->vehicle->vehicle_no ?? "N/A"}} )</td>
                                 <td>{{ $trip->driver->name ?? "N/A" }}</td>
                                 <td>{{ $trip->supervisor->name ?? "N/A"}}</td>
-                                <td>{{ $trip->date }}</td>
-                                <td>{{ $trip->time }}</td>
+                                <td>{{ $trip->start_date }}</td>
+                                <td>{{ $trip->end_date }}</td>
+                                <td>{{ $trip->start_time }}</td>
+                                <td>{{ $trip->end_time }}</td>
                                 <td>{{ $trip->ticket_price }} TK</td>
                                 <td>{{ $trip->total_route_cost }} TK</td>
                                 <td>
@@ -147,21 +153,40 @@
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
-                                                            <label for="date" class="form-label">Date</label>
-                                                            <input type="date" id="date" name="date"
-                                                                value="{{ $trip->date }}" class="form-control"
-                                                                required min="{{ date('Y-m-d') }}" required>
+                                                            <label for="start_date" class="form-label">Start Date</label>
+                                                            <input type="date" id="start_date" name="start_date"
+                                                                value="{{ $trip->start_date }}" class="form-control"
+                                                                required min="{{ date('Y-m-d') }}">
                                                         </div>
                                                     </div>
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
-                                                            <label for="time" class="form-label">Time</label>
-                                                            <input type="time" id="time" name="time"
-                                                                value="{{ $trip->time }}" class="form-control"
+                                                            <label for="end_date" class="form-label">End Date</label>
+                                                            <input type="date" id="end_date" name="end_date"
+                                                                value="{{ $trip->end_date }}" class="form-control"
+                                                                required min="{{ date('Y-m-d') }}">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-12 mb-3">
+                                                            <label for="start_time" class="form-label">Start Time</label>
+                                                            <input type="time" id="start_time" name="start_time"
+                                                                value="{{ $trip->start_time }}" class="form-control"
                                                                 required>
                                                         </div>
                                                     </div>
+
+                                                    <div class="row">
+                                                        <div class="col-12 mb-3">
+                                                            <label for="end_time" class="form-label">End Time</label>
+                                                            <input type="time" id="end_time" name="end_time"
+                                                                value="{{ $trip->end_time }}" class="form-control"
+                                                                required>
+                                                        </div>
+                                                    </div>
+
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
@@ -327,19 +352,32 @@
 
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="date" class="form-label">Date</label>
-                                <input type="date" id="date" name="date" class="form-control"
-                                    required min="{{ date('Y-m-d') }}">
+                                <label for="start_date" class="form-label">Start Date</label>
+                                <input type="date" id="start_date" name="start_date" class="form-control" required
+                                    min="{{ date('Y-m-d') }}">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="time" class="form-label">Time</label>
-                                <input type="time" id="time" name="time" class="form-control"
-                                    required>
+                                <label for="end_date" class="form-label">End Date</label>
+                                <input type="date" id="end_date" name="end_date" class="form-control" required
+                                    min="{{ date('Y-m-d') }}">
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="start_time" class="form-label">Start Time</label>
+                                <input type="time" id="start_time" name="start_time" class="form-control" required>
+                            </div>
+
+                            <div class="col-12 mb-3">
+                                <label for="end_time" class="form-label">End Time</label>
+                                <input type="time" id="end_time" name="end_time" class="form-control" required>
+                            </div>
+                        </div>
+                        
 
                         <div class="row">
                             <div class="col-12 mb-3">

@@ -14,4 +14,9 @@ class Amenities extends Model
         'short_details',
         'status',
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

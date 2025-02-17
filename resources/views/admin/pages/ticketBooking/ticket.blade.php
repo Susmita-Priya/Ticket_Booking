@@ -1,4 +1,4 @@
-@extends('admin.app')
+{{-- @extends('admin.app')
 
 @section('admin_content')
     <div class="row">
@@ -182,4 +182,4 @@
     </style>
 
     
-@endsection
+@endsection --}}

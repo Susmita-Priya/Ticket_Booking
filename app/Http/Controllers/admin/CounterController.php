@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Counter;
+use App\Models\Place;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Yoeunes\Toastr\Facades\Toastr;
@@ -23,8 +24,14 @@ class CounterController extends Controller
 
     public function index()
     {
-        $counters = Counter::where('company_id',auth()->user()->id)->latest()->get();
-        return view('admin.pages.counters.index',compact('counters'));
+        $locations = Place::latest()->get();
+        if (auth()->user()->hasRole('Super Admin')) {
+            $counters = Counter::latest()->get();
+        } else {
+            $counters = Counter::where('company_id', auth()->user()->id)->latest()->get();
+        }
+        // $counters = Counter::where('company_id',auth()->user()->id)->latest()->get();
+        return view('admin.pages.counters.index',compact('counters','locations'));
     }
 
     public function store(Request $request)
@@ -33,14 +40,14 @@ class CounterController extends Controller
             $request->validate([
                 'name' => 'required',
                 'counter_no' => 'required',
-                'location' => 'required',
+                'location_id' => 'required',
             ]);
 
             $counter = new Counter();
             $counter->company_id = auth()->user()->id;
             $counter->name = $request->name;
             $counter->counter_no = $request->counter_no;
-            $counter->location = $request->location;
+            $counter->location_id = $request->location_id;
             $counter->save();
             
             Toastr::success('Counter Added Successfully', 'Success');
@@ -57,13 +64,13 @@ class CounterController extends Controller
             $request->validate([
                 'name' => 'required',
                 'counter_no' => 'required',
-                'location' => 'required',
+                'location_id' => 'required',
             ]);
             
             $counter = Counter::find($id);
             $counter->name = $request->name;
             $counter->counter_no = $request->counter_no;
-            $counter->location = $request->location;
+            $counter->location_id = $request->location_id;
             $counter->status = $request->status;
             $counter->save();
             Toastr::success('Counter Updated Successfully', 'Success');

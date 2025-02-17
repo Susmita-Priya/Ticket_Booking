@@ -23,7 +23,12 @@ class OwnerController extends Controller
 
     public function index()
     {
-        $owners = Owner::where('company_id',auth()->user()->id)->latest()->get();
+        // $owners = Owner::where('company_id',auth()->user()->id)->latest()->get();
+        if (auth()->user()->hasRole('Super Admin')) {
+            $owners = Owner::latest()->get();
+        } else {
+            $owners = Owner::where('company_id', auth()->user()->id)->latest()->get();
+        }
         return view('admin.pages.owner.index',compact('owners'));
     }
 
