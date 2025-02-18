@@ -31,6 +31,7 @@ class TicketBookingController extends Controller
     {
        
         $user = auth()->user();
+        $route = null;
 
         if ($user->hasRole('User')) {
             $routes = Route::where('company_id', $user->id)
@@ -50,7 +51,7 @@ class TicketBookingController extends Controller
         }
         
         if ($request->route_id == null || $request->filter_date == null) {
-            return view('admin.pages.ticketBooking.index', compact('routes', 'trips'));
+            return view('admin.pages.ticketBooking.index', compact('routes', 'trips', 'route'));
         }else{
 
             $route = $routes->where('id', $request->route_id)->first();

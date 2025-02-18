@@ -224,7 +224,7 @@
                                                             <label for="total_seat" class="form-label">Total Seat</label>
                                                             <input type="number" id="total_seat" name="total_seat"
                                                                 value="{{ $vehicle->total_seat }}" class="form-control"
-                                                                placeholder="Enter total seat" required>
+                                                                placeholder="Enter total seat" required max="100">
                                                         </div>
                                                     </div>
 
@@ -420,7 +420,7 @@
                             <div class="col-12 mb-3">
                                 <label for="total_seat" class="form-label">Total Seat</label>
                                 <input type="number" id="total_seat" name="total_seat" class="form-control"
-                                    placeholder="Enter total seat" required>
+                                    placeholder="Enter total seat" required max="100">
                             </div>
                         </div>
 

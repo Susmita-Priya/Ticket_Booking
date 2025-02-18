@@ -71,9 +71,9 @@
                                     <div class="col-12 py-1" style="padding: 5px 0;"><strong>Coach:</strong>
                                         {{ $vehicle->vehicle_no }}</div>
                                     <div class="col-6 py-1" style="padding: 5px 0;"><strong>From:</strong>
-                                        {{ $trip->route->startCounter->name }}</div>
+                                        {{ $trip->route->startCounter->name }}{{ $trip->route->startCounter->counter_no ? ' (' . $trip->route->startCounter->counter_no . ' no)' : '' }}</div>
                                     <div class="col-6 py-1" style="padding: 5px 0;"><strong>To:</strong>
-                                        {{ $trip->route->endCounter->name }}</div>
+                                        {{ $trip->route->endCounter->name }}{{ $trip->route->endCounter->counter_no ? ' (' . $trip->route->endCounter->counter_no . ' no)' : '' }}</div>
                                     <div class="col-6 py-1" style="padding: 5px 0;"><strong>Start Date:</strong>
                                         {{ \Carbon\Carbon::parse($trip->start_date)->format('d M Y') }}</div>
                                     <div class="col-6 py-1" style="padding: 5px 0;"><strong>End Date:</strong>

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('company_id');
             $table->string('name');
-            $table->string('counter_no');
+            $table->string('counter_no')->nullable();
             $table->integer('place_id');
             $table->string('status')->default(1);
             $table->timestamps();

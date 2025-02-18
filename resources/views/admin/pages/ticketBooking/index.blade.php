@@ -117,16 +117,51 @@
                 </div>
                 <div class="col-md-4 me-3">
                     <label for="route_id" class="form-label">Route</label>
-                    <select name="route_id" id="route_id" class="form-select">
-                        <option value="">Select Route</option>
-                        @foreach ($routes as $rte)
-                            <option value="{{ $rte->id }}"
-                                {{ isset($route) && $route->id == $rte->id ? 'selected' : '' }}>
-                                {{ $rte->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <div class="dropdown">
+                        <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center"
+                            type="button" id="routeDropdownButton" data-bs-toggle="dropdown" aria-expanded="false"
+                            style="text-align: left; padding-left: 10px; background-color: white;">
+                            @if($route)
+                            <span id="selected-route">{{ $route->fromLocation->name}} to {{ $route->toLocation->name}}</span>
+                            @else
+                            <span id="selected-route">Select Route</span>
+                            @endif
+                        </button>
+                        <ul class="dropdown-menu pt-0" aria-labelledby="routeDropdownButton" style="width: 100%;">
+                            <input type="text" class=" from-select form-control mb-2"
+                                placeholder="Search..." id="route-search" oninput="handleRouteSearch()"
+                                style="width: 100%; padding-left: 10px;">
+                            @foreach ($routes as $rte)
+                                <li><a class="dropdown-item route-dropdown-item" href="#" data-id="{{ $rte->id }}"
+                                        data-name="{{ $rte->fromLocation->name }} to {{ $rte->toLocation->name }}">
+                                        {{ $rte->fromLocation->name }} to {{ $rte->toLocation->name }}</a></li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <input type="hidden" id="route" name="route_id" value="{{ request('route_id') }}">
                 </div>
+                <script>
+                    function handleRouteSearch() {
+                        const searchInput = document.getElementById('route-search');
+                        const filter = searchInput.value.toLowerCase();
+                        const items = document.querySelectorAll('.route-dropdown-item');
+                        items.forEach(item => {
+                            const text = item.textContent.toLowerCase();
+                            item.style.display = text.includes(filter) ? "block" : "none";
+                        });
+                    }
+                    document.querySelectorAll('.route-dropdown-item').forEach(item => {
+                        item.addEventListener('click', function(event) {
+                            event.preventDefault();
+                            const selectedRoute = event.target;
+                            const routeName = selectedRoute.getAttribute('data-name');
+                            const routeId = selectedRoute.getAttribute('data-id');
+                            document.getElementById('selected-route').textContent = routeName;
+                            document.getElementById('route').value = routeId;
+                            document.getElementById('routeDropdownButton').click();
+                        });
+                    });
+                </script>
 
                 <div class="col-md-4 me-3">
                     <label for="filter_date" class="form-label">date</label>
@@ -151,10 +186,8 @@
                     <th>Category</th>
                     <th>Start Counter</th>
                     <th>End Counter</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
+                    <th>Start Date & Time</th>
+                    <th>End Date & Time</th>
                     <th>Ticket Price</th>
                     <th>Action</th>
                 </tr>
@@ -178,17 +211,19 @@
                         </td>
 
                         @if ($trip->route)
-                            <td>{{ $trip->route->startCounter->name }}</td>
-                            <td>{{ $trip->route->endCounter->name }}</td>
+                            <td>{{ $trip->route->startCounter->name }}{{ $trip->route->startCounter->counter_no ? ' (' . $trip->route->startCounter->counter_no . ' no)' : '' }}</td>
+                            <td>{{ $trip->route->endCounter->name }}{{ $trip->route->endCounter->counter_no ? ' (' . $trip->route->endCounter->counter_no . ' no)' : '' }}</td>
                         @else
                             <td>N/A</td>
                             <td>N/A</td>
                         @endif
 
-                        <td>{{ $trip->start_date }}</td>
+                        {{-- <td>{{ $trip->start_date }}</td>
                         <td>{{ $trip->end_date }}</td>
                         <td>{{ $trip->start_time }}</td>
-                        <td>{{ $trip->end_time }}</td>
+                        <td>{{ $trip->end_time }}</td> --}}
+                        <td>{{ \Carbon\Carbon::parse($trip->start_date . ' ' . $trip->start_time)->format('d-m-Y h:i A') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($trip->end_date . ' ' . $trip->end_time)->format('d-m-Y h:i A') }}</td>
                         <td>{{ $trip->ticket_price }} TK</td>
                         <td style="width: 100px;">
                             <div class="d-flex justify-content-end gap-1">
@@ -704,8 +739,8 @@
                                                 {{ \Carbon\Carbon::parse($trip->date)->format('d M Y') }}</li>
                                             <li><strong>Start Time : </strong>
                                                 {{ \Carbon\Carbon::parse($trip->time)->format('h:i A') }}</li>
-                                            <li><strong>From : </strong> {{ $trip->route->startCounter->name }}</li>
-                                            <li><strong>To : </strong> {{ $trip->route->endCounter->name }}</li>
+                                            <li><strong>From : </strong> {{ $trip->route->startCounter->name }}{{ $trip->route->startCounter->counter_no ? ' (' . $trip->route->startCounter->counter_no . ' no)' : '' }}</li>
+                                            <li><strong>To : </strong> {{ $trip->route->endCounter->name }}{{ $trip->route->endCounter->counter_no ? ' (' . $trip->route->endCounter->counter_no . ' no)' : '' }}</li>
                                         </ul>
 
                                         <h4 class="header-title">Selected Seats</h4>

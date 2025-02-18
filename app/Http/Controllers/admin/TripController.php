@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Driver;
+use App\Models\Place;
 use App\Models\Route;
 use App\Models\Supervisor;
 use App\Models\Trip;
@@ -27,6 +28,7 @@ class TripController extends Controller
 
     public function index()
     {
+        $locations = Place::latest()->get();
         if (auth()->user()->hasRole('Super Admin')) {
             $trips = Trip::with('route', 'vehicle', 'driver', 'supervisor')->latest()->get();
             $routes = Route::all();
@@ -41,7 +43,7 @@ class TripController extends Controller
             $supervisors = Supervisor::where('company_id', auth()->user()->id)->get();
         }
 
-        return view('admin.pages.trip.index', compact('trips', 'routes', 'vehicles', 'drivers', 'supervisors'));
+        return view('admin.pages.trip.index', compact('trips', 'routes', 'vehicles', 'drivers', 'supervisors', 'locations'));
     }
 
     public function store(Request $request)

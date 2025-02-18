@@ -35,10 +35,10 @@
                             <th>Vehicle</th>
                             <th>Driver</th>
                             <th>Supervisor</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Start Time</th>
-                            <th>End Time</th>
+                            <th>Start Date & Time</th>
+                            <th>End Date & Time</th>
+                            {{-- <th>Start Time</th>
+                            <th>End Time</th> --}}
                             <th>Ticket Price</th>
                             <th>Total Route Cost</th>
                             <th>Status</th>
@@ -50,15 +50,15 @@
                             <tr>
                                 <td>{{ ++$key }}</td>
                                 <td class="text-wrap">{{ $trip->company->name ?? "N/A" }}</td>
-                                <td>{{ $trip->route->name ?? "N/A"}}</td>
+                                <td>{{ $trip->route->fromLocation->name ?? "N/A"}} to {{ $trip->route->toLocation->name }}</td>
                                 <td>{{ $trip->vehicle->name ?? "N/A" }} <br>
                                     ({{ $trip->vehicle->vehicle_no ?? "N/A"}} )</td>
                                 <td>{{ $trip->driver->name ?? "N/A" }}</td>
                                 <td>{{ $trip->supervisor->name ?? "N/A"}}</td>
-                                <td>{{ $trip->start_date }}</td>
-                                <td>{{ $trip->end_date }}</td>
-                                <td>{{ $trip->start_time }}</td>
-                                <td>{{ $trip->end_time }}</td>
+                                <td>{{ \Carbon\Carbon::parse($trip->start_date . ' ' . $trip->start_time)->format('d-m-Y h:i A') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($trip->end_date . ' ' . $trip->end_time)->format('d-m-Y h:i A') }}</td>
+                                {{-- <td>{{ $trip->start_time }}</td>
+                                <td>{{ $trip->end_time }}</td> --}}
                                 <td>{{ $trip->ticket_price }} TK</td>
                                 <td>{{ $trip->total_route_cost }} TK</td>
                                 <td>
@@ -98,58 +98,203 @@
                                                     enctype="multipart/form-data">
                                                     @csrf
                                                     @method('PUT')
-
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
                                                             <label for="route_id" class="form-label">Route</label>
-                                                            <select name="route_id" class="form-select">
-                                                                @foreach ($routes as $route)
-                                                                    <option value="{{ $route->id }}"
-                                                                        {{ $trip->route_id == $route->id ? 'selected' : '' }}>
-                                                                        {{ $route->name }}</option>
-                                                                @endforeach
-                                                            </select>
+                                                            <div class="dropdown">
+                                                                <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center" 
+                                                                        type="button" 
+                                                                        id="routeDropdownButton{{ $trip->id }}" 
+                                                                        data-bs-toggle="dropdown" 
+                                                                        aria-expanded="false" 
+                                                                        style="text-align: left; padding-left: 10px;">
+                                                                    <span id="selected-route{{ $trip->id }}">{{ $trip->route->fromLocation->name }} to {{ $trip->route->toLocation->name }}</span>
+                                                                </button>
+                                                                <ul class="dropdown-menu pt-0" aria-labelledby="routeDropdownButton{{ $trip->id }}" style="width: 100%;">
+                                                                    <input type="text" 
+                                                                           class="form-control border-0 border-bottom shadow-none mb-2" 
+                                                                           placeholder="Search..." 
+                                                                           id="route-search{{ $trip->id }}" 
+                                                                           oninput="handleRouteSearch({{ $trip->id }})" 
+                                                                           style="width: 100%; padding-left: 10px;">
+                                                                    @foreach ($routes as $route)
+                                                                        <li><a class="dropdown-item route-dropdown-item{{ $trip->id }}" href="#" data-id="{{ $route->id }}" data-name="{{ $route->fromLocation->name }} to {{ $route->toLocation->name }}">{{ $route->fromLocation->name }} to {{ $route->toLocation->name }}</a></li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                            <input type="hidden" id="route_id{{ $trip->id }}" name="route_id" value="{{ $trip->route_id }}">
                                                         </div>
                                                     </div>
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
                                                             <label for="vehicle_id" class="form-label">Vehicle</label>
-                                                            <select name="vehicle_id" class="form-select">
-                                                                @foreach ($vehicles as $vhcl)
-                                                                    <option value="{{ $vhcl->id }}"
-                                                                        {{ $trip->vehicle_id === $vhcl->id ? 'selected' : '' }}>
-                                                                        {{ $vhcl->name }} ({{ $vhcl->vehicle_no }})</option>
-                                                                @endforeach
-                                                            </select>
+                                                            <div class="dropdown">
+                                                                <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center" 
+                                                                        type="button" 
+                                                                        id="vehicleDropdownButton{{ $trip->id }}" 
+                                                                        data-bs-toggle="dropdown" 
+                                                                        aria-expanded="false" 
+                                                                        style="text-align: left; padding-left: 10px;">
+                                                                    <span id="selected-vehicle{{ $trip->id }}">{{ $trip->vehicle->name }} ({{ $trip->vehicle->vehicle_no }})</span>
+                                                                </button>
+                                                                <ul class="dropdown-menu pt-0" aria-labelledby="vehicleDropdownButton{{ $trip->id }}" style="width: 100%;">
+                                                                    <input type="text" 
+                                                                           class="form-control border-0 border-bottom shadow-none mb-2" 
+                                                                           placeholder="Search..." 
+                                                                           id="vehicle-search{{ $trip->id }}" 
+                                                                           oninput="handleVehicleSearch({{ $trip->id }})" 
+                                                                           style="width: 100%; padding-left: 10px;">
+                                                                    @foreach ($vehicles as $vhcl)
+                                                                        <li><a class="dropdown-item vehicle-dropdown-item{{ $trip->id }}" href="#" data-id="{{ $vhcl->id }}" data-name="{{ $vhcl->name }} ({{ $vhcl->vehicle_no }})">{{ $vhcl->name }} ({{ $vhcl->vehicle_no }})</a></li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                            <input type="hidden" id="vehicle_id{{ $trip->id }}" name="vehicle_id" value="{{ $trip->vehicle_id }}">
                                                         </div>
                                                     </div>
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
                                                             <label for="driver_id" class="form-label">Driver</label>
-                                                            <select name="driver_id" class="form-select">
-                                                                @foreach ($drivers as $driver)
-                                                                    <option value="{{ $driver->id }}"
-                                                                        {{ $trip->driver_id == $driver->id ? 'selected' : '' }}>
-                                                                        {{ $driver->name }}</option>
-                                                                @endforeach
-                                                            </select>
+                                                            <div class="dropdown">
+                                                                <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center" 
+                                                                        type="button" 
+                                                                        id="driverDropdownButton{{ $trip->id }}" 
+                                                                        data-bs-toggle="dropdown" 
+                                                                        aria-expanded="false" 
+                                                                        style="text-align: left; padding-left: 10px;">
+                                                                    <span id="selected-driver{{ $trip->id }}">{{ $trip->driver->name }}</span>
+                                                                </button>
+                                                                <ul class="dropdown-menu pt-0" aria-labelledby="driverDropdownButton{{ $trip->id }}" style="width: 100%;">
+                                                                    <input type="text" 
+                                                                           class="form-control border-0 border-bottom shadow-none mb-2" 
+                                                                           placeholder="Search..." 
+                                                                           id="driver-search{{ $trip->id }}" 
+                                                                           oninput="handleDriverSearch({{ $trip->id }})" 
+                                                                           style="width: 100%; padding-left: 10px;">
+                                                                    @foreach ($drivers as $driver)
+                                                                        <li><a class="dropdown-item driver-dropdown-item{{ $trip->id }}" href="#" data-id="{{ $driver->id }}" data-name="{{ $driver->name }}">{{ $driver->name }}</a></li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                            <input type="hidden" id="driver_id{{ $trip->id }}" name="driver_id" value="{{ $trip->driver_id }}">
                                                         </div>
                                                     </div>
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
                                                             <label for="supervisor_id" class="form-label">Supervisor</label>
-                                                            <select name="supervisor_id" class="form-select">
-                                                                @foreach ($supervisors as $supervisor)
-                                                                    <option value="{{ $supervisor->id }}"
-                                                                        {{ $trip->supervisor_id == $supervisor->id ? 'selected' : '' }}>
-                                                                        {{ $supervisor->name }}</option>
-                                                                @endforeach
-                                                            </select>
+                                                            <div class="dropdown">
+                                                                <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center" 
+                                                                        type="button" 
+                                                                        id="supervisorDropdownButton{{ $trip->id }}" 
+                                                                        data-bs-toggle="dropdown" 
+                                                                        aria-expanded="false" 
+                                                                        style="text-align: left; padding-left: 10px;">
+                                                                    <span id="selected-supervisor{{ $trip->id }}">{{ $trip->supervisor->name }}</span>
+                                                                </button>
+                                                                <ul class="dropdown-menu pt-0" aria-labelledby="supervisorDropdownButton{{ $trip->id }}" style="width: 100%;">
+                                                                    <input type="text" 
+                                                                           class="form-control border-0 border-bottom shadow-none mb-2" 
+                                                                           placeholder="Search..." 
+                                                                           id="supervisor-search{{ $trip->id }}" 
+                                                                           oninput="handleSupervisorSearch({{ $trip->id }})" 
+                                                                           style="width: 100%; padding-left: 10px;">
+                                                                    @foreach ($supervisors as $supervisor)
+                                                                        <li><a class="dropdown-item supervisor-dropdown-item{{ $trip->id }}" href="#" data-id="{{ $supervisor->id }}" data-name="{{ $supervisor->name }}">{{ $supervisor->name }}</a></li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                            <input type="hidden" id="supervisor_id{{ $trip->id }}" name="supervisor_id" value="{{ $trip->supervisor_id }}">
                                                         </div>
                                                     </div>
+
+                                                    <script>
+                                                        function handleRouteSearch(tripId) {
+                                                            const searchInput = document.getElementById('route-search' + tripId);
+                                                            const filter = searchInput.value.toLowerCase();
+                                                            const items = document.querySelectorAll('.route-dropdown-item' + tripId);
+                                                            items.forEach(item => {
+                                                                const text = item.textContent.toLowerCase();
+                                                                item.style.display = text.includes(filter) ? "block" : "none";
+                                                            });
+                                                        }
+                                                        document.querySelectorAll('.route-dropdown-item{{ $trip->id }}').forEach(item => {
+                                                            item.addEventListener('click', function(event) {
+                                                                event.preventDefault();
+                                                                const selectedRoute = event.target;
+                                                                const routeName = selectedRoute.getAttribute('data-name');
+                                                                const routeId = selectedRoute.getAttribute('data-id');
+                                                                document.getElementById('selected-route{{ $trip->id }}').textContent = routeName;
+                                                                document.getElementById('route_id{{ $trip->id }}').value = routeId;
+                                                                document.getElementById('routeDropdownButton{{ $trip->id }}').click();
+                                                            });
+                                                        });
+
+                                                        function handleVehicleSearch(tripId) {
+                                                            const searchInput = document.getElementById('vehicle-search' + tripId);
+                                                            const filter = searchInput.value.toLowerCase();
+                                                            const items = document.querySelectorAll('.vehicle-dropdown-item' + tripId);
+                                                            items.forEach(item => {
+                                                                const text = item.textContent.toLowerCase();
+                                                                item.style.display = text.includes(filter) ? "block" : "none";
+                                                            });
+                                                        }
+                                                        document.querySelectorAll('.vehicle-dropdown-item{{ $trip->id }}').forEach(item => {
+                                                            item.addEventListener('click', function(event) {
+                                                                event.preventDefault();
+                                                                const selectedVehicle = event.target;
+                                                                const vehicleName = selectedVehicle.getAttribute('data-name');
+                                                                const vehicleId = selectedVehicle.getAttribute('data-id');
+                                                                document.getElementById('selected-vehicle{{ $trip->id }}').textContent = vehicleName;
+                                                                document.getElementById('vehicle_id{{ $trip->id }}').value = vehicleId;
+                                                                document.getElementById('vehicleDropdownButton{{ $trip->id }}').click();
+                                                            });
+                                                        });
+
+                                                        function handleDriverSearch(tripId) {
+                                                            const searchInput = document.getElementById('driver-search' + tripId);
+                                                            const filter = searchInput.value.toLowerCase();
+                                                            const items = document.querySelectorAll('.driver-dropdown-item' + tripId);
+                                                            items.forEach(item => {
+                                                                const text = item.textContent.toLowerCase();
+                                                                item.style.display = text.includes(filter) ? "block" : "none";
+                                                            });
+                                                        }
+                                                        document.querySelectorAll('.driver-dropdown-item{{ $trip->id }}').forEach(item => {
+                                                            item.addEventListener('click', function(event) {
+                                                                event.preventDefault();
+                                                                const selectedDriver = event.target;
+                                                                const driverName = selectedDriver.getAttribute('data-name');
+                                                                const driverId = selectedDriver.getAttribute('data-id');
+                                                                document.getElementById('selected-driver{{ $trip->id }}').textContent = driverName;
+                                                                document.getElementById('driver_id{{ $trip->id }}').value = driverId;
+                                                                document.getElementById('driverDropdownButton{{ $trip->id }}').click();
+                                                            });
+                                                        });
+
+                                                        function handleSupervisorSearch(tripId) {
+                                                            const searchInput = document.getElementById('supervisor-search' + tripId);
+                                                            const filter = searchInput.value.toLowerCase();
+                                                            const items = document.querySelectorAll('.supervisor-dropdown-item' + tripId);
+                                                            items.forEach(item => {
+                                                                const text = item.textContent.toLowerCase();
+                                                                item.style.display = text.includes(filter) ? "block" : "none";
+                                                            });
+                                                        }
+                                                        document.querySelectorAll('.supervisor-dropdown-item{{ $trip->id }}').forEach(item => {
+                                                            item.addEventListener('click', function(event) {
+                                                                event.preventDefault();
+                                                                const selectedSupervisor = event.target;
+                                                                const supervisorName = selectedSupervisor.getAttribute('data-name');
+                                                                const supervisorId = selectedSupervisor.getAttribute('data-id');
+                                                                document.getElementById('selected-supervisor{{ $trip->id }}').textContent = supervisorName;
+                                                                document.getElementById('supervisor_id{{ $trip->id }}').value = supervisorId;
+                                                                document.getElementById('supervisorDropdownButton{{ $trip->id }}').click();
+                                                            });
+                                                        });
+                                                    </script>
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
@@ -277,26 +422,30 @@
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="route_id" class="form-label">Route</label>
-                                <select name="route_id" class="form-select">
-                                    <option selected value="">Select Route</option>
-                                    @foreach ($routes as $route)
-                                        <option value="{{ $route->id }}">{{ $route->name }}</option>
-                                    @endforeach
-                                </select>
+                                <div class="dropdown">
+                                    <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center" 
+                                            type="button" 
+                                            id="addRouteDropdownButton" 
+                                            data-bs-toggle="dropdown" 
+                                            aria-expanded="false" 
+                                            style="text-align: left; padding-left: 10px;">
+                                        <span id="add-selected-route">Select Route</span>
+                                    </button>
+                                    <ul class="dropdown-menu pt-0" aria-labelledby="addRouteDropdownButton" style="width: 100%;">
+                                        <input type="text" 
+                                               class="form-control border-0 border-bottom shadow-none mb-2" 
+                                               placeholder="Search..." 
+                                               id="add-route-search" 
+                                               oninput="handleAddRouteSearch()" 
+                                               style="width: 100%; padding-left: 10px;">
+                                        @foreach ($routes as $route)
+                                            <li><a class="dropdown-item add-route-dropdown-item" href="#" data-id="{{ $route->id }}" data-name="{{ $route->fromLocation->name }} to {{ $route->toLocation->name }}">{{ $route->fromLocation->name }} to {{ $route->toLocation->name }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                <input type="hidden" id="add-route" name="route_id">
                             </div>
                         </div>
-
-                        {{-- <div class="row">
-                            <div class="col-12 mb-3">
-                                <label for="vehicle_id" class="form-label">Vehicle</label>
-                                <select name="vehicle_id" class="form-select">
-                                    <option selected value="">Select Vehicle</option>
-                                    @foreach ($vehicles as $vehicle)
-                                        <option value="{{ $vehicle->id }}">{{ $vehicle->name }} ({{ $vehicle->vehicle_no }} )</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div> --}}
 
                         <div class="row">
                             <div class="col-12 mb-3">
@@ -304,51 +453,169 @@
                                 <div class="dropdown">
                                     <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center" 
                                             type="button" 
-                                            id="dropdownMenuButton1" 
+                                            id="addVehicleDropdownButton" 
                                             data-bs-toggle="dropdown" 
                                             aria-expanded="false" 
                                             style="text-align: left; padding-left: 10px;">
-                                        <span id="selected-vehicle">Select Vehicle</span>
+                                        <span id="add-selected-vehicle">Select Vehicle</span>
                                     </button>
-                                    <ul class="dropdown-menu pt-0" aria-labelledby="dropdownMenuButton1" style="width: 100%;">
+                                    <ul class="dropdown-menu pt-0" aria-labelledby="addVehicleDropdownButton" style="width: 100%;">
                                         <input type="text" 
                                                class="form-control border-0 border-bottom shadow-none mb-2" 
                                                placeholder="Search..." 
-                                               id="vehicle-search" 
-                                               oninput="handleVehicleSearch()" 
+                                               id="add-vehicle-search" 
+                                               oninput="handleAddVehicleSearch()" 
                                                style="width: 100%; padding-left: 10px;">
                                         @foreach ($vehicles as $vehicle)
-                                            <li><a class="dropdown-item" href="#" data-id="{{ $vehicle->id }}" data-name="{{ $vehicle->name }} ({{ $vehicle->vehicle_no }})">{{ $vehicle->name }} ({{ $vehicle->vehicle_no }})</a></li>
+                                            <li><a class="dropdown-item add-vehicle-dropdown-item" href="#" data-id="{{ $vehicle->id }}" data-name="{{ $vehicle->name }} ({{ $vehicle->vehicle_no }})">{{ $vehicle->name }} ({{ $vehicle->vehicle_no }})</a></li>
                                         @endforeach
                                     </ul>
                                 </div>
-                                <input type="hidden" id="vehicle_id" name="vehicle_id">
+                                <input type="hidden" id="add-vehicle" name="vehicle_id">
                             </div>
                         </div>
                         
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="driver_id" class="form-label">Driver</label>
-                                <select name="driver_id" class="form-select">
-                                    <option selected value="">Select Driver</option>
-                                    @foreach ($drivers as $driver)
-                                        <option value="{{ $driver->id }}">{{ $driver->name }}</option>
-                                    @endforeach
-                                </select>
+                                <div class="dropdown">
+                                    <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center" 
+                                            type="button" 
+                                            id="addDriverDropdownButton" 
+                                            data-bs-toggle="dropdown" 
+                                            aria-expanded="false" 
+                                            style="text-align: left; padding-left: 10px;">
+                                        <span id="add-selected-driver">Select Driver</span>
+                                    </button>
+                                    <ul class="dropdown-menu pt-0" aria-labelledby="addDriverDropdownButton" style="width: 100%;">
+                                        <input type="text" 
+                                               class="form-control border-0 border-bottom shadow-none mb-2" 
+                                               placeholder="Search..." 
+                                               id="add-driver-search" 
+                                               oninput="handleAddDriverSearch()" 
+                                               style="width: 100%; padding-left: 10px;">
+                                        @foreach ($drivers as $driver)
+                                            <li><a class="dropdown-item add-driver-dropdown-item" href="#" data-id="{{ $driver->id }}" data-name="{{ $driver->name }}">{{ $driver->name }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                <input type="hidden" id="add-driver" name="driver_id">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="supervisor_id" class="form-label">Supervisor</label>
-                                <select name="supervisor_id" class="form-select">
-                                    <option selected value="">Select Supervisor</option>
-                                    @foreach ($supervisors as $supervisor)
-                                        <option value="{{ $supervisor->id }}">{{ $supervisor->name }}</option>
-                                    @endforeach
-                                </select>
+                                <div class="dropdown">
+                                    <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center" 
+                                            type="button" 
+                                            id="addSupervisorDropdownButton" 
+                                            data-bs-toggle="dropdown" 
+                                            aria-expanded="false" 
+                                            style="text-align: left; padding-left: 10px;">
+                                        <span id="add-selected-supervisor">Select Supervisor</span>
+                                    </button>
+                                    <ul class="dropdown-menu pt-0" aria-labelledby="addSupervisorDropdownButton" style="width: 100%;">
+                                        <input type="text" 
+                                               class="form-control border-0 border-bottom shadow-none mb-2" 
+                                               placeholder="Search..." 
+                                               id="add-supervisor-search" 
+                                               oninput="handleAddSupervisorSearch()" 
+                                               style="width: 100%; padding-left: 10px;">
+                                        @foreach ($supervisors as $supervisor)
+                                            <li><a class="dropdown-item add-supervisor-dropdown-item" href="#" data-id="{{ $supervisor->id }}" data-name="{{ $supervisor->name }}">{{ $supervisor->name }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                <input type="hidden" id="add-supervisor" name="supervisor_id">
                             </div>
                         </div>
+
+                        <script>
+                            function handleAddRouteSearch() {
+                                const searchInput = document.getElementById('add-route-search');
+                                const filter = searchInput.value.toLowerCase();
+                                const items = document.querySelectorAll('.add-route-dropdown-item');
+                                items.forEach(item => {
+                                    const text = item.textContent.toLowerCase();
+                                    item.style.display = text.includes(filter) ? "block" : "none";
+                                });
+                            }
+                            document.querySelectorAll('.add-route-dropdown-item').forEach(item => {
+                                item.addEventListener('click', function(event) {
+                                    event.preventDefault();
+                                    const selectedRoute = event.target;
+                                    const routeName = selectedRoute.getAttribute('data-name');
+                                    const routeId = selectedRoute.getAttribute('data-id');
+                                    document.getElementById('add-selected-route').textContent = routeName;
+                                    document.getElementById('add-route').value = routeId;
+                                    document.getElementById('addRouteDropdownButton').click();
+                                });
+                            });
+
+                            function handleAddVehicleSearch() {
+                                const searchInput = document.getElementById('add-vehicle-search');
+                                const filter = searchInput.value.toLowerCase();
+                                const items = document.querySelectorAll('.add-vehicle-dropdown-item');
+                                items.forEach(item => {
+                                    const text = item.textContent.toLowerCase();
+                                    item.style.display = text.includes(filter) ? "block" : "none";
+                                });
+                            }
+                            document.querySelectorAll('.add-vehicle-dropdown-item').forEach(item => {
+                                item.addEventListener('click', function(event) {
+                                    event.preventDefault();
+                                    const selectedVehicle = event.target;
+                                    const vehicleName = selectedVehicle.getAttribute('data-name');
+                                    const vehicleId = selectedVehicle.getAttribute('data-id');
+                                    document.getElementById('add-selected-vehicle').textContent = vehicleName;
+                                    document.getElementById('add-vehicle').value = vehicleId;
+                                    document.getElementById('addVehicleDropdownButton').click();
+                                });
+                            });
+
+                            function handleAddDriverSearch() {
+                                const searchInput = document.getElementById('add-driver-search');
+                                const filter = searchInput.value.toLowerCase();
+                                const items = document.querySelectorAll('.add-driver-dropdown-item');
+                                items.forEach(item => {
+                                    const text = item.textContent.toLowerCase();
+                                    item.style.display = text.includes(filter) ? "block" : "none";
+                                });
+                            }
+                            document.querySelectorAll('.add-driver-dropdown-item').forEach(item => {
+                                item.addEventListener('click', function(event) {
+                                    event.preventDefault();
+                                    const selectedDriver = event.target;
+                                    const driverName = selectedDriver.getAttribute('data-name');
+                                    const driverId = selectedDriver.getAttribute('data-id');
+                                    document.getElementById('add-selected-driver').textContent = driverName;
+                                    document.getElementById('add-driver').value = driverId;
+                                    document.getElementById('addDriverDropdownButton').click();
+                                });
+                            });
+
+                            function handleAddSupervisorSearch() {
+                                const searchInput = document.getElementById('add-supervisor-search');
+                                const filter = searchInput.value.toLowerCase();
+                                const items = document.querySelectorAll('.add-supervisor-dropdown-item');
+                                items.forEach(item => {
+                                    const text = item.textContent.toLowerCase();
+                                    item.style.display = text.includes(filter) ? "block" : "none";
+                                });
+                            }
+                            document.querySelectorAll('.add-supervisor-dropdown-item').forEach(item => {
+                                item.addEventListener('click', function(event) {
+                                    event.preventDefault();
+                                    const selectedSupervisor = event.target;
+                                    const supervisorName = selectedSupervisor.getAttribute('data-name');
+                                    const supervisorId = selectedSupervisor.getAttribute('data-id');
+                                    document.getElementById('add-selected-supervisor').textContent = supervisorName;
+                                    document.getElementById('add-supervisor').value = supervisorId;
+                                    document.getElementById('addSupervisorDropdownButton').click();
+                                });
+                            });
+                        </script>
 
                         <div class="row">
                             <div class="col-12 mb-3">
@@ -403,27 +670,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        function handleVehicleSearch() {
-            const searchInput = document.getElementById('vehicle-search');
-            const filter = searchInput.value.toLowerCase();
-            const items = document.querySelectorAll('.dropdown-item');
-            items.forEach(item => {
-                const text = item.textContent.toLowerCase();
-                item.style.display = text.includes(filter) ? "block" : "none";
-            });
-        }
-        document.querySelectorAll('.dropdown-item').forEach(item => {
-            item.addEventListener('click', function(event) {
-                event.preventDefault();
-                const selectedVehicle = event.target;
-                const vehicleName = selectedVehicle.getAttribute('data-name');
-                const vehicleId = selectedVehicle.getAttribute('data-id');
-                document.getElementById('selected-vehicle').textContent = vehicleName;
-                document.getElementById('vehicle_id').value = vehicleId;
-                document.getElementById('dropdownMenuButton1').click();
-            });
-        });
-    </script>
 @endsection

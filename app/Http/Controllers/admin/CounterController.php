@@ -39,7 +39,6 @@ class CounterController extends Controller
         try {
             $request->validate([
                 'name' => 'required',
-                'counter_no' => 'required',
                 'location_id' => 'required',
             ]);
 
@@ -63,7 +62,6 @@ class CounterController extends Controller
         try {
             $request->validate([
                 'name' => 'required',
-                'counter_no' => 'required',
                 'location_id' => 'required',
             ]);
             

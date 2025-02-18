@@ -43,35 +43,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($routes as $key => $routedata)
-                        @php
-                            $routeParts = explode(' to ', $routedata->name);
+                        @foreach ($routes as $key => $routeData)
+                        {{-- @php
+                            $routeParts = explode(' to ', $routeData->name);
                             $from = $routeParts[0] ?? '';
                             $to = $routeParts[1] ?? '';
                             $fromLocation = $locations->firstWhere('id', $from); // Assuming from is a location ID
                             $toLocation = $locations->firstWhere('id', $to); // Assuming to is a location ID
-                        @endphp
+                        @endphp --}}
                             <tr>
                                 <td>{{ ++$key }}</td>
-                                <td>{{ $routedata->company->name }}</td>
-                                <td>{{ $fromLocation->name. ' to ' .$toLocation->name}}</td>
-                                <td>{{ $routedata->startCounter->name ?? 'N/A' }}</td>
-                                <td>{{ $routedata->endCounter->name ?? 'N/A' }}</td>
-                                {{-- <td>
-                                    @php
-                                        $routeCounters = json_decode($routedata->counters_id, true) ?? [];
-                                    @endphp
-                                    @foreach ($counters as $counter)
-                                        @if (in_array($counter->id, $routeCounters))
-                                            <span class="badge bg-primary">{{ $counter->name }}</span>
-                                        @endif
-                                    @endforeach
-                                </td> --}}
-                                <td>{{ $routedata->routeManager->name ?? 'N/A' }}
+                                <td>{{ $routeData->company->name }}</td>
+                                <td>{{ $routeData->fromLocation->name. ' to ' .$routeData->toLocation->name}}</td>
+                                <td>{{ $routeData->startCounter->name  }}{{ $routeData->startCounter->counter_no ? ' (' . $routeData->startCounter->counter_no . ' no)' : '' }}</td>
+                                <td>{{ $routeData->endCounter->name ?? 'N/A' }}{{ $routeData->endCounter->counter_no ? ' (' . $routeData->endCounter->counter_no . ' no)' : '' }}</td>
+                                <td>{{ $routeData->routeManager->name ?? 'N/A' }}
                                 </td>
                                 <td>
                                     @php
-                                        $routeCheckers = json_decode($routedata->checkers_id, true) ?? [];
+                                        $routeCheckers = json_decode($routeData->checkers_id, true) ?? [];
                                     @endphp
                                     @foreach ($checkers as $checker)
                                         @if (in_array($checker->id, $routeCheckers))
@@ -80,15 +70,15 @@
                                     @endforeach
                                 </td>
                                 <td>
-                                    @if ($routedata->document)
-                                        <a href="{{ asset($routedata->document) }}" target="_blank"
+                                    @if ($routeData->document)
+                                        <a href="{{ asset($routeData->document) }}" target="_blank"
                                             class="btn btn-primary btn-sm">Route Permit Doc</a>
                                     @else
                                         No Document
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($routedata->status == 1)
+                                    @if ($routeData->status == 1)
                                         <span class="badge bg-success">Active</span>
                                     @else
                                         <span class="badge bg-danger">Inactive</span>
@@ -98,44 +88,38 @@
                                     <div class="d-flex justify-content-end gap-1">
                                         @can('route-edit')
                                             <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#editNewModalId{{ $routedata->id }}">Edit</button>
+                                                data-bs-target="#editNewModalId{{ $routeData->id }}">Edit</button>
                                         @endcan
                                         @can('route-delete')
-                                            <a href="{{ route('route.destroy', $routedata->id) }}" class="btn btn-danger btn-sm"
+                                            <a href="{{ route('route.destroy', $routeData->id) }}" class="btn btn-danger btn-sm"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#danger-header-modal{{ $routedata->id }}">Delete</a>
+                                                data-bs-target="#danger-header-modal{{ $routeData->id }}">Delete</a>
                                         @endcan
                                     </div>
                                 </td>
 
                                 <!-- Edit Modal -->
-                                <div class="modal fade" id="editNewModalId{{ $routedata->id }}" data-bs-backdrop="static"
-                                    tabindex="-1" role="dialog" aria-labelledby="editNewModalLabel{{ $routedata->id }}"
+                                <div class="modal fade" id="editNewModalId{{ $routeData->id }}" data-bs-backdrop="static"
+                                    tabindex="-1" role="dialog" aria-labelledby="editNewModalLabel{{ $routeData->id }}"
                                     aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h4 class="modal-title" id="editNewModalLabel{{ $routedata->id }}">Edit
+                                                <h4 class="modal-title" id="editNewModalLabel{{ $routeData->id }}">Edit
                                                 </h4>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form method="post" action="{{ route('route.update', $routedata->id) }}"
+                                                <form method="post" action="{{ route('route.update', $routeData->id) }}"
                                                     enctype="multipart/form-data">
                                                     @csrf
                                                     @method('PUT')
 
                                                     <div class="row">
-                                                        {{-- <div class="col-12 mb-3">
-                                                            <label for="name" class="form-label">Route Name</label>
-                                                            <input type="text" id="name" name="name"
-                                                                value="{{ $routedata->name }}" class="form-control"
-                                                                placeholder="Enter Name" required>
-                                                        </div> --}}
 
                                                         <div class="col-6 mb-3">
-                                                            <label for="from" class="form-label">From</label>
+                                                            <label for="from_location_id" class="form-label">From</label>
                                                             <div class="dropdown">
                                                                 <button
                                                                     class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center"
@@ -143,7 +127,7 @@
                                                                     data-bs-toggle="dropdown" aria-expanded="false"
                                                                     style="text-align: left; padding-left: 10px;">
                                                                     <span
-                                                                        id="selected-from">{{ $fromLocation ? $fromLocation->name : 'Select Starting Point' }}</span>
+                                                                        id="selected-from">{{ $routeData->fromLocation ? $routeData->fromLocation->name : 'Select Starting Point' }}</span>
                                                                 </button>
                                                                 <ul class="dropdown-menu pt-0"
                                                                     aria-labelledby="fromDropdownButton"
@@ -162,12 +146,12 @@
                                                                     @endforeach
                                                                 </ul>
                                                             </div>
-                                                            <input type="hidden" id="from" name="from"
-                                                                value="{{ $from }}">
+                                                            <input type="hidden" id="from" name="from_location_id"
+                                                                value="{{ $routeData->fromLocation->id }}">
                                                         </div>
 
                                                         <div class="col-6 mb-3">
-                                                            <label for="to" class="form-label">To</label>
+                                                            <label for="to_location_id" class="form-label">To</label>
                                                             <div class="dropdown">
                                                                 <button
                                                                     class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center"
@@ -175,7 +159,7 @@
                                                                     data-bs-toggle="dropdown" aria-expanded="false"
                                                                     style="text-align: left; padding-left: 10px;">
                                                                     <span
-                                                                        id="selected-to">{{ $toLocation ? $toLocation->name : 'Select Destination' }}</span>
+                                                                        id="selected-to">{{ $routeData->toLocation ? $routeData->toLocation->name : 'Select Destination' }}</span>
                                                                 </button>
                                                                 <ul class="dropdown-menu pt-0"
                                                                     aria-labelledby="toDropdownButton" style="width: 100%;">
@@ -193,8 +177,8 @@
                                                                     @endforeach
                                                                 </ul>
                                                             </div>
-                                                            <input type="hidden" id="to" name="to"
-                                                                value="{{ $to }}">
+                                                            <input type="hidden" id="to" name="to_location_id"
+                                                                value="{{ $routeData->toLocation->id }}">
                                                         </div>
 
 
@@ -255,7 +239,7 @@
                                                                     data-bs-toggle="dropdown" aria-expanded="false"
                                                                     style="text-align: left; padding-left: 10px;">
                                                                     <span id="selected-counter">
-                                                                        {{ $routedata->startCounter->name ?? 'Select Start Counter' }}
+                                                                        {{ $routeData->startCounter->name ?? 'Select Start Counter' }}{{ $routeData->startCounter->counter_no ? ' (' . $routeData->startCounter->counter_no . ' no)' : '' }}
                                                                     </span>
                                                                 </button>
                                                                 <ul class="dropdown-menu pt-0"
@@ -269,13 +253,14 @@
                                                                     @foreach ($counters as $counter)
                                                                         <li><a class="dropdown-item counter-dropdown-item" href="#"
                                                                                 data-id="{{ $counter->id }}"
-                                                                                data-name="{{ $counter->name }}">
-                                                                                {{ $counter->name }}</a></li>
+                                                                                data-name="{{ $counter->name }}"
+                                                                                data-counterNo="{{ $counter->counter_no }}">
+                                                                                {{ $counter->name }}{{ $counter->counter_no ? ' (' . $counter->counter_no . ' no)' : '' }}</a></li>
                                                                     @endforeach
                                                                 </ul>
                                                             </div>
                                                             <input type="hidden" id="start_counter_id" name="start_counter_id"
-                                                                value="{{ $routedata->start_counter_id }}">
+                                                                value="{{ $routeData->start_counter_id }}">
                                                         </div>
 
                                                         <script>
@@ -295,7 +280,8 @@
                                                                     const selectedCounter = event.target;
                                                                     const counterName = selectedCounter.getAttribute('data-name');
                                                                     const counterId = selectedCounter.getAttribute('data-id');
-                                                                    document.getElementById('selected-counter').textContent = counterName;
+                                                                    const counterNo = selectedCounter.getAttribute('data-counterNo');
+                                                                    document.getElementById('selected-counter').textContent = counterName + (counterNo ? ' (' + counterNo + ' no)' : '');
                                                                     document.getElementById('start_counter_id').value = counterId;
                                                                     document.getElementById('dropdownMenuButton2').click();
                                                                 });
@@ -309,18 +295,18 @@
                                                                 <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center"
                                                                     type="button" id="endDropdownButton" data-bs-toggle="dropdown" aria-expanded="false"
                                                                     style="text-align: left; padding-left: 10px;">
-                                                                    <span id="selected-end-counter">{{ $routedata->endCounter->name ?? 'Select End Counter' }}</span>
+                                                                    <span id="selected-end-counter">{{ $routeData->endCounter->name ?? 'Select End Counter' }}{{ $routeData->endCounter->counter_no ? ' (' . $routeData->endCounter->counter_no . ' no)' : '' }}</span>
                                                                 </button>
                                                                 <ul class="dropdown-menu pt-0" aria-labelledby="endDropdownButton" style="width: 100%;">
                                                                     <input type="text" class="form-control border-0 border-bottom shadow-none mb-2" placeholder="Search..."
                                                                         id="end-counter-search" oninput="handleEndCounterSearch()" style="width: 100%; padding-left: 10px;">
                                                                     @foreach ($counters as $counter)
                                                                         <li><a class="dropdown-item end-dropdown-item" href="#" data-id="{{ $counter->id }}"
-                                                                                data-name="{{ $counter->name }}">{{ $counter->name }}</a></li>
+                                                                                data-name="{{ $counter->name }}" data-counterNo="{{ $counter->counter_no }}">{{ $counter->name }}{{ $counter->counter_no ? ' (' . $counter->counter_no . ' no)' : '' }}</a></li>
                                                                     @endforeach
                                                                 </ul>
                                                             </div>
-                                                            <input type="hidden" id="end_counter_id" name="end_counter_id" value="{{ $routedata->end_counter_id }}">
+                                                            <input type="hidden" id="end_counter_id" name="end_counter_id" value="{{ $routeData->end_counter_id }}">
                                                         </div>
 
                                                         <div class="col-12 mb-3">
@@ -329,7 +315,7 @@
                                                                 <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center"
                                                                     type="button" id="routeManagerDropdownButton" data-bs-toggle="dropdown" aria-expanded="false"
                                                                     style="text-align: left; padding-left: 10px;">
-                                                                    <span id="selected-route-manager">{{ $routedata->routeManager->name ?? 'Select Route Manager' }}</span>
+                                                                    <span id="selected-route-manager">{{ $routeData->routeManager->name ?? 'Select Route Manager' }}</span>
                                                                 </button>
                                                                 <ul class="dropdown-menu pt-0" aria-labelledby="routeManagerDropdownButton" style="width: 100%;">
                                                                     <input type="text" class="form-control border-0 border-bottom shadow-none mb-2" placeholder="Search..."
@@ -340,7 +326,7 @@
                                                                     @endforeach
                                                                 </ul>
                                                             </div>
-                                                            <input type="hidden" id="route_manager_id" name="route_manager_id" value="{{ $routedata->route_manager_id }}">
+                                                            <input type="hidden" id="route_manager_id" name="route_manager_id" value="{{ $routeData->route_manager_id }}">
                                                         </div>
 
                                                         <script>
@@ -370,7 +356,8 @@
                                                                     const selectedCounter = event.target;
                                                                     const counterName = selectedCounter.getAttribute('data-name');
                                                                     const counterId = selectedCounter.getAttribute('data-id');
-                                                                    document.getElementById('selected-end-counter').textContent = counterName;
+                                                                    const counterNo = selectedCounter.getAttribute('data-counterNo');
+                                                                    document.getElementById('selected-end-counter').textContent = counterName + (counterNo ? ' (' + counterNo + ' no)' : '');
                                                                     document.getElementById('end_counter_id').value = counterId;
                                                                     document.getElementById('endDropdownButton').click();
                                                                 });
@@ -397,7 +384,7 @@
                                                                 data-toggle="select2" multiple="multiple">
                                                                 @foreach ($checkers as $checker)
                                                                     <option value="{{ $checker->id }}"
-                                                                        {{ in_array($checker->id, json_decode($routedata->checkers_id, true) ?? []) ? 'selected' : '' }}>
+                                                                        {{ in_array($checker->id, json_decode($routeData->checkers_id, true) ?? []) ? 'selected' : '' }}>
                                                                         {{ $checker->name }}</option>
                                                                 @endforeach
                                                             </select>
@@ -409,8 +396,8 @@
                                                             <label for="document" class="form-label">Document</label>
                                                             <input type="file" id="document" name="document"
                                                                 class="form-control">
-                                                            @if ($routedata->document)
-                                                                <a href="{{ asset($routedata->document) }}"
+                                                            @if ($routeData->document)
+                                                                <a href="{{ asset($routeData->document) }}"
                                                                     target="_blank"
                                                                     class="btn btn-primary btn-sm mt-2">View Document</a>
                                                             @endif
@@ -422,10 +409,10 @@
                                                             <label for="status" class="form-label">Status</label>
                                                             <select name="status" class="form-select">
                                                                 <option value="1"
-                                                                    {{ $routedata->status == 1 ? 'selected' : '' }}>Active
+                                                                    {{ $routeData->status == 1 ? 'selected' : '' }}>Active
                                                                 </option>
                                                                 <option value="0"
-                                                                    {{ $routedata->status == 0 ? 'selected' : '' }}>
+                                                                    {{ $routeData->status == 0 ? 'selected' : '' }}>
                                                                     Inactive
                                                                 </option>
                                                             </select>
@@ -442,14 +429,14 @@
                                 </div>
 
                                 <!-- Delete Modal -->
-                                <div id="danger-header-modal{{ $routedata->id }}" class="modal fade" tabindex="-1"
-                                    role="dialog" aria-labelledby="danger-header-modalLabel{{ $routedata->id }}"
+                                <div id="danger-header-modal{{ $routeData->id }}" class="modal fade" tabindex="-1"
+                                    role="dialog" aria-labelledby="danger-header-modalLabel{{ $routeData->id }}"
                                     aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header modal-colored-header bg-danger">
                                                 <h4 class="modal-title"
-                                                    id="danger-header-modalLabel{{ $routedata->id }}">
+                                                    id="danger-header-modalLabel{{ $routeData->id }}">
                                                     Delete</h4>
                                                 <button type="button" class="btn-close btn-close-white"
                                                     data-bs-dismiss="modal" aria-label="Close"></button>
@@ -460,7 +447,7 @@
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-light"
                                                     data-bs-dismiss="modal">Close</button>
-                                                <a href="{{ route('route.destroy', $routedata->id) }}"
+                                                <a href="{{ route('route.destroy', $routeData->id) }}"
                                                     class="btn btn-danger">Delete</a>
                                             </div>
                                         </div>
@@ -488,7 +475,7 @@
                     @csrf
                     <div class="row">
                         <div class="col-6 mb-3">
-                            <label for="from" class="form-label">From</label>
+                            <label for="from_location_id" class="form-label">From</label>
                             <div class="dropdown">
                                 <button
                                     class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center"
@@ -504,15 +491,15 @@
                                     @foreach ($locations as $location)
                                         <li><a class="dropdown-item add-from-dropdown-item" href="#"
                                                 data-id="{{ $location->id }}"
-                                                data-name="{{ $location->name }}">{{ $location->name }}</a></li>
+                                                data-name="{{ $location->name }}" >{{ $location->name }}</a></li>
                                     @endforeach
                                 </ul>
                             </div>
-                            <input type="hidden" id="add-from" name="from">
+                            <input type="hidden" id="add-from" name="from_location_id">
                         </div>
 
                         <div class="col-6 mb-3">
-                            <label for="to" class="form-label">To</label>
+                            <label for="to_location_id" class="form-label">To</label>
                             <div class="dropdown">
                                 <button
                                     class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center"
@@ -532,7 +519,7 @@
                                     @endforeach
                                 </ul>
                             </div>
-                            <input type="hidden" id="add-to" name="to">
+                            <input type="hidden" id="add-to" name="to_location_id">
                         </div>
                     </div>
 
@@ -554,7 +541,8 @@
                                     @foreach ($counters as $counter)
                                         <li><a class="dropdown-item add-start-counter-dropdown-item" href="#"
                                                 data-id="{{ $counter->id }}"
-                                                data-name="{{ $counter->name }}">{{ $counter->name }}</a></li>
+                                                data-name="{{ $counter->name }}"
+                                                data-counterNo="{{ $counter->counter_no }}">{{ $counter->name }}{{ $counter->counter_no ? ' (' . $counter->counter_no . ' no)' : '' }}</a></li>
                                     @endforeach
                                 </ul>
                             </div>
@@ -578,7 +566,8 @@
                                     @foreach ($counters as $counter)
                                         <li><a class="dropdown-item add-end-counter-dropdown-item" href="#"
                                                 data-id="{{ $counter->id }}"
-                                                data-name="{{ $counter->name }}">{{ $counter->name }}</a></li>
+                                                data-name="{{ $counter->name }}"
+                                                data-counterNo="{{ $counter->counter_no }}">{{ $counter->name }}{{ $counter->counter_no ? ' (' . $counter->counter_no . ' no)' : '' }}</a></li>
                                     @endforeach
                                 </ul>
                             </div>
@@ -721,7 +710,8 @@
             const selectedCounter = event.target;
             const counterName = selectedCounter.getAttribute('data-name');
             const counterId = selectedCounter.getAttribute('data-id');
-            document.getElementById('add-selected-start-counter').textContent = counterName;
+            const counterNo = selectedCounter.getAttribute('data-counterNo');
+            document.getElementById('add-selected-start-counter').textContent = counterName + (counterNo ? ' (' + counterNo + ' no)' : '');
             document.getElementById('add-start-counter-id').value = counterId;
             document.getElementById('addStartCounterDropdownButton').click();
         });
@@ -733,7 +723,8 @@
             const selectedCounter = event.target;
             const counterName = selectedCounter.getAttribute('data-name');
             const counterId = selectedCounter.getAttribute('data-id');
-            document.getElementById('add-selected-end-counter').textContent = counterName;
+            const counterNo = selectedCounter.getAttribute('data-counterNo');
+            document.getElementById('add-selected-end-counter').textContent = counterName + (counterNo ? ' (' + counterNo + ' no)' : '');
             document.getElementById('add-end-counter-id').value = counterId;
             document.getElementById('addEndCounterDropdownButton').click();
         });

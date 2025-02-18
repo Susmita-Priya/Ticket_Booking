@@ -31,8 +31,7 @@
                         <tr>
                             <th>S/N</th>
                             <th>Company Name</th>
-                            <th>Name</th>
-                            <th>Counter No</th>
+                            <th>Counter Name</th>
                             <th>Location</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -43,8 +42,7 @@
                             <tr>
                                 <td>{{ ++$key }}</td>
                                 <td>{{ $counter->company->name }}</td>
-                                <td>{{ $counter->name }}</td>
-                                <td>{{ $counter->counter_no }}</td>
+                                <td>{{ $counter->name }}{{ $counter->counter_no ? ' (' . $counter->counter_no . ' no)' : '' }}</td>
                                 <td>{{ $counter->location->name?? 'N/A' }}</td>
                                 <td>{{ $counter->status == 1 ? 'Active' : 'Inactive' }}</td>
                                 <td style="width: 100px;">
@@ -93,7 +91,7 @@
                                                                     No</label>
                                                                 <input type="text" id="counter_no" name="counter_no"
                                                                     value="{{ $counter->counter_no }}" class="form-control"
-                                                                    locationholder="Enter counter number" required>
+                                                                    locationholder="Enter counter number">
                                                             </div>
                                                         </div>
 
@@ -239,7 +237,7 @@
                                 <div class="col-12 mb-3">
                                     <label for="counter_no" class="form-label">Counter No</label>
                                     <input type="text" id="counter_no" name="counter_no" class="form-control"
-                                        locationholder="Enter counter number" required>
+                                        locationholder="Enter counter number">
                                 </div>
                             </div>
 

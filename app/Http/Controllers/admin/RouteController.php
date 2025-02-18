@@ -51,8 +51,8 @@ class RouteController extends Controller
     {
         try {
             $request->validate([
-            'from' => 'required',
-            'to' => 'required',
+            'from_location_id' => 'required',
+            'to_location_id' => 'required',
             'start_counter_id' => 'required',
             'end_counter_id' => 'required',
             'route_manager_id' => 'required',
@@ -61,7 +61,8 @@ class RouteController extends Controller
 
             $route = new Route();
             $route->company_id = auth()->user()->id;
-            $route->name = $request->from . ' to ' . $request->to;
+            $route->from_location_id = $request->from_location_id ;
+            $route->to_location_id = $request->to_location_id;
             $route->start_counter_id = $request->start_counter_id;
             $route->end_counter_id = $request->end_counter_id;
             $route->route_manager_id = $request->route_manager_id;
@@ -86,8 +87,8 @@ class RouteController extends Controller
     {
         try {
             $request->validate([
-               'from' => 'required',
-                'to' => 'required',
+               'from_location_id' => 'required',
+                'to_location_id' => 'required',
                 'start_counter_id' => 'required',
                 'end_counter_id' => 'required',
                 'route_manager_id' => 'required',
@@ -95,9 +96,9 @@ class RouteController extends Controller
             ]);
 
             $route = Route::find($id);
-            $route->name = $request->from . ' to ' . $request->to;
-            // $route->route_no = $request->route_no;
-            // $route->counters_id = json_encode($request->counters_id);
+            // $route->name = $request->from_location_id . ' to_location_id ' . $request->to_location_id;
+            $route->from_location_id = $request->from_location_id ;
+            $route->to_location_id = $request->to_location_id;
             $route->start_counter_id = $request->start_counter_id;
             $route->end_counter_id = $request->end_counter_id;
             $route->route_manager_id = $request->route_manager_id;
