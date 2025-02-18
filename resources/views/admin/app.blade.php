@@ -28,7 +28,9 @@
     <script src="{{ asset('backend/js/config.js') }}"></script>
     <link href="{{ asset('backend/css/app.min.css') }}" rel="stylesheet" type="text/css" id="app-style" />
     <link href="{{ asset('backend/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.min.css" rel="stylesheet">
+    <!-- Include Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     {{-- datepicker --}}
     <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
     
@@ -149,22 +151,18 @@
                                         </li>
                                     @endcan
 
-                                        @can('district-list')
-                                            <li>
-                                                <a href="{{ route('district.section') }}">District</a>
-                                            </li>
-                                        @endcan
+                                    @can('district-list')
+                                        <li>
+                                            <a href="{{ route('district.section') }}">District</a>
+                                        </li>
+                                    @endcan
 
-                                    @can('type-list')
+                                    @can('place-list')
                                         <li>
-                                            <a href="{{ route('type.section') }}">Type</a>
+                                            <a href="{{ route('place.section') }}">Location</a>
                                         </li>
                                     @endcan
-                                    @can('vehicle-list')
-                                        <li>
-                                            <a href="{{ route('vehicle.section') }}">Vehicle</a>
-                                        </li>
-                                    @endcan
+
                                     @can('counter-list')
                                         <li>
                                             <a href="{{ route('counter.section') }}">Counter</a>
@@ -200,6 +198,19 @@
                                             <a href="{{ route('supervisor.section') }}">Supervisor</a>
                                         </li>
                                     @endcan
+
+                                    @can('type-list')
+                                        <li>
+                                            <a href="{{ route('type.section') }}">Type</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('vehicle-list')
+                                        <li>
+                                            <a href="{{ route('vehicle.section') }}">Vehicle</a>
+                                        </li>
+                                    @endcan
+                                    
 
                                     @can('route-list')
                                         <li>
@@ -277,14 +288,6 @@
                             </div>
                         </li>
                     @endcan
-
-
-
-
-
-
-
-
 
                 @can('admin-menu-list')
                         <li class="side-nav-item">
@@ -437,6 +440,20 @@
     <script src="{{ asset('backend/js/pages/datatable.init.js') }}"></script>
     <script src="{{ asset('backend/js/pages/dashboard.js') }}"></script>
     <script src="{{ asset('backend/js/app.min.js') }}"></script>
+    
+    <!-- Include Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
+    <script>
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-right',
+            timeOut: 5000,
+            extendedTimeOut: 1000,
+        };
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             ClassicEditor.create(document.querySelector('#content'))

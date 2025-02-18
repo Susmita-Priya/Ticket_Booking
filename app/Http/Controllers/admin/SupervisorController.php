@@ -23,7 +23,12 @@ class SupervisorController extends Controller
 
     public function index()
     {
-        $supervisors = Supervisor::where('company_id',auth()->user()->id)->latest()->get();
+        // $supervisors = Supervisor::where('company_id',auth()->user()->id)->latest()->get();
+        if (auth()->user()->hasRole('Super Admin')) {
+            $supervisors = Supervisor::latest()->get();
+        } else {
+            $supervisors = Supervisor::where('company_id', auth()->user()->id)->latest()->get();
+        }
         return view('admin.pages.supervisor.index',compact('supervisors'));
     }
 

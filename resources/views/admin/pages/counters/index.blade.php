@@ -30,8 +30,8 @@
                     <thead>
                         <tr>
                             <th>S/N</th>
-                            <th>Name</th>
-                            <th>Counter No</th>
+                            <th>Company Name</th>
+                            <th>Counter Name</th>
                             <th>Location</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -41,9 +41,9 @@
                         @foreach ($counters as $key => $counter)
                             <tr>
                                 <td>{{ ++$key }}</td>
-                                <td>{{ $counter->name }}</td>
-                                <td>{{ $counter->counter_no }}</td>
-                                <td>{{ $counter->location }}</td>
+                                <td>{{ $counter->company->name }}</td>
+                                <td>{{ $counter->name }}{{ $counter->counter_no ? ' (' . $counter->counter_no . ' no)' : '' }}</td>
+                                <td>{{ $counter->location->name?? 'N/A' }}</td>
                                 <td>{{ $counter->status == 1 ? 'Active' : 'Inactive' }}</td>
                                 <td style="width: 100px;">
                                     <div class="d-flex justify-content-end gap-1">
@@ -81,7 +81,7 @@
                                                             <label for="name" class="form-label">Name</label>
                                                             <input type="text" id="name" name="name"
                                                                 value="{{ $counter->name }}" class="form-control"
-                                                                placeholder="Enter Name" required>
+                                                                locationholder="Enter Name" required>
                                                         </div>
                                                     </div>
 
@@ -91,18 +91,69 @@
                                                                     No</label>
                                                                 <input type="text" id="counter_no" name="counter_no"
                                                                     value="{{ $counter->counter_no }}" class="form-control"
-                                                                    placeholder="Enter counter number" required>
+                                                                    locationholder="Enter counter number">
                                                             </div>
                                                         </div>
 
                                                         <div class="row">
                                                             <div class="col-12 mb-3">
-                                                                <label for="location" class="form-label">Location</label>
-                                                                <input type="text" id="location" name="location"
-                                                                    value="{{ $counter->location }}" class="form-control"
-                                                                    placeholder="Enter location" required>
+                                                                <label for="location_id" class="form-label">Location</label>
+                                                                <div class="dropdown location-dropdown">
+                                                                    <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center" 
+                                                                            type="button" 
+                                                                            data-bs-toggle="dropdown" 
+                                                                            aria-expanded="false" 
+                                                                            style="text-align: left; padding-left: 10px;">
+                                                                        <span class="selected-location">{{ $counter->location->name ?? 'Select Location' }}</span>
+                                                                    </button>
+                                                                    <ul class="dropdown-menu pt-0" style="width: 100%;">
+                                                                        <input type="text" 
+                                                                               class="form-control border-0 border-bottom shadow-none mb-2 location-search" 
+                                                                               locationholder="Search..."  
+                                                                               style="width: 100%; padding-left: 10px;">
+                                                                        @foreach($locations as $location)
+                                                                            <li>
+                                                                                <a class="dropdown-item location-option" href="#" 
+                                                                                   data-id="{{ $location->id }}" 
+                                                                                   data-name="{{ $location->name }}" 
+                                                                                   @if(isset($counter->location_id) && $counter->location_id == $location->id) 
+                                                                                       style="font-weight:bold;" 
+                                                                                   @endif>
+                                                                                    {{ $location->name }}
+                                                                                </a>
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
+                                                                <input type="hidden" class="location-id" name="location_id" value="{{ $counter->location_id }}">
                                                             </div>
                                                         </div>
+
+                                                        <script>
+                                                            document.querySelectorAll('.location-dropdown').forEach(dropdown => {
+                                                                const searchInput = dropdown.querySelector('.location-search');
+                                                                const items = dropdown.querySelectorAll('.dropdown-item');
+
+                                                                searchInput.addEventListener('input', function() {
+                                                                    const searchValue = searchInput.value.toLowerCase();
+                                                                    items.forEach(item => {
+                                                                        const text = item.textContent.toLowerCase();
+                                                                        item.style.display = text.includes(searchValue) ? "block" : "none";
+                                                                    });
+                                                                });
+                                                                dropdown.addEventListener('click', function(event) {
+                                                                    if (event.target.classList.contains('location-option')) {
+                                                                        event.preventDefault();
+                                                                        
+                                                                        const selectedValue = event.target.getAttribute('data-name');
+                                                                        const locationId = event.target.getAttribute('data-id');
+                                                                        dropdown.querySelector('.selected-location').textContent = selectedValue;
+                                                                        dropdown.nextElementSibling.value = locationId;
+                                                                        dropdown.querySelector('.dropdown-toggle').click();
+                                                                    }
+                                                                });
+                                                            });
+                                                        </script>
 
                                                         <div class="row">
                                                             <div class="col-12 mb-3">
@@ -178,7 +229,7 @@
                             <div class="col-12 mb-3">
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" id="name" name="name" class="form-control"
-                                    placeholder="Enter Name" required>
+                                    locationholder="Enter Name" required>
                             </div>
                         </div>
 
@@ -186,17 +237,66 @@
                                 <div class="col-12 mb-3">
                                     <label for="counter_no" class="form-label">Counter No</label>
                                     <input type="text" id="counter_no" name="counter_no" class="form-control"
-                                        placeholder="Enter counter number" required>
+                                        locationholder="Enter counter number">
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-12 mb-3">
-                                    <label for="location" class="form-label">Location</label>
-                                    <input type="text" id="location" name="location" class="form-control"
-                                        placeholder="Enter location" required>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="location_id" class="form-label">Location</label>
+                                    <div class="dropdown location-dropdown">
+                                        <button class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center" 
+                                                type="button" 
+                                                data-bs-toggle="dropdown" 
+                                                aria-expanded="false" 
+                                                style="text-align: left; padding-left: 10px;">
+                                            <span class="selected-location">Select Location</span>
+                                        </button>
+                                        <ul class="dropdown-menu pt-0" style="width: 100%;">
+                                            <input type="text" 
+                                                   class="form-control border-0 border-bottom shadow-none mb-2 location-search" 
+                                                   locationholder="Search..."  
+                                                   style="width: 100%; padding-left: 10px;">
+                                            @foreach($locations as $location)
+                                                <li>
+                                                    <a class="dropdown-item location-option" href="#" 
+                                                       data-id="{{ $location->id }}" 
+                                                       data-name="{{ $location->name }}">
+                                                        {{ $location->name }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    <input type="hidden" class="location-id" name="location_id">
                                 </div>
                             </div>
+
+                            <script>
+                                document.querySelectorAll('.location-dropdown').forEach(dropdown => {
+                                    const searchInput = dropdown.querySelector('.location-search');
+                                    const items = dropdown.querySelectorAll('.dropdown-item');
+
+                                    searchInput.addEventListener('input', function() {
+                                        const searchValue = searchInput.value.toLowerCase();
+                                        items.forEach(item => {
+                                            const text = item.textContent.toLowerCase();
+                                            item.style.display = text.includes(searchValue) ? "block" : "none";
+                                        });
+                                    });
+                                    dropdown.addEventListener('click', function(event) {
+                                        if (event.target.classList.contains('location-option')) {
+                                            event.preventDefault();
+                                            
+                                            const selectedValue = event.target.getAttribute('data-name');
+                                            const locationId = event.target.getAttribute('data-id');
+                                            dropdown.querySelector('.selected-location').textContent = selectedValue;
+                                            dropdown.nextElementSibling.value = locationId;
+                                            dropdown.querySelector('.dropdown-toggle').click();
+                                        }
+                                    });
+                                });
+                            </script>
 
                             <div class="d-flex justify-content-end">
                                 <button class="btn btn-primary" type="submit">Submit</button>

@@ -24,7 +24,11 @@ class CheckerController extends Controller
 
     public function index()
     {
-        $checkers = Checker::where('company_id',auth()->user()->id)->latest()->get();
+        if (auth()->user()->hasRole('Super Admin')) {
+            $checkers = Checker::latest()->get();
+        } else {
+            $checkers = Checker::where('company_id', auth()->user()->id)->latest()->get();
+        }
         return view('admin.pages.checker.index',compact('checkers'));
     }
 

@@ -14,6 +14,7 @@ class Seat extends Model
         'vehicle_id',
         'seat_no',
         'is_booked',
+        'is_reserved_by',
         'status',
     ];
 

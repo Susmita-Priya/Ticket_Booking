@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('locations', function (Blueprint $table) {
+        Schema::create('locations', function (Blueprint $table) {    //for plane module
             $table->id();
             $table->foreignId('country_id');
             $table->string('name');

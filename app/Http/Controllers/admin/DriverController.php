@@ -23,7 +23,12 @@ class DriverController extends Controller
 
     public function index()
     {
-        $drivers = Driver::where('company_id',auth()->user()->id)->latest()->get();
+        // $drivers = Driver::where('company_id',auth()->user()->id)->latest()->get();
+        if (auth()->user()->hasRole('Super Admin')) {
+            $drivers = Driver::latest()->get();
+        } else {
+            $drivers = Driver::where('company_id', auth()->user()->id)->latest()->get();
+        }
         return view('admin.pages.driver.index',compact('drivers'));
     }
 

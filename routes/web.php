@@ -29,6 +29,8 @@ use App\Http\Controllers\admin\SiteSettingController;
 use App\Http\Controllers\admin\SupervisorController;
 use App\Http\Controllers\admin\SliderController;
 use App\Http\Controllers\admin\BlogController;
+use App\Http\Controllers\admin\PDFController;
+use App\Http\Controllers\admin\PlaceController;
 use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\admin\TermsController;
 use App\Http\Controllers\admin\TicketBookingController;
@@ -39,6 +41,7 @@ use App\Http\Controllers\frontend\HomePageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Models\SeatBooking;
+use App\Models\TicketBooking;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Route;
 
@@ -124,13 +127,17 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/ticket-booking-section', [TicketBookingController::class, 'index'])->name('ticket_booking.section');
     Route::post('/ticket-booking-store', [TicketBookingController::class, 'store'])->name('ticket_booking.store');
     Route::get('/ticket-booking/passenger-details', [TicketBookingController::class, 'showDetails'])->name('passenger.detail');
+    Route::post('/reserve-seats', [TicketBookingController::class, 'reserveSeats'])->name('reserve.seats');
+    Route::post('/cancel/reservation', [TicketBookingController::class, 'cancelReservation'])->name('cancel.reservation');
     Route::get('/booking-confirmation', [TicketBookingController::class, 'showConfirmation'])->name('booking.confirmation');
+    Route::get('/generate-pdf', [TicketBookingController::class, 'generatePDF'])->name('generate.pdf');
 
 
     //Seat Booking Section after ticket booking done
     Route::get('/seat-booking-section/{vehicle_id}', [SeatBookingController::class, 'index'])->name('seat_booking.section');
     Route::get('/seat-booking-delete/{id}', [SeatBookingController::class, 'destroy'])->name('seat_booking.destroy');
 
+    
     //Country Section
     Route::get('/country-section', [CountryController::class, 'index'])->name('country.section');
     Route::post('/country-store', [CountryController::class, 'store'])->name('country.store');
@@ -184,10 +191,10 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/booking-delete/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
 
 
-
     //Role and User Section
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
+    Route::get('/show/users/{id}', [UserController::class, 'fetch']);
 
     //Site Setting
     Route::get('/site-setting', [SiteSettingController::class, 'index'])->name('site.setting');
@@ -206,7 +213,13 @@ Route::middleware('auth')->group(callback: function () {
     Route::put('/district-update/{id}', [DistrictController::class, 'update'])->name('district.update');
     Route::get('/district-delete/{id}', [DistrictController::class, 'destroy'])->name('district.destroy');
 
+    //Place Section
+    Route::get('/place-section', [PlaceController::class, 'index'])->name('place.section');
+    Route::post('/place-store', [PlaceController::class, 'store'])->name('place.store');
+    Route::put('/place-update/{id}', [PlaceController::class, 'update'])->name('place.update');
+    Route::get('/place-delete/{id}', [PlaceController::class, 'destroy'])->name('place.destroy');
 
+    
     //counter
     Route::get('/counter-section', [CounterController::class, 'index'])->name('counter.section');
     Route::post('/counter-store', [CounterController::class, 'store'])->name('counter.store');
@@ -251,6 +264,7 @@ Route::middleware('auth')->group(callback: function () {
 
     //route
     Route::get('/route-section', [RouteController::class, 'index'])->name('route.section');
+    Route::get('/location/{id}/counters', [RouteController::class, 'getCounter'])->name('route.getcounter');
     Route::post('/route-store', [RouteController::class, 'store'])->name('route.store');
     Route::put('/route-update/{id}', [RouteController::class, 'update'])->name('route.update');
     Route::get('/route-delete/{id}', [RouteController::class, 'destroy'])->name('route.destroy');

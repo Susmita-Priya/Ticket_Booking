@@ -198,6 +198,13 @@ class PermissionTableSeeder extends Seeder
             'district-delete',
 
 
+            //For Place
+            'place-list',
+            'place-create',
+            'place-edit',
+            'place-delete',
+
+
             //For Counter
             'counter-list',
             'counter-create',

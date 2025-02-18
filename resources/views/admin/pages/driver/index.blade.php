@@ -30,6 +30,7 @@
                     <thead>
                         <tr>
                             <th>S/N</th>
+                            <th>Company Name</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
@@ -44,6 +45,7 @@
                         @foreach ($drivers as $key => $driver)
                             <tr>
                                 <td>{{ ++$key }}</td>
+                                <td>{{ $driver->company->name }}</td>
                                 <td>{{ $driver->name }}</td>
                                 <td>{{ $driver->email }}</td>
                                 <td>{{ $driver->phone }}</td>
@@ -100,7 +102,7 @@
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
                                                             <label for="email" class="form-label">Email</label>
-                                                            <input type="text" id="email" name="email"
+                                                            <input type="email" id="email" name="email"
                                                                 value="{{ $driver->email }}" class="form-control"
                                                                 placeholder="Enter Email" required>
                                                         </div>
@@ -111,7 +113,7 @@
                                                             <label for="phone" class="form-label">Phone</label>
                                                             <input type="text" id="phone" name="phone"
                                                                 value="{{ $driver->phone }}" class="form-control"
-                                                                placeholder="Enter Phone" required>
+                                                                placeholder="Enter Phone" required maxlength="15" pattern="\d{11,15}" title="Phone number must be between 11 to 15 digits">
                                                         </div>
                                                     </div>
 
@@ -129,7 +131,7 @@
                                                             <label for="nid" class="form-label">Nid</label>
                                                             <input type="text" id="nid" name="nid"
                                                                 value="{{ $driver->nid }}" class="form-control"
-                                                                placeholder="Enter Nid" required>
+                                                                placeholder="Enter Nid" required maxlength="10">
                                                         </div>
                                                     </div>
 
@@ -224,7 +226,7 @@
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="text" id="email" name="email" class="form-control"
+                                <input type="email" id="email" name="email" class="form-control"
                                     placeholder="Enter Email" required>
                             </div>
                         </div>
@@ -233,7 +235,7 @@
                             <div class="col-12 mb-3">
                                 <label for="phone" class="form-label">Phone</label>
                                 <input type="text" id="phone" name="phone" class="form-control"
-                                    placeholder="Enter Phone" required>
+                                    placeholder="Enter Phone" required maxlength="15" pattern="\d{11,15}" title="Phone number must be between 11 to 15 digits">
                             </div>
                         </div>
 
@@ -250,7 +252,7 @@
                             <div class="col-12 mb-3">
                                 <label for="nid" class="form-label">Nid</label>
                                 <input type="text" id="nid" name="nid" class="form-control"
-                                    placeholder="Enter Nid" required>
+                                    placeholder="Enter Nid" required maxlength="10">
                             </div>
                         </div>
 

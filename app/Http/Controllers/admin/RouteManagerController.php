@@ -23,7 +23,12 @@ class RouteManagerController extends Controller
 
     public function index()
     {
-        $routeManagers = RouteManager::where('company_id',auth()->user()->id)->latest()->get();
+        // $routeManagers = RouteManager::where('company_id',auth()->user()->id)->latest()->get();
+        if (auth()->user()->hasRole('Super Admin')) {
+            $routeManagers = RouteManager::latest()->get();
+        } else {
+            $routeManagers = RouteManager::where('company_id', auth()->user()->id)->latest()->get();
+        }
         return view('admin.pages.routeManager.index',compact('routeManagers'));
     }
 

@@ -45,7 +45,6 @@ class UserController extends Controller
             // Assign role to the user
             $user->assignRole('User');
 
-
             // Send verification email
             Mail::to($request->email)->send(new VerifyMail($user));
 

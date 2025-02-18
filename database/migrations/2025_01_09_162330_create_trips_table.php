@@ -18,8 +18,10 @@ return new class extends Migration
             $table->integer('vehicle_id');
             $table->integer('driver_id');
             $table->integer('supervisor_id');
-            $table->date('date');
-            $table->time('time');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->string('total_route_cost');
             $table->string('ticket_price');
             $table->string('status')->default(1);

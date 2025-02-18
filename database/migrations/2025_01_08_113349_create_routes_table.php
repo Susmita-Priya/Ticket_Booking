@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('routes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id');
-            $table->string('name');
+            $table->string('from_location_id');
+            $table->string('to_location_id');
             $table->integer('start_counter_id');
             $table->integer('end_counter_id');
             $table->integer('route_manager_id');

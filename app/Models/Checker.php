@@ -18,4 +18,9 @@ class Checker extends Model
         'nid',
         'status',
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

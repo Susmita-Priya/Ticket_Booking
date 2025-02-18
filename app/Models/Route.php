@@ -11,7 +11,8 @@ class Route extends Model
 
     protected $fillable = [
         'company_id',
-        'name',
+        'from_location_id',
+        'to_location_id',
         'start_counter_id',
         'end_counter_id',
         'route_manager_id',
@@ -19,6 +20,21 @@ class Route extends Model
         'document',
         'status',
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function fromLocation()
+    {
+        return $this->belongsTo(Place::class, 'from_location_id');
+    }
+
+    public function toLocation()
+    {
+        return $this->belongsTo(Place::class, 'to_location_id');
+    }
 
     public function routeManager()
     {
@@ -34,5 +50,6 @@ class Route extends Model
     {
         return $this->belongsTo(Counter::class, 'end_counter_id');
     }
+
 
 }

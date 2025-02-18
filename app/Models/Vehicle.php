@@ -25,6 +25,10 @@ class Vehicle extends Model
         'status',
     ];
 
+    public function company(){
+        return $this->belongsTo(User::class);
+    }
+
     public function owner(){
         return $this->belongsTo(Owner::class);
     }
@@ -36,5 +40,7 @@ class Vehicle extends Model
     public function seats(){
         return $this->hasMany(Seat::class);
     }
+
+
 
 }

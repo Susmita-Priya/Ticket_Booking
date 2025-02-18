@@ -15,12 +15,19 @@ class Trip extends Model
         'vehicle_id',
         'driver_id',
         'supervisor_id',
-        'date',
-        'time',
+        'start_date',
+        'end_date',
+        'start_time',
+        'end_time',
         'total_route_cost',
         'ticket_price',
         'status',
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function route()
     {
