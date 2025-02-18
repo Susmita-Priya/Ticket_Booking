@@ -10,5 +10,6 @@ php artisan migrate
 php artisan db:seed --class=PermissionTableSeeder
 # Admin Create
 php artisan db:seed --class=CreateAdminUserSeeder
-
+# Push from dev-susmita origin branch
+git push secondary dev-susmita:main
 
