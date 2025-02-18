@@ -258,8 +258,7 @@
                                                 <h5>No route available</h5>
                                             @endif
                                         </h5>
-                                        <p><strong></strong> {{ \Carbon\Carbon::parse($trip->date)->format('d M Y') }},
-                                            {{ \Carbon\Carbon::parse($trip->time)->format('h:i A') }}</p>
+                                        <p><strong></strong> {{ \Carbon\Carbon::parse($trip->start_date . ' ' . $trip->start_time)->format('d M Y h:i A') }}</p>
                                         <p><strong>Driver:</strong> {{ $trip->driver->name }} <strong>,
                                                 Supervisor:</strong>
                                             {{ $trip->supervisor->name }}</p>
@@ -736,9 +735,9 @@
                                         <ul type="none">
                                             <li><strong>Coach : </strong> {{ $trip->vehicle->vehicle_no }}</li>
                                             <li><strong>Travel Date : </strong>
-                                                {{ \Carbon\Carbon::parse($trip->date)->format('d M Y') }}</li>
+                                                {{ \Carbon\Carbon::parse($trip->start_date)->format('d M Y') }}</li>
                                             <li><strong>Start Time : </strong>
-                                                {{ \Carbon\Carbon::parse($trip->time)->format('h:i A') }}</li>
+                                                {{ \Carbon\Carbon::parse($trip->start_time)->format('h:i A') }}</li>
                                             <li><strong>From : </strong> {{ $trip->route->startCounter->name }}{{ $trip->route->startCounter->counter_no ? ' (' . $trip->route->startCounter->counter_no . ' no)' : '' }}</li>
                                             <li><strong>To : </strong> {{ $trip->route->endCounter->name }}{{ $trip->route->endCounter->counter_no ? ' (' . $trip->route->endCounter->counter_no . ' no)' : '' }}</li>
                                         </ul>
