@@ -16,9 +16,8 @@
             </div>
         </div>
     </div>
-
    
-    <div class="col-12">
+    <div class="col-12">  
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-end gap-1">
