@@ -122,7 +122,7 @@
                                      {{ "Card" }}
                                         <br>Card Number: {{ $booking->payments->card_number ?? 'N/A' }}
                                         <br>Expiry: {{ $booking->payments->card_expiry ?? 'N/A' }}
-                                        <br>Security Code: {{ $booking->payments->card_security_code ?? 'N/A' }}
+                                        <br>Security Code: {{ $booking->payments->security_code ?? 'N/A' }}
                                     @elseif ($booking->payments->payment_method == 'mobile_banking')
                                         {{ "Mobile Banking" }}
                                         <br>Transaction ID: {{ $booking->payments->transaction_id ?? 'N/A' }}
