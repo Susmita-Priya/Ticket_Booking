@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Booking routes
     Route::post('/store-booking', [BookingController::class, 'storeBooking']);
     
+    //booking
     Route::get('/booking', [BookingController::class, 'booking']);
 
     //type 
