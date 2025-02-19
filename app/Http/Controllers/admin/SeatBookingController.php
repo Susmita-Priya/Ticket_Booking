@@ -18,7 +18,7 @@ class SeatBookingController extends Controller
     {
         $this->middleware('auth');
         $this->middleware(function ($request, $next) {
-            if (!Gate::allows('seat-booking-list')) {
+            if (!Gate::allows('booking-list')) {
                 return redirect()->route('unauthorized.action');
             }
             return $next($request);
@@ -43,14 +43,20 @@ class SeatBookingController extends Controller
             ->get();
 
         } elseif ($user->hasRole('Company')) {
-           
-            $vehicles = Vehicle::where('company_id', $user->id)->get();
+            $vehicles = Vehicle::where('company_id', $user->id)
+            ->orWhereHas('company', function ($query) use ($user) {
+                $query->where('is_registration_by', $user->id);
+            })
+            ->get();
             $bookings = TicketBooking::where('company_id', $user->id)
+            ->orWhereHas('company', function ($query) use ($user) {
+                $query->where('is_registration_by', $user->id);
+            })
             ->latest()
             ->get();
-        } else {
+        } elseif ($user->hasRole('Super Admin')) {
             $vehicles = Vehicle::latest()->get();
-            $bookings = TicketBooking::where('travel_date', date('Y-m-d'))->latest()->get();
+            $bookings = TicketBooking::latest()->get();
         }
 
 
@@ -72,6 +78,9 @@ class SeatBookingController extends Controller
                 ->get();
             } elseif ($user->hasRole('Company')) {
                 $bookings = TicketBooking::where('company_id', $user->id)
+                ->orWhereHas('company', function ($query) use ($user) {
+                    $query->where('is_registration_by', $user->id);
+                })
                 ->where('vehicle_id', $request->vehicle_id)
                 ->where('travel_date', $filter_date)
                 ->latest()

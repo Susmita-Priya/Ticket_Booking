@@ -101,6 +101,7 @@
                             <th>Payment Amount</th>
                             <th>Passenger Name</th>
                             <th>Passenger Phone</th>
+                            <th>Booked By</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -140,12 +141,13 @@
                                     (Ticket Price : {{ $seatPrice }} TK)</td>
                                 <td>{{ $booking->passenger_name ?? 'N/A' }}</td>
                                 <td>{{ $booking->passenger_phone }}</td>
+                                <td>{{ $booking->company->name }}</td>
                                 <td>
                                     <div class="d-flex ">
                                         {{-- @can('seats-edit')
                                         <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{$booking->id}}">Edit</button>
                                         @endcan --}}
-                                        @can('seats-delete')
+                                        @can('booking-delete')
                                             <a href="{{ route('seat_booking.destroy', $booking->id) }}"
                                                 class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#deleteModal{{ $booking->id }}">Delete</a>
