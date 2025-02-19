@@ -15,6 +15,8 @@
             </div>
         </div>
     </div>
+    <div class="col-12">
+        <div class="card">
     <div class="card-header">
         <div class="d-flex justify-content-end">
             @can('role-create')
@@ -30,13 +32,16 @@
         </div>
     @endif
 
-
-    <table class="table table-bordered">
+    <div class="card-body table-responsive">
+        <table id="basic-datatable" class="table table-striped nowrap w-100">
+            <thead>
         <tr>
             <th>No</th>
             <th>Name</th>
             <th width="280px">Action</th>
         </tr>
+    </thead>
+    <tbody>
         @foreach ($roles as $key => $role)
             <tr>
                 <td>{{ ++$i }}</td>
@@ -54,9 +59,13 @@
                 </td>
             </tr>
         @endforeach
-    </table>
+    </tbody>
+</table>
+</div>
+</div>
+</div>
 
-
-    {!! $roles->render() !!}
+{{-- 
+    {!! $roles->render() !!} --}}
 
 @endsection

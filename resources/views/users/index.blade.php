@@ -21,6 +21,8 @@
             <p>{{ $message }}</p>
         </div>
     @endif
+    <div class="col-12">
+        <div class="card">
     <div class="card-header">
         <div class="d-flex justify-content-end">
             <a class="btn btn-success" href="{{ route('users.create') }}"> Create New User</a>
@@ -28,7 +30,9 @@
     </div>
     <br>
 
-    <table class="table table-bordered">
+    <div class="card-body table-responsive">
+        <table id="basic-datatable" class="table table-striped nowrap w-100">
+            <thead>
         <tr>
             <th>No</th>
             <th>Name</th>
@@ -36,6 +40,8 @@
             <th>Roles</th>
             <th width="280px">Action</th>
         </tr>
+    </thead>
+    <tbody>
         @foreach ($data as $key => $user)
             <tr>
                 <td>{{ ++$i }}</td>
@@ -57,7 +63,11 @@
                 </td>
             </tr>
         @endforeach
-    </table>
+    </tbody>
+</table>
+</div>
+</div>
+</div>
 
     {{-- {{ $data->links('pagination::bootstrap-4') }} --}}
     {{-- {!! $data->render() !!} --}}
