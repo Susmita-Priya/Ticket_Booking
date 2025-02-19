@@ -31,7 +31,6 @@ class SeatBookingController extends Controller
         $vehicle = null;
         $total_payment = 0;
 
-       
 
         if ($user->hasRole('User')) {
            
@@ -60,12 +59,8 @@ class SeatBookingController extends Controller
             return view('admin.pages.seatBooking.index', compact('vehicles', 'bookings', 'vehicle' ));
             
         }else{
-            
-
 
             $filter_date = $request->filter_date;
-
-
             $vehicle = Vehicle::where('id', $request->vehicle_id)->firstOrFail();
 
             if ($user->hasRole('User')) {
@@ -89,8 +84,11 @@ class SeatBookingController extends Controller
             }
 
             // $total_payment = $bookings->sum('payment_amount');
+            foreach ($bookings as $booking) {
+              $total_payment += $booking->payments->total_payment;
+            }
 
-        return view('admin.pages.seatBooking.index', compact('vehicles', 'vehicle','bookings'));
+        return view('admin.pages.seatBooking.index', compact('vehicles', 'vehicle','bookings', 'total_payment'));
         }
     }
 

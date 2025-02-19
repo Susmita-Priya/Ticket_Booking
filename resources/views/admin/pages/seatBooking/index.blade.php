@@ -30,7 +30,7 @@
                                     class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center"
                                     type="button" id="vehicleDropdownButton" data-bs-toggle="dropdown" aria-expanded="false"
                                     style="text-align: left; padding-left: 10px; background-color: white;">
-                                    @if ($vehicle)
+                                    @if($vehicle)
                                         <span id="selected-vehicle">{{ $vehicle->name }} ( Coach - {{ $vehicle->vehicle_no }})</span>
                                     @else
                                         <span id="selected-vehicle">Select Vehicle</span>
@@ -85,8 +85,11 @@
                 </div>
             </div>
             <div class="card-body">
-                <h3 class="text-center"> {{ $vehicle->name }} (Coach - {{ $vehicle->vehicle_no }})</h3>
-                {{-- <p class="text-center">Total Payment : <span style="color: green;"><strong>{{ $total_payment }} TK</strong></span></p> --}}
+                @if($vehicle)
+                    <h3 class="text-center"> {{ $vehicle->name }} (Coach - {{ $vehicle->vehicle_no }})</h3>
+                    <p class="text-center">Total Payment : <span style="color: green;"><strong>{{ $total_payment }} TK</strong></span></p>
+                @endif
+                
                 <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
                     <thead>
                         <tr>
@@ -116,7 +119,7 @@
                                         @php $seatPrice = $seat->seatPrice; @endphp
                                     @endforeach
                                 </td>
-                                <td>{{ $booking->travel_date }}</td>
+                                <td>{{ \Carbon\Carbon::parse($booking->travel_date)->format('d-m-Y') }}</td>
                                 <td>
                                     @if ($booking->payments->payment_method == 'card')
                                      {{ "Card" }}
@@ -140,8 +143,8 @@
                                 <td>
                                     <div class="d-flex ">
                                         {{-- @can('seats-edit')
-                                    <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{$booking->id}}">Edit</button>
-                                    @endcan --}}
+                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{$booking->id}}">Edit</button>
+                                        @endcan --}}
                                         @can('seats-delete')
                                             <a href="{{ route('seat_booking.destroy', $booking->id) }}"
                                                 class="btn btn-danger btn-sm" data-bs-toggle="modal"
