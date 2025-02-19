@@ -24,8 +24,9 @@ use Illuminate\Support\Facades\Route;
 
 
 // User routes
-Route::post('/user-registration', [UserController::class, 'storeRegistration']);
+Route::post('/user-registration', [UserController::class, 'register']);
 Route::post('/verify', [UserController::class, 'verify']);
+Route::post('/resend-verification-code', [UserController::class, 'resendVerificationCode']);
 Route::post('/login', [UserController::class, 'login']);
 
 //user info
@@ -39,7 +40,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // Booking routes
     Route::post('/store-booking', [BookingController::class, 'storeBooking']);
     
-
     Route::get('/booking', [BookingController::class, 'booking']);
 
     //type 

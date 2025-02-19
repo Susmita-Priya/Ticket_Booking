@@ -33,7 +33,6 @@ class SeatBookingController extends Controller
 
 
         if ($user->hasRole('User')) {
-           
             $vehicles = Vehicle::where('company_id', $user->id)
             ->orWhere('company_id', $user->is_registration_by)
             ->get();

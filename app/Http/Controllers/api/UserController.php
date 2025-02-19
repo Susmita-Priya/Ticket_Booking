@@ -16,7 +16,7 @@ use Yoeunes\Toastr\Facades\Toastr;
 
 class UserController extends Controller
 {
-    public function storeRegistration(Request $request)
+    public function register(Request $request)
     {
         $this->validate($request, [
             'name' => 'required|string|max:255',
@@ -96,41 +96,84 @@ class UserController extends Controller
         }
     }
 
-    public function login(Request $request)
-{
-    // Validate input
-    $this->validate($request, [
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+    public function resendVerificationCode(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email',
+        ]);
 
-    // Attempt to authenticate the user
-    if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-        $user = Auth::user();
-
-        // Check if the email is verified
-        if (empty($user->email_verified_at)) {
+        $user = User::where('email', $request->email)->first();
+        if ($user) {
+            if ($user->status == 1) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Your email is already verified.'
+                ], 400);
+            }
+            $verificationCode = rand(100000, 999999);
+            $user->update([
+                'verification_code' => $verificationCode
+            ]);
+            Mail::to($request->email)->send(new VerifyMail($user));
             return response()->json([
-                'message' => 'Please verify your email first.',
-            ], 401); // 401 Unauthorized
+                'success' => true,
+                'message' => 'Verification code has been resent to your email.'
+            ], 200);
         }
-
-        // Generate a new token
-        $token = $user->createToken('YourAppName')->plainTextToken;
-
-        // Return a success response with the token
         return response()->json([
-            'message' => 'Login successful.',
-            'token' => $token,
-            'user' => $user, // Optionally return user data
-        ], 200);
+            'success' => false,
+            'message' => 'User not found with this email.'
+        ], 404);
     }
 
-    // Return error response for invalid credentials
-    return response()->json([
-        'message' => 'Invalid email or password.',
-    ], 401); // 401 Unauthorized
-}
+
+    public function login(Request $request)
+    {
+        // Validate input
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        // // Attempt to authenticate the user
+        // if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        //     $user = Auth::user();
+
+        //     // Check if the email is verified
+        //     if (empty($user->email_verified_at)) {
+        //         return response()->json([
+        //             'message' => 'Please verify your email first.',
+        //         ], 401); // 401 Unauthorized
+        //     }
+
+            $user = User::where('email', $request->email)->first();
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'message' => 'Could not login. Invalid email or password.',
+                ], 401);
+            }
+            if ($user->email_verified_at === null) {
+                return response()->json([
+                    'message' => 'Please verify your email first.',
+                ], 403);
+            }
+
+            // Generate a new token
+            $token = $user->createToken('YourAppName')->plainTextToken;
+
+            // Return a success response with the token
+            return response()->json([
+                'message' => 'Login successful.',
+                'token' => $token,
+                'user' => $user, // Optionally return user data
+            ], 200);
+
+        // }
+        // // Return error response for invalid credentials
+        // return response()->json([
+        //     'message' => 'Invalid email or password.',
+        // ], 401); // 401 Unauthorized
+    }
 
 
     public function userInfo()
