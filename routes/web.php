@@ -134,7 +134,7 @@ Route::middleware('auth')->group(callback: function () {
 
 
     //Seat Booking Section after ticket booking done
-    Route::get('/seat-booking-section/{vehicle_id}', [SeatBookingController::class, 'index'])->name('seat_booking.section');
+    Route::get('/seat-booking-section', [SeatBookingController::class, 'index'])->name('seat_booking.section');
     Route::get('/seat-booking-delete/{id}', [SeatBookingController::class, 'destroy'])->name('seat_booking.destroy');
 
     

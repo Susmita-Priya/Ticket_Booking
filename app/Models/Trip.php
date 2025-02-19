@@ -48,4 +48,9 @@ class Trip extends Model
     {
         return $this->belongsTo(Supervisor::class);
     }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

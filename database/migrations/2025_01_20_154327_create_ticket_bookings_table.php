@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('passenger_phone');
             // $table->string('payment_method');
             // $table->string('total_payment');
+            $table->date('travel_date');
             $table->softDeletes();
             $table->timestamps();
         });

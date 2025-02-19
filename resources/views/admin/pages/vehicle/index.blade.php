@@ -19,6 +19,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-end">
+                   
                     @can('vehicle-create')
                         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addNewModalId">Add
                             New</button>

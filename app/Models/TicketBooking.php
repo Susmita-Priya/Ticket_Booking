@@ -16,6 +16,7 @@ class TicketBooking extends Model
         'seat_data',
         'passenger_name',
         'passenger_phone',
+        'travel_date',
     ];
 
     public function company()
@@ -36,6 +37,11 @@ class TicketBooking extends Model
     public function seat()
     {
         return $this->belongsTo(Seat::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasOne(Payment::class, 'booking_id');
     }
 
     

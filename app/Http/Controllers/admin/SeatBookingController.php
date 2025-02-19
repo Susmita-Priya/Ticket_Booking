@@ -27,15 +27,71 @@ class SeatBookingController extends Controller
 
     public function index(Request $request)
     {
-        $vehicle = Vehicle::where('company_id', auth()->user()->id)
-        ->where('id', $request->vehicle_id)->firstOrFail();
-        $vehicle_id = $request->vehicle_id;
+        $user = auth()->user();
+        $vehicle = null;
+        $total_payment = 0;
 
-        $filter_date = $request->filter_date;
-        $bookings = TicketBooking::where('company_id', auth()->user()->id)->where('vehicle_id', $vehicle_id)->latest()->get();
-        $total_payment = $bookings->sum('payment_amount');
+       
 
-        return view('admin.pages.seatBooking.index', compact('vehicle', 'bookings', 'total_payment'));
+        if ($user->hasRole('User')) {
+           
+            $vehicles = Vehicle::where('company_id', $user->id)
+            ->orWhere('company_id', $user->is_registration_by)
+            ->get();
+            $bookings = TicketBooking::where('company_id', $user->id)
+            ->orWhere('company_id', $user->is_registration_by)
+            ->latest()
+            ->get();
+
+        } elseif ($user->hasRole('Company')) {
+           
+            $vehicles = Vehicle::where('company_id', $user->id)->get();
+            $bookings = TicketBooking::where('company_id', $user->id)
+            ->latest()
+            ->get();
+        } else {
+            $vehicles = Vehicle::latest()->get();
+            $bookings = TicketBooking::where('travel_date', date('Y-m-d'))->latest()->get();
+        }
+
+
+        if ($request->vehicle_id == null || $request->filter_date == null) {
+            
+            return view('admin.pages.seatBooking.index', compact('vehicles', 'bookings', 'vehicle' ));
+            
+        }else{
+            
+
+
+            $filter_date = $request->filter_date;
+
+
+            $vehicle = Vehicle::where('id', $request->vehicle_id)->firstOrFail();
+
+            if ($user->hasRole('User')) {
+                $bookings = TicketBooking::where('company_id', $user->id)
+                ->orWhere('company_id', $user->is_registration_by)
+                ->where('vehicle_id', $request->vehicle_id)
+                ->where('travel_date', $filter_date)
+                ->latest()
+                ->get();
+            } elseif ($user->hasRole('Company')) {
+                $bookings = TicketBooking::where('company_id', $user->id)
+                ->where('vehicle_id', $request->vehicle_id)
+                ->where('travel_date', $filter_date)
+                ->latest()
+                ->get();
+            } elseif ($user->hasRole('Super Admin')) {
+                $bookings = TicketBooking::where('vehicle_id', $request->vehicle_id)
+                ->where('travel_date', $filter_date)
+                ->latest()
+                ->get();
+            }
+
+            // $total_payment = $bookings->sum('payment_amount');
+
+        return view('admin.pages.seatBooking.index', compact('vehicles', 'vehicle','bookings'));
+        }
     }
 
 

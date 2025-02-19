@@ -29,7 +29,6 @@ class TicketBookingController extends Controller
 
     public function index(Request $request)
     {
-       
         $user = auth()->user();
         $route = null;
 
@@ -182,6 +181,7 @@ public function store(Request $request)
                     'seat_data' => json_encode($selectedSeats),
                     'passenger_name' => $request->passenger_name,
                     'passenger_phone' => $request->passenger_phone,
+                    'travel_date' => $request->travel_date,
                     // 'payment_method' => $request->payment_method, 
                     // 'total_payment' => $totalPayment,
                 ]);

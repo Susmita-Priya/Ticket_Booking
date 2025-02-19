@@ -230,6 +230,12 @@
                                         </li>
                                     @endcan
 
+                                    @can('booking-list')
+                                        <li>
+                                            <a href="{{ route('seat_booking.section') }}" >Booking List</a>
+                                        </li>
+                                    @endcan
+
                                 </ul>
                             </div>
                         </li>
