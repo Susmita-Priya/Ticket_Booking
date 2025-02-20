@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ResetPasswordMail;
 use App\Mail\VerifyMail;
 use App\Models\User;
 use Illuminate\Database\QueryException;
@@ -39,7 +40,7 @@ class UserController extends Controller
                 'password' => $input['password'],
                 'verification_code' => $verificationCode,
                 'status' => 0,
-                'is_registration_by' => 'User',
+                'is_registration_by' => null,
             ]);
 
             // Assign role to the user
@@ -175,6 +176,100 @@ class UserController extends Controller
         // ], 401); // 401 Unauthorized
     }
 
+    public function forgotPassword(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found with this email.',
+            ], 404);
+        }
+
+        $resetCode  = rand(100000, 999999);
+        $user->update([
+            'reset_password_token' => $resetCode ,
+            'reset_password_token_created_at' => now(),
+        ]);
+
+        // Send reset password email
+        Mail::to($user->email)->send(new ResetPasswordMail($user, $resetCode));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Reset code has been sent to your email.',
+        ], 200);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email',
+            'resetCode' => 'required',
+            'password' => 'required|string|min:6',
+        ]);
+
+        $user = User::where('email', $request->email)
+                    ->where('reset_password_token', $request->resetCode)
+                    ->first();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid resetCode or email.',
+            ], 400);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->password),
+            'reset_password_token' => null,
+            'reset_password_token_created_at' => null,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Password has been reset successfully.',
+        ], 200);
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $this->validate($request, [
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:6',
+            'new_password_confirmation' => 'required|string|min:6',
+        ]);
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Current password is incorrect.',
+            ], 400);
+        }
+
+        if ($request->new_password !== $request->new_password_confirmation) {
+            return response()->json([
+                'success' => false,
+                'message' => 'New password and new password confirmation do not match.',
+            ], 400);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Password updated successfully.',
+        ], 200);
+    }
+
 
     public function userInfo()
     {
@@ -184,4 +279,14 @@ class UserController extends Controller
             'user' => $user, // Optionally return user data
         ], 200);
     }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json([
+            'message' => 'Logged out',
+        ], 200);
+    }
+
+
 }

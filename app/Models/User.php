@@ -26,6 +26,8 @@ class User extends Authenticatable
         'email_verified_at',
         'password',
         'verification_code',
+        'reset_password_token',
+        'reset_password_token_created_at',
         'image',
         'status',
         'is_registration_by',
