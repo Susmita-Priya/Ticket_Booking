@@ -28,13 +28,23 @@ Route::post('/user-registration', [UserController::class, 'register']);
 Route::post('/verify', [UserController::class, 'verify']);
 Route::post('/resend-verification-code', [UserController::class, 'resendVerificationCode']);
 Route::post('/login', [UserController::class, 'login']);
+Route::post('/forgot-password', [UserController::class, 'forgotPassword']);
+Route::post('/reset-password', [UserController::class, 'resetPassword']);
+
 
 //user info
 Route::middleware('auth:sanctum')->group(function () {
 
+    //user info
     Route::get('/user-info', [UserController::class, 'userInfo']);
 
-    // Passenger routes
+    //update password
+    Route::post('/update-password', [UserController::class, 'updatePassword']);
+
+    //logout
+    Route::post('/logout', [UserController::class, 'logout']);
+
+    //Passenger routes
     Route::post('/store-passenger', [PassengerController::class, 'storePassenger']);
 
     // Booking routes
