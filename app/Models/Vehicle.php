@@ -40,7 +40,4 @@ class Vehicle extends Model
     public function seats(){
         return $this->hasMany(Seat::class);
     }
-
-
-
 }

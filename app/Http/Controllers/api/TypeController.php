@@ -11,14 +11,17 @@ class TypeController extends Controller
     //
     public function type()
     {
-        $user_id = auth()->user()->id;
-        $types = Type::where('company_id', $user_id)->get();
+        $types = Type::all();
 
         if ($types->isEmpty()) {
             return response()->json([
                 'message' => 'No types found.',
             ], 400);
         }else{
+
+            foreach ($types as $type) {
+                $type->company;
+            }
             return response()->json([
                 'message' => 'Check out types',
                 'types' => $types, 

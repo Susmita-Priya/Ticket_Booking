@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\SliderController;
 use App\Http\Controllers\api\TypeController;
 use App\Http\Controllers\api\BookingController;
 use App\Http\Controllers\api\CuponController;
@@ -55,6 +56,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //type 
     Route::get('/type', [TypeController::class, 'type']);
+
+    //location
+    Route::get('/location-bus', [LocationController::class, 'locationBus']);
+
+    //search
+    Route::post('/search-bus', [SearchController::class, 'searchBus']);
+
+    //slider
+    Route::get('/slider', [SliderController::class, 'index']);
 });
 
 
@@ -65,7 +75,7 @@ Route::get('/cupon', [CuponController::class, 'cupon']);
 Route::get('/plane', [PlaneController::class, 'plane']);
 
 // search routes
-Route::post('/search', [SearchController::class, 'search']);
+Route::post('/search-plane', [SearchController::class, 'searchPlane']);
 
 // location routes
-Route::get('/location', [LocationController::class, 'location']);
+Route::get('/location-plane', [LocationController::class, 'locationPlane']);

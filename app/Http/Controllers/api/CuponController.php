@@ -17,7 +17,10 @@ class CuponController extends Controller
                 'message' => 'No cupons found.',
             ], 400);
         }else{
-
+            
+            foreach ($cupons as $cupon) {
+                $cupon->company;
+            }
         return response()->json([
             'message' => 'Check out cupons',
             'cupons' => $cupons, 

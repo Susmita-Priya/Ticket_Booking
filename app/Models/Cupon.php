@@ -18,4 +18,10 @@ class Cupon extends Model
         'minimum_expend',
         'discount_amount',
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
+

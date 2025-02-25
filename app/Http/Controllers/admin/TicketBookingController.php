@@ -221,48 +221,6 @@ public function store(Request $request)
         Toastr::success('Ticket Booking Successfully', 'Success');
 }
 
-// public function generatePdf(Request $request)
-// {
-//     $data = [
-//         'vehicle' => Vehicle::find($request->vehicle_id),
-//         'route' => Route::find($request->route_id),
-//         'trip' => Trip::find($request->trip_id),
-//         'seatsData' => json_decode($request->seats_data, true),
-//         'passenger_name' => $request->passenger_name,
-//         'passenger_phone' => $request->passenger_phone,
-//     ];
-
-//     $pdf = FacadePdf::loadView('admin.pages.ticketBooking.print', $data);
-//     return $pdf->download('ticket.pdf');
-// }
-
-// public function showConfirmation(Request $request)
-// {
-//     // Check if session data exists
-//     if ( !session()->has('passenger_phone') || !session()->has('trip') || !session()->has('vehicle') || !session()->has('route') || !session()->has('bookingDate') || !session()->has('seatsData')) {
-//         return redirect()->route('ticket_booking.section')->with('error', 'No booking data found. Please book a ticket first.');
-//     }
-
-//     // Get data from the session
-//     $passenger_name = session('passenger_name');
-//     $passenger_phone = session('passenger_phone');
-//     $trip = session('trip');
-//     $vehicle = session('vehicle');
-//     $route = session('route');
-//     $bookingDate = session('bookingDate');
-//     $seatsData = session('seatsData');
-
-//     // Pass data to the view
-//     return view('admin.pages.ticketBooking.ticket', compact(
-//         'passenger_name',
-//         'passenger_phone',
-//         'trip',
-//         'vehicle',
-//         'route',
-//         'bookingDate',
-//         'seatsData'
-//     ));
-// }
 public function reserveSeats(Request $request)
 {
     $request->validate([

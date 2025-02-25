@@ -13,4 +13,9 @@ class Type extends Model
         'name',
         'status',
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

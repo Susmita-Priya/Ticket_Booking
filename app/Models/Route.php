@@ -51,5 +51,9 @@ class Route extends Model
         return $this->belongsTo(Counter::class, 'end_counter_id');
     }
 
+    public function checkers()
+    {
+        return $this->belongsTo(Checker::class);
+    }
 
 }
