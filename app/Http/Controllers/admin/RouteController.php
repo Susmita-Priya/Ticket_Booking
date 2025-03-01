@@ -135,9 +135,9 @@ class RouteController extends Controller
     {
         try {
             $route = Route::find($id);
-            if ($route->document && file_exists(public_path($route->document))) {
-                unlink(public_path($route->document));
-            }
+            // if ($route->document && file_exists(public_path($route->document))) {
+            //     unlink(public_path($route->document));
+            // }
             $route->delete();
             Toastr::success('Route Deleted Successfully', 'Success');
             return redirect()->back();

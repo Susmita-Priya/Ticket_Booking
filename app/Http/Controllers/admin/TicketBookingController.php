@@ -31,6 +31,8 @@ class TicketBookingController extends Controller
     {
         $user = auth()->user();
         $route = null;
+        $trips = null;
+        $routes = null;
 
         if ($user->hasRole('User')) {
             $routes = Route::where('company_id', $user->id)
@@ -46,7 +48,7 @@ class TicketBookingController extends Controller
             $trips = Trip::where('company_id', $user->id) ->where('start_date', '>=', now()->toDateString())->latest()->get();
         } else {
             $routes = Route::latest()->get();
-            $trips = Trip::latest() ->where('start_date', '>=', now()->toDateString())->get();
+            $trips = Trip::latest()->where('start_date', '>=', now()->toDateString())->get();
         }
         
         if ($request->route_id == null || $request->filter_date == null) {
@@ -80,83 +82,7 @@ class TicketBookingController extends Controller
         }
     }
 
-//     public function showDetails(Request $request)
-// {
-//     // Extract data from the request
-//     $trip = Trip::find($request->get('trip_id'));
-//     $vehicle = Vehicle::find($request->get('vehicle_id'));
-//     $route = Route::find($trip->route_id);
-//     $bookingDate = $request->get('booking_date');
-//     $seatsData = json_decode($request->get('seats_data'), true);
 
-//     // Return view using compact
-//     return view('admin.pages.ticketBooking.passengerDetails', compact('trip', 'vehicle', 'route','bookingDate', 'seatsData'));
-// }
-
-// public function store(Request $request)
-// {
-//     try {
-//         $request->validate([
-//             'trip_id' => 'required|exists:trips,id',
-//             'vehicle_id' => 'required|exists:vehicles,id',
-//             'booking_date' => 'required|date',
-//             'passenger_phone' => 'required|string',
-//         ]);
-
-//         $selectedSeats = json_decode($request->seats_data, true);
-
-//         if (is_array($selectedSeats)) {
-//             foreach ($selectedSeats as $seat) {
-//                 TicketBooking::create([
-//                     'company_id' => auth()->user()->id,
-//                     'trip_id' => $request->trip_id,
-//                     'vehicle_id' => $request->vehicle_id,
-//                     'seat_id' => $seat['seatId'],
-//                     'seat_no' => $seat['seatNo'],
-//                     'booking_date' => $request->booking_date,
-//                     'payment_amount' => $seat['seatPrice'],
-//                     'passenger_name' => $request->passenger_name,
-//                     'passenger_phone' => $request->passenger_phone,
-//                 ]);
-
-//                 $seatModel = Seat::where('id', $seat['seatId'])->first();
-//                 $seatModel->is_booked = 2;
-//                 $seatModel->save();
-//             }
-//         } else {
-//             return redirect()->back()->with('error', 'Invalid selected seats data.');
-//         }
-
-//         // Fetch trip, vehicle, and route details for the confirmation page
-//         $trip = Trip::find($request->trip_id);
-//         $vehicle = Vehicle::find($request->vehicle_id);
-//         $route = Route::find($trip->route_id);
-
-//         // Store data in the session (persist until explicitly removed)
-//         session([
-//             'passenger_name' => $request->passenger_name ?? null,
-//             'passenger_phone' => $request->passenger_phone,
-//             'trip' => $trip,
-//             'vehicle' => $vehicle,
-//             'route' => $route,
-//             'bookingDate' => $request->booking_date,
-//             'seatsData' => $selectedSeats,
-//         ]);
-
-//         // Return a success response with a flag to show the modal
-//         return response()->json([
-//             'success' => true,
-//             'message' => 'Booking successful!',
-//             'show_modal' => true, // Flag to indicate that the modal should be shown
-//         ]);
-
-//     } catch (\Exception $e) {
-//         return response()->json([
-//             'success' => false,
-//             'message' => 'An error occurred: ' . $e->getMessage(),
-//         ], 500);
-//     }
-// }
 
 public function store(Request $request)
 {

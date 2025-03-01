@@ -21,10 +21,10 @@
                 <div class="card widget-flat text-bg-pink">
                     <div class="card-body">
                         <div class="float-end">
-                            <i class="ri-app-store-line widget-icon"></i>
+                            <i class="ri-store-2-line widget-icon"></i>
                         </div>
-                        <h6 class="text-uppercase mt-0" title="Customers">Total App</h6>
-                        <h2 class="my-2">10</h2>
+                        <h6 class="text-uppercase mt-0" title="Customers">Total Counter</h6>
+                        <h2 class="my-2">{{ count($counters) }}</h2>
                     </div>
                 </div>
             </div>
@@ -32,10 +32,10 @@
                 <div class="card widget-flat text-bg-purple">
                     <div class="card-body">
                         <div class="float-end">
-                            <i class="ri-profile-line widget-icon"></i>
+                            <i class="ri-road-map-line widget-icon"></i>
                         </div>
-                        <h6 class="text-uppercase mt-0" title="Customers">Total Website</h6>
-                        <h2 class="my-2">10</h2>
+                        <h6 class="text-uppercase mt-0" title="Customers">Total Route</h6>
+                        <h2 class="my-2">{{ count($routes) }}</h2>
                     </div>
                 </div>
             </div>
@@ -43,10 +43,10 @@
                 <div class="card widget-flat text-bg-info">
                     <div class="card-body">
                         <div class="float-end">
-                            <i class="ri-route-line widget-icon"></i>
+                            <i class="ri-user-settings-line widget-icon"></i>
                         </div>
-                        <h6 class="text-uppercase mt-0" title="Customers">Total News</h6>
-                        <h2 class="my-2">10</h2>
+                        <h6 class="text-uppercase mt-0" title="Customers">Total Route Manager</h6>
+                        <h2 class="my-2">{{ count($routeManagers) }}</h2>
                     </div>
                 </div>
             </div>
@@ -54,10 +54,56 @@
                 <div class="card widget-flat text-bg-primary">
                     <div class="card-body">
                         <div class="float-end">
-                            <i class="ri-file-line widget-icon"></i>
+                            <i class="ri-shield-user-line widget-icon"></i>
                         </div>
-                        <h6 class="text-uppercase mt-0" title="Customers">Total Offer</h6>
-                        <h2 class="my-2">{{$totalOffer}}</h2>
+                        <h6 class="text-uppercase mt-0" title="Customers">Total Checker</h6>
+                        <h2 class="my-2">{{ count($checkers) }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xxl-3 col-sm-6">
+                <div class="card widget-flat text-bg-success">
+                    <div class="card-body">
+                        <div class="float-end">
+                            <i class="ri-user-star-line widget-icon"></i>
+                        </div>
+                        <h6 class="text-uppercase mt-0" title="Customers">Total Owner</h6>
+                        <h2 class="my-2">{{ count($owners) }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-3 col-sm-6">
+                <div class="card widget-flat text-bg-primary">
+                    <div class="card-body">
+                        <div class="float-end">
+                            <i class="ri-steering-2-line widget-icon"></i>
+                        </div>
+                        <h6 class="text-uppercase mt-0" title="Customers">Total Driver</h6>
+                        <h2 class="my-2">{{ count($drivers) }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-3 col-sm-6">
+                <div class="card widget-flat text-bg-danger">
+                    <div class="card-body">
+                        <div class="float-end">
+                            <i class="ri-bus-2-line widget-icon"></i>
+                        </div>
+                        <h6 class="text-uppercase mt-0" title="Customers">Total Vehicle</h6>
+                        <h2 class="my-2">{{ count($vehicles) }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-3 col-sm-6">
+                <div class="card widget-flat text-bg-warning">
+                    <div class="card-body">
+                        <div class="float-end">
+                            <i class="ri-roadster-line widget-icon"></i>
+                        </div>
+                        <h6 class="text-uppercase mt-0" title="Customers">Total Trip</h6>
+                        <h2 class="my-2">{{ count($trips) }}</h2>
                     </div>
                 </div>
             </div>

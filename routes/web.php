@@ -267,7 +267,7 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/location/{id}/counters', [RouteController::class, 'getCounter'])->name('route.getcounter');
     Route::post('/route-store', [RouteController::class, 'store'])->name('route.store');
     Route::put('/route-update/{id}', [RouteController::class, 'update'])->name('route.update');
-    Route::get('/route-delete/{id}', [RouteController::class, 'destroy'])->name('route.destroy');
+    Route::get('/route-info-delete/{id}', [RouteController::class, 'destroy'])->name('route.destroy');
 
 
     //Trip

@@ -262,6 +262,8 @@
                                         <div class="seat-wrapper">
                                             <div class="text-center mb-3">
                                                 <h3>{{ $trip->vehicle->name }}</h3>
+                                                <h5>(Coach : {{ $trip->vehicle->vehicle_no ?? 'N/A' }})
+                                                </h5>
                                                 <h5>
                                                     @if ($trip->route)
                                                         <h5>{{ $trip->route->name }}</h5>
@@ -720,21 +722,34 @@
                                                 document.getElementById('payment-method').addEventListener('change', function() {
                                                     const transactionIdField = document.getElementById('transaction-id-field');
                                                     const cardIdField = document.getElementById('card-id-field');
+                                                    const cardIdInput = document.getElementById('card-id');
+                                                    const expirationDateInput = document.getElementById('expirationdate');
+                                                    const securityCodeInput = document.getElementById('securitycode');
+                                                    const transactionIdInput = document.getElementById('transaction_id');
+                                                    const bankingTypeInput = document.getElementById('banking_type');
+
+                                                    // Reset all required attributes
+                                                    cardIdInput.required = false;
+                                                    expirationDateInput.required = false;
+                                                    securityCodeInput.required = false;
+                                                    transactionIdInput.required = false;
+                                                    bankingTypeInput.required = false;
+
                                                     if (this.value === 'cash') {
                                                         transactionIdField.style.display = 'none';
                                                         cardIdField.style.display = 'none';
                                                     } else if (this.value === 'card') {
                                                         cardIdField.style.display = 'block';
-                                                        document.getElementById('card-id').required = true;
-                                                        document.getElementById('card-id').minLength = 16;
-                                                        document.getElementById('expirationdate').required = true;
-                                                        document.getElementById('securitycode').required = true;
+                                                        cardIdInput.required = true;
+                                                        cardIdInput.minLength = 16;
+                                                        expirationDateInput.required = true;
+                                                        securityCodeInput.required = true;
                                                         transactionIdField.style.display = 'none';
                                                     } else {
                                                         transactionIdField.style.display = 'block';
-                                                        document.getElementById('transaction_id').required = true;
-                                                        document.getElementById('transaction_id').minLength = 10;
-                                                        document.getElementById('banking_type').required = true;
+                                                        transactionIdInput.required = true;
+                                                        transactionIdInput.minLength = 10;
+                                                        bankingTypeInput.required = true;
                                                         cardIdField.style.display = 'none';
                                                     }
                                                 });
@@ -826,7 +841,7 @@
                         // const bookButton = document.getElementById(`book-button-${tripKey}`);
                         const authUserId = "{{ auth()->user()->id }}";
                         const dateField = document.getElementById('filter_date');
-                        dateField.value = '{{ $trip->start_date }}';
+                        dateField.value = '{{ $trip->start_date ?? '' }}';
 
                         let selectedSeats = [];
                         let totalPrice = 0;
