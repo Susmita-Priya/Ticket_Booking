@@ -61,6 +61,11 @@ Route::get('/', function () {
 });
 
 
+Route::get('/medicine-panda', function () {
+    return view('medicine-panda-design');
+});
+
+
 //Route::get('/', [HomePageController::class, 'index'])->name('home');
 Route::get('/about', [HomePageController::class, 'about'])->name('about');
 
@@ -137,7 +142,7 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/seat-booking-section', [SeatBookingController::class, 'index'])->name('seat_booking.section');
     Route::get('/seat-booking-delete/{id}', [SeatBookingController::class, 'destroy'])->name('seat_booking.destroy');
 
-    
+
     //Country Section
     Route::get('/country-section', [CountryController::class, 'index'])->name('country.section');
     Route::post('/country-store', [CountryController::class, 'store'])->name('country.store');
@@ -219,7 +224,7 @@ Route::middleware('auth')->group(callback: function () {
     Route::put('/place-update/{id}', [PlaceController::class, 'update'])->name('place.update');
     Route::get('/place-delete/{id}', [PlaceController::class, 'destroy'])->name('place.destroy');
 
-    
+
     //counter
     Route::get('/counter-section', [CounterController::class, 'index'])->name('counter.section');
     Route::post('/counter-store', [CounterController::class, 'store'])->name('counter.store');
