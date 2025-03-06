@@ -47,6 +47,7 @@ class AdminDashboardController extends Controller
             $trips = Trip::where('company_id', auth()->user()->id)->latest()->get();
         }
 
+
         $loginLog = LoginLog::orderBy('last_login','desc')->get();
         $totalOffer = Offer::count();
        return view('admin.dashboard', compact('loginLog','totalOffer','counters', 'routes', 'routeManagers', 'checkers', 'owners', 'drivers', 'vehicles', 'trips'));

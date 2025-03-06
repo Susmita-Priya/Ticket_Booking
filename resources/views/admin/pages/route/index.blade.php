@@ -26,14 +26,15 @@
                     @endcan
                 </div>
             </div>
-            <div class="card-body">
-                <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+            <div class="card-body table-responsive">
+                <table id="basic-datatable" class="table table-striped nowrap w-100">
                     <thead>
                         <tr>
                             <th>S/N</th>
                             <th>Company Name</th>
                             <th>Route Name</th>
                             <th>Start Counter</th>
+                            <th>Via Counters</th>
                             <th>End Counter</th>
                             <th>Route Manager</th>
                             <th>Checkers</th>
@@ -61,6 +62,16 @@
                                 <td><span class="text-wrap"
                                         style="max-width: 120px;">{{ $routeData->startCounter->name }}{{ $routeData->startCounter->counter_no ? ' (' . $routeData->startCounter->counter_no . ' no)' : '' }}</span>
                                 </td>
+                                <td>
+                                    @php
+                                        $viaCounters = json_decode($routeData->via_counters_id, true) ?? [];
+                                    @endphp
+                                    @foreach ($counters as $counter)
+                                        @if (in_array($counter->id, $viaCounters))
+                                            {{ $counter->name }}{{ $counter->counter_no ? ' (' . $counter->counter_no . ' no)' : '' }} </br>
+                                        @endif
+                                    @endforeach
+                                </td>   
                                 <td><span class="text-wrap"
                                         style="max-width: 120px;">{{ $routeData->endCounter->name ?? 'N/A' }}{{ $routeData->endCounter->counter_no ? ' (' . $routeData->endCounter->counter_no . ' no)' : '' }}</span>
                                 </td>
@@ -72,7 +83,7 @@
                                     @endphp
                                     @foreach ($checkers as $checker)
                                         @if (in_array($checker->id, $routeCheckers))
-                                            {{ $checker->name }}
+                                            {{ $checker->name }} <br>
                                         @endif
                                     @endforeach
                                 </td>
@@ -367,7 +378,23 @@
                                                                 name="end_counter_id"
                                                                 value="{{ $routeData->end_counter_id }}">
                                                         </div>
+                                                    </div>
 
+                                                    <div class="row">
+                                                        <div class="col-12 mb-3">
+                                                            <label for="via_counters_id" class="form-label">Via Counters</label>
+                                                            <select name="via_counters_id[]" class="select2 form-control select2-multiple"
+                                                                data-toggle="select2" multiple="multiple">
+                                                                @foreach ($counters as $counter)
+                                                                    <option value="{{ $counter->id }}"
+                                                                        {{ in_array($counter->id, json_decode($routeData->via_counters_id, true) ?? []) ? 'selected' : '' }}>
+                                                                        {{ $counter->name }}{{ $counter->counter_no ? ' (' . $counter->counter_no . ' no)' : '' }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>  
+
+                                                    <div class="row">
                                                         <div class="col-12 mb-3">
                                                             <label for="route_manager_id" class="form-label">Route
                                                                 Manager</label>
@@ -661,31 +688,43 @@
 
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="add-route-manager-id" class="form-label">Route Manager</label>
-                                <div class="dropdown">
-                                    <button
-                                        class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center"
-                                        type="button" id="addRouteManagerDropdownButton" data-bs-toggle="dropdown"
-                                        aria-expanded="false" style="text-align: left; padding-left: 10px;">
-                                        <span id="add-selected-route-manager">Select Route Manager</span>
-                                    </button>
-                                    <ul class="dropdown-menu pt-0" id="addRouteManagerDropdownMenu"
-                                        aria-labelledby="addRouteManagerDropdownButton" style="width: 100%;">
-                                        <input type="text" class="form-control border-0 border-bottom shadow-none mb-2"
-                                            placeholder="Search..." id="add-route-manager-search"
-                                            oninput="handleAddRouteManagerSearch()"
-                                            style="width: 100%; padding-left: 10px;">
-                                        @foreach ($routeManagers as $routeManager)
-                                            <li><a class="dropdown-item add-route-manager-dropdown-item" href="#"
-                                                    data-id="{{ $routeManager->id }}"
-                                                    data-name="{{ $routeManager->name }}">{{ $routeManager->name }}</a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                                <input type="hidden" id="add-route-manager-id" name="route_manager_id">
+                                <label for="via_counters_id" class="form-label">Via Counters</label>
+                                <select name="via_counters_id[]" class="select2 form-control select2-multiple"
+                                    data-toggle="select2" multiple="multiple">
+                                    @foreach ($counters as $counter)
+                                        <option value="{{ $counter->id }}">{{ $counter->name }}{{ $counter->counter_no ? ' (' . $counter->counter_no . ' no)' : '' }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
+
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label for="add-route-manager-id" class="form-label">Route Manager</label>
+                                    <div class="dropdown">
+                                        <button
+                                            class="btn form-control dropdown-toggle border d-flex justify-content-between align-items-center"
+                                            type="button" id="addRouteManagerDropdownButton" data-bs-toggle="dropdown"
+                                            aria-expanded="false" style="text-align: left; padding-left: 10px;">
+                                            <span id="add-selected-route-manager">Select Route Manager</span>
+                                        </button>
+                                        <ul class="dropdown-menu pt-0" id="addRouteManagerDropdownMenu"
+                                            aria-labelledby="addRouteManagerDropdownButton" style="width: 100%;">
+                                            <input type="text" class="form-control border-0 border-bottom shadow-none mb-2"
+                                                placeholder="Search..." id="add-route-manager-search"
+                                                oninput="handleAddRouteManagerSearch()"
+                                                style="width: 100%; padding-left: 10px;">
+                                            @foreach ($routeManagers as $routeManager)
+                                                <li><a class="dropdown-item add-route-manager-dropdown-item" href="#"
+                                                        data-id="{{ $routeManager->id }}"
+                                                        data-name="{{ $routeManager->name }}">{{ $routeManager->name }}</a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    <input type="hidden" id="add-route-manager-id" name="route_manager_id">
+                                </div>
+                            </div>
 
                         <div class="row">
                             <div class="col-12 mb-3">

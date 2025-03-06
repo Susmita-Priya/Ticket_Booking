@@ -25,8 +25,8 @@
                     @endcan
                 </div>
             </div>
-            <div class="card-body">
-                <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+            <div class="card-body table-responsive">
+                <table id="basic-datatable" class="table table-striped nowrap w-100">
                     <thead>
                         <tr>
                             <th>S/N</th>

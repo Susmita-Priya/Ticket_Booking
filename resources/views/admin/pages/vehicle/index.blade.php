@@ -41,6 +41,7 @@
                             <th>Document</th>
                             <th>Seat</th>
                             <th>Assign trip?</th>
+                            {{-- <th>Up or Down Trip?</th> --}}
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -100,6 +101,15 @@
                                         <span class="badge bg-danger">No</span>
                                     @endif
                                 </td>
+                                {{-- <td>
+                                    @if ($vehicle->is_up_down == 1)
+                                        <span class="badge bg-success">Up Trip</span>
+                                    @elseif ($vehicle->is_up_down == 2)
+                                        <span class="badge bg-warning">Down Trip</span>
+                                    @else
+                                        <span class="badge bg-danger">N/A</span>
+                                    @endif
+                                </td> --}}
                                 <td>
                                     @if ($vehicle->status == 1)
                                     <span class="badge bg-success">Active</span>
@@ -277,6 +287,23 @@
                                                             </select>
                                                         </div>
                                                     </div>
+
+                                                    {{-- <div class = "row">
+                                                        <div class="col-12 mb-3">
+                                                            <label for="is_up_down" class="form-label">Up or Down Trip</label>
+                                                            <select name="is_up_down" class="form-select">
+                                                                <option value="1"
+                                                                    {{ $vehicle->is_up_down == 1 ? 'selected' : '' }}>Up Trip
+                                                                </option>
+                                                                <option value="2"
+                                                                    {{ $vehicle->is_up_down == 2 ? 'selected' : '' }}>Down Trip
+                                                                </option>
+                                                                <option value="0"
+                                                                    {{ $vehicle->is_up_down == 0 ? 'selected' : '' }}>N/A
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div> --}}
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">

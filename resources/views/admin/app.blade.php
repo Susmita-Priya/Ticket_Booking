@@ -193,6 +193,12 @@
                                         </li>
                                     @endcan
 
+                                    @can('helper-list')
+                                        <li>
+                                            <a href="{{ route('helper.section') }}">Helper</a>
+                                        </li>
+                                    @endcan
+
                                     @can('supervisor-list')
                                         <li>
                                             <a href="{{ route('supervisor.section') }}">Supervisor</a>
@@ -220,7 +226,13 @@
 
                                     @can('trip-list')
                                         <li>
-                                            <a href="{{ route('trip.section') }}">Trip</a>
+                                            <a href="{{ route('trip.section') }}">Ongoing/Upcoming Trip</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('completed-trip-list')
+                                        <li>
+                                            <a href="{{ route('completed.trip.section') }}">Completed Trip</a>
                                         </li>
                                     @endcan
 

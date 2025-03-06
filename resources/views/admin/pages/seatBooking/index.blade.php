@@ -84,13 +84,13 @@
                     </form>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body table-responsive">
                 @if($vehicle)
                     <h3 class="text-center"> {{ $vehicle->name }} (Coach - {{ $vehicle->vehicle_no }})</h3>
                     <p class="text-center">Total Payment : <span style="color: green;"><strong>{{ $total_payment }} TK</strong></span></p>
                 @endif
                 
-                <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                <table id="basic-datatable" class="table table-striped nowrap w-100">
                     <thead>
                         <tr>
                             <th>S/N</th>

@@ -18,12 +18,14 @@ return new class extends Migration
             $table->integer('vehicle_id');
             $table->integer('driver_id');
             $table->integer('supervisor_id');
+            $table->integer('helper_id');
             $table->date('start_date');
             $table->date('end_date');
             $table->time('start_time');
             $table->time('end_time');
             $table->string('total_route_cost');
             $table->string('ticket_price');
+            $table->integer('trip_status')->default(0);
             $table->string('status')->default(1);
             $table->timestamps();
         });

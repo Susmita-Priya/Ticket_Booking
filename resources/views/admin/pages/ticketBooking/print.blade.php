@@ -118,7 +118,16 @@
                             </div>
                             <div class="line" style="border-left: 1px dotted #E91E63; margin: 0 20px; display: table-cell;"></div>
                             <div class="right passenger ps-3" style="width: 300px; padding-left: 20px; display: table-cell;">
-                                <h5 style="margin: 0; font-size: 18px;"><strong>Economy Class</strong></h5>
+                                {{-- <h5 style="margin: 0; font-size: 18px;"><strong>Economy Class</strong></h5> --}}
+                                <h5 style="margin: 0; font-size: 18px;"><strong>
+                                    @if ($vehicle->category == '0')
+                                        Economy Class
+                                    @elseif ($vehicle->category == '1')
+                                        Business Class
+                                    @elseif ($vehicle->category == '2')
+                                        Sleeping Coach
+                                    @endif
+                                </strong></h5>
                                 <div class="details" style="font-size: 14px; margin-top: 10px;">
                                     <div class="py-1" style="padding: 5px 0;"><strong>Name:</strong>
                                         {{ $passenger_name ?? 'N/A' }}</div>
@@ -127,10 +136,10 @@
                                     <div class="py-1" style="padding: 5px 0;"><strong>Coach:</strong>
                                         {{ $vehicle->name }} - {{ $vehicle->vehicle_no }}
                                     </div>
-                                    <div class="py-1" style="padding: 5px 0;"><strong>From:</strong>
-                                        {{ $trip->route->startCounter->name }}</div>
-                                    <div class="py-1" style="padding: 5px 0;"><strong>To:</strong>
-                                        {{ $trip->route->endCounter->name }}</div>
+                                    <div class="col-6 py-1" style="padding: 5px 0;"><strong>From:</strong>
+                                        {{ $trip->route->startCounter->name }}{{ $trip->route->startCounter->counter_no ? ' (' . $trip->route->startCounter->counter_no . ' no)' : '' }}</div>
+                                    <div class="col-6 py-1" style="padding: 5px 0;"><strong>To:</strong>
+                                        {{ $trip->route->endCounter->name }}{{ $trip->route->endCounter->counter_no ? ' (' . $trip->route->endCounter->counter_no . ' no)' : '' }}</div>
                                         <div class="col-6 py-1" style="padding: 5px 0;"><strong>Start Date:</strong>
                                             {{ \Carbon\Carbon::parse($trip->start_date)->format('d M Y') }}</div>
                                         <div class="col-6 py-1" style="padding: 5px 0;"><strong>End Date:</strong>

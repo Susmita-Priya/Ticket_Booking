@@ -65,6 +65,7 @@ class RouteController extends Controller
             $route->to_location_id = $request->to_location_id;
             $route->start_counter_id = $request->start_counter_id;
             $route->end_counter_id = $request->end_counter_id;
+            $route->via_counters_id = json_encode(array_values($request->via_counters_id));
             $route->route_manager_id = $request->route_manager_id;
             $route->checkers_id = json_encode($request->checkers_id);
             if ($request->hasFile('document')) {
@@ -101,6 +102,7 @@ class RouteController extends Controller
             $route->to_location_id = $request->to_location_id;
             $route->start_counter_id = $request->start_counter_id;
             $route->end_counter_id = $request->end_counter_id;
+            $route->via_counters_id = json_encode($request->via_counters_id);
             $route->route_manager_id = $request->route_manager_id;
             $route->checkers_id = json_encode($request->checkers_id);
             $fullpath = $route->document;

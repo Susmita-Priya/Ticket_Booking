@@ -238,6 +238,13 @@ class PermissionTableSeeder extends Seeder
             'driver-create',
             'driver-edit',
             'driver-delete',
+            
+
+            //For helper
+            'helper-list',
+            'helper-create',
+            'helper-edit',
+            'helper-delete',
 
 
             //For supervisor
@@ -258,6 +265,9 @@ class PermissionTableSeeder extends Seeder
             'trip-create',
             'trip-edit',
             'trip-delete',
+
+            //For Completed Trip
+            'completed-trip-list',
 
 
         ];

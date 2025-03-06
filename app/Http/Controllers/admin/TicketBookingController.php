@@ -40,15 +40,27 @@ class TicketBookingController extends Controller
             ->get();
             $trips = Trip::where('company_id', $user->id)
             ->orWhere('company_id', $user->is_registration_by)
-            ->where('start_date', '>=', now()->toDateString())
+            ->where(function ($query) {
+                $query->whereRaw("CONCAT(start_date, ' ', start_time) > ?", [now()->toDateTimeString()]);
+            })
+            ->where('trip_status', 1)
             ->latest()
             ->get();
         } elseif ($user->hasRole('Company')) {
             $routes = Route::where('company_id', $user->id)->get();
-            $trips = Trip::where('company_id', $user->id) ->where('start_date', '>=', now()->toDateString())->latest()->get();
+            $trips = Trip::where('company_id', $user->id)
+            ->where(function ($query) {
+                $query->whereRaw("CONCAT(start_date, ' ', start_time) > ?", [now()->toDateTimeString()]);
+            })
+            ->where('trip_status', 1)
+            ->latest()
+            ->get();
         } else {
             $routes = Route::latest()->get();
-            $trips = Trip::latest()->where('start_date', '>=', now()->toDateString())->get();
+            $trips = Trip::latest()->where(function ($query) {
+                $query->whereRaw("CONCAT(start_date, ' ', start_time) > ?", [now()->toDateTimeString()]);
+            })
+            ->where('trip_status', 1)->get();
         }
         
         if ($request->route_id == null || $request->filter_date == null) {
