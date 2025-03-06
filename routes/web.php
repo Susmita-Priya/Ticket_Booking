@@ -61,7 +61,7 @@ Route::get('/', function () {
 });
 
 
-Route::get('/medicine-panda', function () {
+Route::get('/medicine-app-prototype', function () {
     return view('medicine-panda-design');
 });
 
