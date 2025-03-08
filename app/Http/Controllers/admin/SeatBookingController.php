@@ -29,6 +29,8 @@ class SeatBookingController extends Controller
     {
         $user = auth()->user();
         $vehicle = null;
+        $vehicles = null;
+        $bookings = null;
         $total_payment = 0;
 
 
@@ -68,6 +70,8 @@ class SeatBookingController extends Controller
             $filter_date = $request->filter_date;
             $vehicle = Vehicle::where('id', $request->vehicle_id)->firstOrFail();
 
+
+
             if ($user->hasRole('User')) {
                 $bookings = TicketBooking::where('company_id', $user->id)
                 ->orWhere('company_id', $user->is_registration_by)
@@ -77,9 +81,6 @@ class SeatBookingController extends Controller
                 ->get();
             } elseif ($user->hasRole('Company')) {
                 $bookings = TicketBooking::where('company_id', $user->id)
-                ->orWhereHas('company', function ($query) use ($user) {
-                    $query->where('is_registration_by', $user->id);
-                })
                 ->where('vehicle_id', $request->vehicle_id)
                 ->where('travel_date', $filter_date)
                 ->latest()

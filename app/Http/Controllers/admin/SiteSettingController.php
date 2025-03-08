@@ -49,8 +49,11 @@ class SiteSettingController extends Controller
             'youtube_link' => 'nullable|url',
         ];
 
+
+
         // Validate the request data
         $validator = Validator::make($request->all(), $rules);
+        $request->merge(['company_id' => auth()->user()->id]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();

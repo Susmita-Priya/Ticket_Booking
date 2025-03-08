@@ -22,6 +22,7 @@ class Vehicle extends Model
         'amenities_id',
         'document',
         'is_booked',
+        'current_location_id',
         'status',
     ];
 
@@ -39,5 +40,10 @@ class Vehicle extends Model
 
     public function seats(){
         return $this->hasMany(Seat::class);
+    }
+
+    public function trips()
+    {
+        return $this->hasMany(Trip::class);
     }
 }

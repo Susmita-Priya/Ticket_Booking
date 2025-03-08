@@ -14,13 +14,16 @@ class Trip extends Model
         'route_id',
         'vehicle_id',
         'driver_id',
+        'helper_id',
         'supervisor_id',
         'start_date',
         'end_date',
         'start_time',
         'end_time',
+        'reporting_time',
         'total_route_cost',
         'ticket_price',
+        'trip_status',
         'status',
     ];
 
@@ -47,6 +50,11 @@ class Trip extends Model
     public function supervisor()
     {
         return $this->belongsTo(Supervisor::class);
+    }
+
+    public function helper()
+    {
+        return $this->belongsTo(Helper::class);
     }
 
     public function payments()

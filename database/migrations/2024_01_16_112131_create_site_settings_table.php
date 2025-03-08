@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('site_settings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('company_id');
             $table->string('name')->nullable();
             $table->string('title')->nullable();
             $table->text('meta_description')->nullable();

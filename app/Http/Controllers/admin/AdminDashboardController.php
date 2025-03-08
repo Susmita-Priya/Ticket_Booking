@@ -27,6 +27,7 @@ class AdminDashboardController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
         if (auth()->user()->hasRole('Super Admin')) {
             $counters = Counter::latest()->get();
             $routes = Route::latest()->get();
@@ -36,29 +37,50 @@ class AdminDashboardController extends Controller
             $drivers = Driver::latest()->get();
             $vehicles = Vehicle::latest()->get();
             $trips = Trip::latest()->get();
-        } else {
-            $counters = Counter::where('company_id', auth()->user()->id)->latest()->get();
-            $routes = Route::where('company_id', auth()->user()->id)->latest()->get();
-            $routeManagers = RouteManager::where('company_id', auth()->user()->id)->latest()->get();
-            $checkers = Checker::where('company_id', auth()->user()->id)->latest()->get();
-            $owners = Owner::where('company_id', auth()->user()->id)->latest()->get();
-            $drivers = Driver::where('company_id', auth()->user()->id)->latest()->get();
-            $vehicles = Vehicle::where('company_id', auth()->user()->id)->latest()->get();
-            $trips = Trip::where('company_id', auth()->user()->id)->latest()->get();
+        } elseif (auth()->user()->hasRole('Company')) {
+            $counters = Counter::where('company_id', auth()->
+                user()->id)->latest()->get();
+            $routes = Route::where('company_id', auth()->
+                user()->id)->latest()->get();
+            $routeManagers = RouteManager::where('company_id', auth()->
+                user()->id)->latest()->get();
+            $checkers = Checker::where('company_id', auth()->
+                user()->id)->latest()->get();
+            $owners = Owner::where('company_id', auth()->
+                user()->id)->latest()->get();
+            $drivers = Driver::where('company_id', auth()->
+                user()->id)->latest()->get();
+            $vehicles = Vehicle::where('company_id', auth()->
+                user()->id)->latest()->get();
+            $trips = Trip::where('company_id', auth()->
+                user()->id)->latest()->get();
+        }else {
+            $counters = Counter::where('company_id', $user->id)
+                ->orWhere('company_id', $user->is_registration_by)->latest()->get();
+            $routes = Route::where('company_id', $user->id)
+                ->orWhere('company_id', $user->is_registration_by)->latest()->get();
+            $routeManagers = RouteManager::where('company_id', $user->id)
+                ->orWhere('company_id', $user->is_registration_by)->latest()->get();
+            $checkers = Checker::where('company_id', $user->id)
+                ->orWhere('company_id', $user->is_registration_by)->latest()->get();
+            $owners = Owner::where('company_id', $user->id)
+                ->orWhere('company_id', $user->is_registration_by)->latest()->get();
+            $drivers = Driver::where('company_id', $user->id)
+                ->orWhere('company_id', $user->is_registration_by)->latest()->get();
+            $vehicles = Vehicle::where('company_id', $user->id)
+                ->orWhere('company_id', $user->is_registration_by)->latest()->get();
+            $trips = Trip::where('company_id', $user->id)
+                ->orWhere('company_id', $user->is_registration_by)->latest()->get();
         }
 
-        $loginLog = LoginLog::orderBy('last_login','desc')->get();
+
+        $loginLog = LoginLog::orderBy('last_login', 'desc')->get();
         $totalOffer = Offer::count();
-       return view('admin.dashboard', compact('loginLog','totalOffer','counters', 'routes', 'routeManagers', 'checkers', 'owners', 'drivers', 'vehicles', 'trips'));
+        return view('admin.dashboard', compact('loginLog', 'totalOffer', 'counters', 'routes', 'routeManagers', 'checkers', 'owners', 'drivers', 'vehicles', 'trips'));
     }
 
     public function unauthorized()
     {
         return view('admin.unauthorized');
     }
-
-
-
-
-
 }

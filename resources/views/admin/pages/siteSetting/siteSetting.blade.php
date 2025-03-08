@@ -51,6 +51,7 @@
                                         <label for="logo" class="form-label">Logo</label>
                                         <input type="file" class="form-control" name="logo" value="{{$siteSettings?$siteSettings->logo:''}}"
                                                placeholder="Enter Logo">
+                                        <small class="form-text text-muted">Logo dimension should be (100x50)px</small>
                                         @if($siteSettings? $siteSettings->logo:'')
                                             <img src="{{asset($siteSettings?$siteSettings->logo:'')}}" alt="Current Image" class="mt-2" style="max-width: 50px;">
                                         @endif
@@ -66,7 +67,7 @@
                                     <div class="mb-3 col-md-4">
                                         <label for="phone" class="form-label">Phone</label>
                                         <input type="number" class="form-control" name="phone" value="{{$siteSettings?$siteSettings->phone:''}}"
-                                               placeholder="Password">
+                                               placeholder="Phone">
                                     </div>
                                 </div>
 

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->json('amenities_id');
             $table->string('document')->nullable();
             $table->string('is_booked')->default(0);
+            $table->string('current_location_id')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });

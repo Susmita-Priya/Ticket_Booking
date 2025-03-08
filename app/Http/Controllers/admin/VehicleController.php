@@ -25,8 +25,10 @@ class VehicleController extends Controller
         })->only('index');
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        // $route = $request->route() ?? null;
+
         if (auth()->user()->hasRole('Super Admin')) {
             $vehicles = Vehicle::with('owner', 'type')->latest()->get();
             $owners = Owner::latest()->get();
@@ -122,6 +124,7 @@ class VehicleController extends Controller
                 $vehicle->document = $vehicle->document;
             }
             $vehicle->is_booked = $request->is_booked;
+            // $vehicle->current_location_id = $request->current_location_id;
             $vehicle->status = $request->status;
             $vehicle->save();
             Toastr::success('Vehicle Updated Successfully', 'Success');

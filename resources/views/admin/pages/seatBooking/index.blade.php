@@ -84,13 +84,13 @@
                     </form>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body table-responsive">
                 @if($vehicle)
                     <h3 class="text-center"> {{ $vehicle->name }} (Coach - {{ $vehicle->vehicle_no }})</h3>
                     <p class="text-center">Total Payment : <span style="color: green;"><strong>{{ $total_payment }} TK</strong></span></p>
                 @endif
                 
-                <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                <table id="basic-datatable" class="table table-striped nowrap w-100">
                     <thead>
                         <tr>
                             <th>S/N</th>
@@ -112,8 +112,8 @@
                         @foreach ($bookings as $booking)
                             <tr>
                                 <td>{{ ++$key }}</td>
-                                <td>{{ $booking->vehicle->name }} <br>
-                                    Vehicle No : {{ $booking->vehicle->vehicle_no }}</td>
+                                <td>{{ $booking->vehicle->name ?? "N/A"}} <br>
+                                    Vehicle No : {{ $booking->vehicle->vehicle_no ?? "N/A"}}</td>
                                 <td>
                                     @foreach (json_decode($booking->seat_data) as $seat)
                                         {{ $seat->seatNo }}<br>
@@ -123,7 +123,7 @@
                                 <td>{{ \Carbon\Carbon::parse($booking->travel_date)->format('d-m-Y') }}</td>
                                 <td>
                                     @if ($booking->payments->payment_method == 'card')
-                                     {{ "Card" }}
+                                        {{ "Card" }}
                                         <br>Card Number: {{ $booking->payments->card_number ?? 'N/A' }}
                                         <br>Expiry: {{ $booking->payments->card_expiry ?? 'N/A' }}
                                         <br>Security Code: {{ $booking->payments->security_code ?? 'N/A' }}

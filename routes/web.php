@@ -29,10 +29,14 @@ use App\Http\Controllers\admin\SiteSettingController;
 use App\Http\Controllers\admin\SupervisorController;
 use App\Http\Controllers\admin\SliderController;
 use App\Http\Controllers\admin\BlogController;
+use App\Http\Controllers\admin\completedTripController;
+use App\Http\Controllers\admin\HelperController;
 use App\Http\Controllers\admin\PDFController;
 use App\Http\Controllers\admin\PlaceController;
 use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\admin\TermsController;
+use App\Http\Controllers\admin\testHelper;
+use App\Http\Controllers\admin\testHelperController;
 use App\Http\Controllers\admin\TicketBookingController;
 use App\Http\Controllers\admin\TripController;
 use App\Http\Controllers\admin\TypeController;
@@ -73,6 +77,8 @@ Route::get('/offer', [HomePageController::class, 'offer'])->name('offer');
 Route::get('/contact', [HomePageController::class, 'contact'])->name('contact');
 
 Route::middleware('auth')->group(callback: function () {
+
+    // Route::get('/test', [testHelperController::class, 'index']);
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('/unauthorized-action', [AdminDashboardController::class, 'unauthorized'])->name('unauthorized.action');
 
@@ -260,6 +266,13 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/driver-delete/{id}', [DriverController::class, 'destroy'])->name('driver.destroy');
 
 
+    //helper
+    Route::get('/helper-section', [HelperController::class, 'index'])->name('helper.section');
+    Route::post('/helper-store', [HelperController::class, 'store'])->name('helper.store');
+    Route::put('/helper-update/{id}', [HelperController::class, 'update'])->name('helper.update');
+    Route::get('/helper-delete/{id}', [HelperController::class, 'destroy'])->name('helper.destroy');    
+
+
     //supervisor
     Route::get('/supervisor-section', [SupervisorController::class, 'index'])->name('supervisor.section');
     Route::post('/supervisor-store', [SupervisorController::class, 'store'])->name('supervisor.store');
@@ -280,6 +293,11 @@ Route::middleware('auth')->group(callback: function () {
     Route::post('/trip-store', [TripController::class, 'store'])->name('trip.store');
     Route::put('/trip-update/{id}', [TripController::class, 'update'])->name('trip.update');
     Route::get('/trip-delete/{id}', [TripController::class, 'destroy'])->name('trip.destroy');
+
+    Route::get('/fetch-vehicles', [TripController::class, 'fetchVehicles']);
+
+    //Completed Trip
+    Route::get('/completed-trip-section', [completedTripController::class, 'index'])->name('completed.trip.section');
 
     //slider
     Route::get('/slider-section', [SliderController::class, 'index'])->name('slider.section');

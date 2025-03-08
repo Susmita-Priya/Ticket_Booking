@@ -15,6 +15,7 @@ class Route extends Model
         'to_location_id',
         'start_counter_id',
         'end_counter_id',
+        'via_counters_id',
         'route_manager_id',
         'checkers_id',
         'document',
@@ -49,6 +50,11 @@ class Route extends Model
     public function endCounter()
     {
         return $this->belongsTo(Counter::class, 'end_counter_id');
+    }
+
+    public function viaCounters()
+    {
+        return $this->hasMany(Counter::class, 'via_counters_id');
     }
 
     public function checkers()

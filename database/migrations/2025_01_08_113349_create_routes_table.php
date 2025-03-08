@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('to_location_id');
             $table->integer('start_counter_id');
             $table->integer('end_counter_id');
+            $table->json('via_counters_id');
             $table->integer('route_manager_id');
             $table->json('checkers_id');
             $table->string('document')->nullable();
