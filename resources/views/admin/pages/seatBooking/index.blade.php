@@ -112,8 +112,8 @@
                         @foreach ($bookings as $booking)
                             <tr>
                                 <td>{{ ++$key }}</td>
-                                <td>{{ $booking->vehicle->name }} <br>
-                                    Vehicle No : {{ $booking->vehicle->vehicle_no }}</td>
+                                <td>{{ $booking->vehicle->name ?? "N/A"}} <br>
+                                    Vehicle No : {{ $booking->vehicle->vehicle_no ?? "N/A"}}</td>
                                 <td>
                                     @foreach (json_decode($booking->seat_data) as $seat)
                                         {{ $seat->seatNo }}<br>
@@ -123,7 +123,7 @@
                                 <td>{{ \Carbon\Carbon::parse($booking->travel_date)->format('d-m-Y') }}</td>
                                 <td>
                                     @if ($booking->payments->payment_method == 'card')
-                                     {{ "Card" }}
+                                        {{ "Card" }}
                                         <br>Card Number: {{ $booking->payments->card_number ?? 'N/A' }}
                                         <br>Expiry: {{ $booking->payments->card_expiry ?? 'N/A' }}
                                         <br>Security Code: {{ $booking->payments->security_code ?? 'N/A' }}

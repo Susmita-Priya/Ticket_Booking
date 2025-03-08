@@ -9,6 +9,7 @@ class SiteSetting extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'company_id',
         'name',
         'title',
         'meta_description',

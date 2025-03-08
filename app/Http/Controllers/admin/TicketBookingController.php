@@ -75,17 +75,20 @@ class TicketBookingController extends Controller
                 ->orWhere('company_id', $user->is_registration_by)
                 ->where('route_id', $request->route_id)
                 ->where('start_date', $filter_date)
+                ->where('trip_status', 1)
                 ->latest()
                 ->get();
             } elseif ($user->hasRole('Company')) {
                 $trips = Trip::where('company_id', $user->id)
                 ->where('route_id', $request->route_id)
                 ->where('start_date', $filter_date)
+                ->where('trip_status', 1)
                 ->latest()
                 ->get();
             } elseif ($user->hasRole('Super Admin')) {
                 $trips = Trip::where('route_id', $request->route_id)
                 ->where('start_date', $filter_date)
+                ->where('trip_status', 1)
                 ->latest()
                 ->get();
             }

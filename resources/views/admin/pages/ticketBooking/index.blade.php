@@ -187,7 +187,7 @@
                     <thead>
                         <tr>
                             <th>S/N</th>
-                            <th>Company Name</th>
+                            {{-- <th>Company Name</th> --}}
                             <th>Vehicle</th>
                             <th>Category</th>
                             <th>Start Counter</th>
@@ -202,7 +202,7 @@
                         @foreach ($trips as $trip)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td class="text-wrap">{{ $trip->company->name ?? 'N/A' }}</td>
+                                {{-- <td class="text-wrap">{{ $trip->company->name ?? 'N/A' }}</td> --}}
                                 <td>{{ $trip->vehicle->name ?? 'N/A' }} <br>
                                     (Coach : {{ $trip->vehicle->vehicle_no ?? 'N/A' }})
                                 </td>

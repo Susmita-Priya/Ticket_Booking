@@ -1,185 +1,172 @@
-{{-- @extends('admin.app')
+{{-- <!DOCTYPE html>
+<html lang="en">
 
-@section('admin_content')
-    <div class="row">
-        <div class="col-12">
-            <div class="page-title-box">
-                <h4 class="page-title">Print Ticket</h4>
-            </div>
-        </div>
-    </div>
+<head>
+    <meta charset="utf-8" />
+    <title>Dashboard | Online Ticket Booking</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card print-section">
-                <div class="card-body">
-                    @if (session()->has('vehicle'))
-                        <div class="ticket mx-auto">
-                            <div class="header d-flex align-items-center">
-                                <h3 class="text-nowrap operator text-uppercase">{{ session('vehicle')->name }}</h3>
-                                <h4 class="text-nowrap passenger text-uppercase p-3">Passenger Info</h4>
-                            </div>
-                            <div class="ticket-details p-3 d-flex">
-                                <div class="left operator">
-                                    <h5><strong>
-                                        @if (session('vehicle')->category == '0')
-                                            Economy Class
-                                        @elseif (session('vehicle')->category == '1')
-                                            Business Class
-                                        @elseif (session('vehicle')->category == '2')
-                                            Sleeping Coach
-                                        @endif
-                                    </strong></h5>
-                                    <div class="details row">
-                                        <div class="col-12 py-1"><strong>Coach:</strong> {{ session('vehicle')->vehicle_no }}</div>
-                                        <div class="col-6 py-1"><strong>From:</strong> {{ session('route')->startCounter->name }}</div>
-                                        <div class="col-6 py-1"><strong>To:</strong> {{ session('route')->endCounter->name }}</div>
-                                        <div class="col-6 py-1"><strong>Travel Date:</strong> {{ \Carbon\Carbon::parse(session('bookingDate'))->format('d M Y') }}</div>
-                                        <div class="col-6 py-1"><strong>Departure Time:</strong> {{ \Carbon\Carbon::parse(session('trip')->time)->format('h:i A') }}</div>
-                                    </div>
-                                    <table class="table-fixed table mt-3">
-                                        <tbody>
-                                            <tr>
-                                                <td class="col-6"><strong>Seat:</strong></td>
-                                                <td>
-                                                    @foreach (session('seatsData') as $seat)
-                                                        {{ $loop->last ? $seat['seatNo'] : $seat['seatNo'] . ',' }}
-                                                    @endforeach
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Ticket Price:</strong></td>
-                                                <td>{{ number_format(session('seatsData')[0]['seatPrice'], 2) }} BDT </td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Quantity:</strong></td>
-                                                <td> {{ count(session('seatsData')) }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Total:</strong></td>
-                                                <td><strong>{{ number_format(array_sum(array_column(session('seatsData'), 'seatPrice')), 2) }} BDT</strong></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+        @page {
+            margin-top: 10px !important;
+            margin-right: 10px !important;
+            padding: 0 10px !important;
+            size: A4;
+        }
+
+        .ticket {
+            position: relative;
+            width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            background: url("{{ asset('images/ticket/city_bus_bro1.png') }}") no-repeat center center;
+            background-size: cover;
+        }
+
+        .ticket::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("{{ asset('images/ticket/city_bus_bro1.png') }}") no-repeat center center;
+            background-size: cover;
+            background-color: rgba(255, 255, 255, 0.5); 
+            z-index: -1;
+            opacity: 0.2;
+        }
+
+        style="display: table; width: 800px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin: 0 auto;background: url("{{ asset('images/ticket/city_bus_bro1.png') }}") no-repeat center center; background-size: cover;"
+
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f5f5f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; box-sizing:border-box;">
+    <div class="row print-section" style="width: 800px">
+        <div class="col-12" style="width: 100%;">
+            <div class="card" style="background: transparent; border: none;">
+                <div class="card-body" style="padding: 0;">
+                    <div class="ticket">
+                        <div class="header" style="background-color: #E91E63; color: white; padding: 16px; display: table;">
+                            <div class="d-flex align-items-center" style="display: table; box-sizing:border-box; width: 500px;">
+                                <div class="company-logo" style="display: table-cell; width: 100px; height:50px; margin-right: 10px; vertical-align: middle;">
+                                    <img src="{{ asset('images/ticket/company-logo.png') }}" alt="logo" style=" width: 100px; height:50px; object-fit: contain;">
                                 </div>
-                                <div class="line"></div>
-                                <div class="right passenger ps-3">
-                                    <h5 class=""><strong>Economy Class</strong></h5>
-                                    <div class="details">
-                                        <div class="py-1"><strong>Name:</strong> {{ session('passenger_name') ?? 'N/A'}}</div>
-                                        <div class="py-1"><strong>Phone:</strong> {{ session('passenger_phone') }}</div>
-                                        <div class="py-1"><strong>Coach:</strong> {{ session('vehicle')->name }} - {{ session('vehicle')->vehicle_no }}</div>
-                                        <div class="py-1"><strong>From:</strong> {{ session('route')->startCounter->name }}</div>
-                                        <div class="py-1"><strong>To:</strong> {{ session('route')->endCounter->name }}</div>
-                                        <div class="py-1"><strong>Travel Date:</strong> {{ \Carbon\Carbon::parse(session('bookingDate'))->format('d M Y') }}</div>
-                                        <div class="py-1"><strong>Departure Time:</strong> {{ \Carbon\Carbon::parse(session('trip')->time)->format('h:i A') }}</div>
-                                        <div class="py-1"><strong>Seat:</strong>
-                                            @foreach (session('seatsData') as $seat)
-                                                {{ $loop->last ? $seat['seatNo'] : $seat['seatNo'] . ',' }}
-                                            @endforeach
+                                
+                                <h1 class="text-nowrap operator text-uppercase" style="display: table-cell; width:400px; white-space: nowrap; margin: 0; font-size: 24px; vertical-align: middle;">
+                                    vehicle name
+                                </h1>
+                            </div>
+                            <h1 class="text-nowrap passenger text-uppercase p-3" style="display: table-cell; box-sizing:border-box; white-space: nowrap; width: 300px; margin: 0; font-size: 20px; vertical-align: middle;">
+                                Passenger Info</h1>
+                        </div>
+                        <div class="ticket-details" style="padding: 20px; display: table; gap: 20px;">
+                            <div class="left operator" style="display: table-cell; width: 500px;">
+                                <h5 style="margin: 0; font-size: 18px;"><strong>
+                                       vehicle category
+                                    </strong></h5>
+                                <div class="details" style="font-size: 14px; margin-top: 10px;">
+                                    <div class="col-12 py-1" style="padding: 5px 0;"><strong>Coach:</strong>
+                                        vehicle_no</div>
+                                    <div class="col-6 py-1" style="padding: 5px 0;"><strong>From:</strong>
+                                        from location</div>
+                                    <div class="col-6 py-1" style="padding: 5px 0;"><strong>To:</strong>
+                                       to location</div>
+                                    <div class="col-6 py-1" style="padding: 5px 0;"><strong>Start Date:</strong>
+                                       start date</div>
+                                    <div class="col-6 py-1" style="padding: 5px 0;"><strong>End Date:</strong>
+                                        end date</div>
+                                    <div class="col-6 py-1" style="padding: 5px 0;"><strong>Start Time:</strong>
+                                        start time</div>
+                                    <div class="col-6 py-1" style="padding: 5px 0;"><strong>End Time:</strong>
+                                        end time</div>
+                                </div>
+                                <table class="table-fixed table mt-3" style="width: 100%; margin-top: 15px;">
+                                    <tbody>
+                                        <tr>
+                                            <td class="col-6" style="width: 50%; padding: 5px 0;">
+                                                <strong>Seat:</strong>
+                                            </td>
+                                            <td style="padding: 5px 0;">
+                                                @foreach ($seatsData as $seat)
+                                                    {{ $loop->last ? $seat['seatNo'] : $seat['seatNo'] . ',' }}
+                                                @endforeach
+                                                seat no
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 5px 0;"><strong>Ticket Price:</strong></td>
+                                            <td style="padding: 5px 0;">
+                                                price BDT
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 5px 0;"><strong>Quantity:</strong></td>
+                                            <td style="padding: 5px 0;">quantity</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 5px 0;"><strong>Total:</strong></td>
+                                            <td style="padding: 5px 0;">
+                                                <strong>
+                                                    BDT
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="line" style="border-left: 1px dotted #E91E63; margin: 0 20px; display: table-cell;"></div>
+                            <div class="right passenger ps-3" style="width: 300px; padding-left: 20px; display: table-cell;">
+                                <h5 style="margin: 0; font-size: 18px;"><strong>Economy Class</strong></h5>
+                                <h5 style="margin: 0; font-size: 18px;"><strong>
+                                    vehicle category
+                                </strong></h5>
+                                <div class="details" style="font-size: 14px; margin-top: 10px;">
+                                    <div class="py-1" style="padding: 5px 0;"><strong>Name:</strong>
+                                       </div>
+                                    <div class="py-1" style="padding: 5px 0;"><strong>Phone:</strong>
                                         </div>
-                                        <div class="py-1" style="padding: 5px 0;"><strong>Price:</strong>
-                                            {{ number_format(session('seatsData')[0]['seatPrice'], 2) }} BDT x {{ count(session('seatsData')) }} </div>
-                                        <div class="py-1" style="padding: 5px 0;"><strong>Total: </strong>
-                                            {{ number_format(array_sum(array_column(session('seatsData'), 'seatPrice')), 2) }} BDT
+                                    <div class="py-1" style="padding: 5px 0;"><strong>Coach:</strong>
+                                       
+                                    </div>
+                                    <div class="col-6 py-1" style="padding: 5px 0;"><strong>From:</strong>
+                                     </div>
+                                    <div class="col-6 py-1" style="padding: 5px 0;"><strong>To:</strong>
+                                        </div>
+                                        <div class="col-6 py-1" style="padding: 5px 0;"><strong>Start Date:</strong>
                                             </div>
+                                        <div class="col-6 py-1" style="padding: 5px 0;"><strong>End Date:</strong>
+                                            </div>
+                                        <div class="col-6 py-1" style="padding: 5px 0;"><strong>Start Time:</strong>
+                                            </div>
+                                        <div class="col-6 py-1" style="padding: 5px 0;"><strong>End Time:</strong>
+                                            </div>
+                                    <div class="py-1" style="padding: 5px 0;"><strong>Seat:</strong>
+                                        @foreach ($seatsData as $seat)
+                                            {{ $loop->last ? $seat['seatNo'] : $seat['seatNo'] . ',' }}
+                                        @endforeach
+                                    </div>
+                                    <div class="py-1" style="padding: 5px 0;"><strong>Price:</strong>
+                                         </div>
+                                    <div class="py-1" style="padding: 5px 0;"><strong>Total: </strong>
+                                         BDT
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    @else
-                        <div class="alert alert-danger">No booking data found. Please book a ticket first.</div>
-                    @endif
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="row mt-3">
-        <div class="col-12 text-center">
-            <a href="{{ route('generate.pdf') }}" class="btn btn-primary">Download Ticket</a>
-            <a href="{{ route('ticket_booking.section') }}" class="btn btn-secondary">Back</a>
-        </div>
-    </div>
-
-    <style>
-        .ticket {
-            background: white;
-            width: 800px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            position: relative; /* Required for pseudo-element positioning */
-            overflow: hidden;
-        }
-
-        .operator {
-            width: 500px;
-        }
-
-        .passenger {
-            width: 300px;
-        }
-
-        .header {
-            background-color: #E91E63;
-            color: white;
-            padding: 16px;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-        }
-
-        .details {
-            font-size: 14px;
-        }
-
-        .ticket-details {
-            gap: 5px;
-        }
-
-        .line{
-        border: 1px dotted #E91E63;
-        margin-left: 15px;
-        }
-
-        .ticket::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url("{{ asset('images/ticket/city_bus_bro.png') }}") no-repeat center center;
-    background-size: cover;
-    opacity: 0.2; /* Adjust opacity here (0.5 = 50% opacity) */
-    z-index: -1; /* Ensures the pseudo-element stays behind the content */
-}
-
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-
-            .print-section,
-            .print-section * {
-                visibility: visible;
-                
-            }
-
-            .print-section {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
-
-            .btn {
-                display: none;
-            }
-        }
-    </style>
-
-    
-@endsection --}}
+</body>
+</html>
+ --}}

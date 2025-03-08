@@ -38,6 +38,7 @@
                             <th>Supervisor</th>
                             <th>Start Date & Time</th>
                             <th>End Date & Time</th>
+                            <th>Reporting Time</th>
                             {{-- <th>Start Time</th>
                             <th>End Time</th> --}}
                             <th>Ticket Price</th>
@@ -64,6 +65,7 @@
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($trip->end_date . ' ' . $trip->end_time)->format('d-m-Y h:i A') }}
                                 </td>
+                                <td>{{ \Carbon\Carbon::parse($trip->reporting_time)->format('h:i A') }}</td>
                                 {{-- <td>{{ $trip->start_time }}</td>
                                 <td>{{ $trip->end_time }}</td> --}}
                                 <td>{{ $trip->ticket_price }} TK</td>
@@ -474,6 +476,16 @@
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
+                                                            <label for="reporting_time" class="form-label">Reporting
+                                                                Time</label>
+                                                            <input type="time" id="reporting_time" name="reporting_time"
+                                                                value="{{ $trip->reporting_time }}" class="form-control"
+                                                                required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-12 mb-3">
                                                             <label for="start_time" class="form-label">Start Time</label>
                                                             <input type="time" id="start_time" name="start_time"
                                                                 value="{{ $trip->start_time }}" class="form-control"
@@ -490,7 +502,7 @@
                                                         </div>
                                                     </div>
 
-
+                                                
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
                                                             <label for="ticket_price" class="form-label">Ticket
@@ -1052,6 +1064,15 @@
 
                         <div class="row">
                             <div class="col-12 mb-3">
+                                <label for="reporting_time" class="form-label
+                                    ">Reporting Time</label>
+                                <input type="time" id="reporting_time" name="reporting_time" class="form-control"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
                                 <label for="start_time" class="form-label">Start Time</label>
                                 <input type="time" id="start_time" name="start_time" class="form-control" required>
                             </div>
@@ -1061,6 +1082,7 @@
                                 <input type="time" id="end_time" name="end_time" class="form-control" required>
                             </div>
                         </div>
+
 
 
                         <div class="row">

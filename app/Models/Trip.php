@@ -20,6 +20,7 @@ class Trip extends Model
         'end_date',
         'start_time',
         'end_time',
+        'reporting_time',
         'total_route_cost',
         'ticket_price',
         'trip_status',

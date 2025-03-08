@@ -78,6 +78,7 @@ public function fetchVehicles(Request $request)
                 'end_date' => 'required',
                 'start_time' => 'required',
                 'end_time' => 'required',
+                'reporting_time' => 'required',
                 'ticket_price' => 'required|numeric',
                 'total_route_cost' => 'required|numeric',
             ]);
@@ -93,6 +94,7 @@ public function fetchVehicles(Request $request)
             $trip->end_date = $request->end_date;
             $trip->start_time = $request->start_time;
             $trip->end_time = $request->end_time;
+            $trip->reporting_time = $request->reporting_time;
             $trip->ticket_price = $request->ticket_price;
             $trip->total_route_cost = $request->total_route_cost;
             $trip->trip_status = 1;
@@ -125,6 +127,7 @@ public function fetchVehicles(Request $request)
                 'end_date' => 'required',
                 'start_time' => 'required',
                 'end_time' => 'required',
+                'reporting_time' => 'required',
                 'ticket_price' => 'required|numeric',
                 'total_route_cost' => 'required|numeric',
             ]);
@@ -141,6 +144,7 @@ public function fetchVehicles(Request $request)
             $trip->end_date = $request->end_date;
             $trip->start_time = $request->start_time;
             $trip->end_time = $request->end_time;
+            $trip->reporting_time = $request->reporting_time;
             $trip->ticket_price = $request->ticket_price;
             $trip->total_route_cost = $request->total_route_cost;
             $trip->trip_status = $request->trip_status;

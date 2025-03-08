@@ -99,10 +99,13 @@
         <div class="leftside-menu">
             <a href="{{ route('dashboard') }}" class="logo logo-light">
                 <span class="logo-lg">
-                    <img src="{{ URL::to('backend/images/bb.png') }}" alt="logo" style="height: 50px;">
+                    @php
+                        $companyLogo = \App\Models\SiteSetting::where('company_id', auth()->user()->id)->first()->logo ?? 'backend/images/bb.png';
+                    @endphp
+                    <img src="{{ URL::to($companyLogo) }}" alt="logo" style="height: 50px;">
                 </span>
                 <span class="logo-sm">
-                    <img src="{{ URL::to('backend/images/bb.png') }}" alt="small logo">
+                    <img src="{{ URL::to($companyLogo) }}" alt="small logo">
                 </span>
             </a>
 
