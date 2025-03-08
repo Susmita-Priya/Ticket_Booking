@@ -1,0 +1,249 @@
+								------------------------------------------------------------------------------------------------------
+								|                                               START                                                |
+								------------------------------------------------------------------------------------------------------
+PATH : app\Http\Controllers\ExpenseTransactionController.php
+
+	Import : use Illuminate\Support\Str;
+
+	Method : index ()
+
+		Have to find out this line : return $row->expenseItems->pluck('head.name')->join(',');
+		Change it into this one : return Str::limit($row->expenseItems->pluck('head.name')->join(','), 50);
+
+		Have to find out this line : return $row->expenseItems->pluck('headItem.name')->join(',');
+		Change it into this one : return Str::limit($row->expenseItems->pluck('headItem.name')->join(','), 50);
+
+								------------------------------------------------------------------------------------------------------
+								|                                                END                                                 |
+								------------------------------------------------------------------------------------------------------
+
+
+								------------------------------------------------------------------------------------------------------
+								|                                               START                                                |
+								------------------------------------------------------------------------------------------------------
+PATH : resources\views\expense\create.blade.php
+
+	Comment out this part : 
+		
+		$(document).on('click', '.add-more-btn', function () {
+                let lll = $('#expense-table tbody>tr:last');
+                let index = Number($(lll).find('input[name=index]').val()) + 1;
+                let prefix = "items[" + index + "]";
+                let cloned = $(lll).clone().find('input, select')
+                    .each(function (ind, el) {
+                        this.name = this.name.replace(/items\[\d+]/, prefix);
+                        this.value = '';
+                    }).end();
+
+                // Fix Select2 dropdown
+                cloned.find('.select2-container').remove(); // Remove the old Select2 wrapper
+                cloned.find('select').show().select2(); // Reinitialize Select2
+
+                $('#expense-table').append(cloned)
+                $('#expense-table tbody select').select2();
+
+            })
+
+	$(document).on('click', '.remove-item-btn', function () {
+                $(this).closest('tr').remove();
+                calculateTotal();
+            })
+
+
+
+
+
+	Add this part : 
+		
+		$(document).on("click", ".add-more-btn", function () {
+                let index = $("#expense-table tbody tr").length; // Get the next available index
+                let newRow = `<tr>
+                        <input type="hidden" value="${index}" name="index">
+                        <td style="width: 35%">
+                            <select class="form-control select-expense-head" name="items[${index}][head_id]">
+                                <option value="">Select Expense Head</option>
+                                @foreach($expenseHeads as $id => $name)
+                                <option value="{{ $id }}">{{ $name }}</option>
+                                @endforeach
+                                </select>
+                            </td>
+                            <td style="width: 35%">
+                                <select class="form-control select-expense-head-item" name="items[${index}][head_item_id]">
+                                <option value="">Select Item Head</option>
+                            </select>
+                        </td>
+                        <td style="width: 20%">
+                            <input type="text" class="form-control td-amount" name="items[${index}][amount]" value="">
+                        </td>
+                        <td>
+                            <button class="remove-item-btn btn-sm btn-danger" type="button">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>`;
+                $("#expense-table tbody").append(newRow);
+            });
+
+            $(document).on("click", ".remove-item-btn", function () {
+                $(this).closest("tr").remove();
+                $("#expense-table tbody tr").each(function (i) {
+                    $(this).find("input, select").each(function () {
+                        let name = $(this).attr("name");
+                        if (name) {
+                            name = name.replace(/\[\d+\]/, `[${i}]`);
+                            $(this).attr("name", name);
+                        }
+                    });
+                });
+                calculateTotal();
+            });
+
+		<script>
+        	document.addEventListener("keydown", function(event) {
+            		if (event.key === "Enter" && event.target.tagName !== "TEXTAREA") {
+                		event.preventDefault();
+            		}
+        	});
+    	</script>
+
+								------------------------------------------------------------------------------------------------------
+								|                                                END                                                 |
+								------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+								------------------------------------------------------------------------------------------------------
+								|                                               START                                                |
+								------------------------------------------------------------------------------------------------------
+PATH : resources\views\expense\edit.blade.php
+
+	Comment out the full script.
+
+
+	Add this part : 
+		
+	@push('scripts')
+		<script>
+			$(document).ready(function () {
+				$('#expense-datepicker').datetimepicker({
+					format: 'yyyy-MM-DD HH:mm:ss'
+				});
+				$(document).on('change', '.td-amount', function () {
+					calculateTotal();
+				})
+
+				$(document).on("click", ".add-more-btn", function () {
+					let index = $("#expense-table tbody tr").length; // Get the next available index
+					let newRow = `<tr>
+							<input type="hidden" value="${index}" name="index">
+							<td style="width: 35%">
+								<select class="form-control select-expense-head" name="items[${index}][head_id]">
+									<option value="">Select Expense Head</option>
+									@foreach($expenseHeads as $id => $name)
+					<option value="{{ $id }}">{{ $name }}</option>
+									@endforeach
+					</select>
+				</td>
+				<td style="width: 35%">
+					<select class="form-control select-expense-head-item" name="items[${index}][head_item_id]">
+									<option value="">Select Item Head</option>
+								</select>
+							</td>
+							<td style="width: 20%">
+								<input type="text" class="form-control td-amount" name="items[${index}][amount]" value="">
+							</td>
+							<td>
+								<button class="remove-item-btn btn-sm btn-danger" type="button">
+									<i class="fa fa-trash"></i>
+								</button>
+							</td>
+						</tr>`;
+					$("#expense-table tbody").append(newRow);
+				});
+
+				$(document).on("click", ".remove-item-btn", function () {
+					$(this).closest("tr").remove();
+					$("#expense-table tbody tr").each(function (i) {
+						$(this).find("input, select").each(function () {
+							let name = $(this).attr("name");
+							if (name) {
+								name = name.replace(/\[\d+\]/, `[${i}]`);
+								$(this).attr("name", name);
+							}
+						});
+					});
+					calculateTotal();
+				});
+				//on select expense head
+				$(document).on('change', '.select-expense-head', function () {
+					let head = this.value;
+					let el = $(this);
+					$.ajax({
+						url: `/get-head-items?head_id=${head}`,
+						success: function (data) {
+							// Transforms the top-level key of the response object from 'items' to 'results'
+							let options = '<option>Select Item Head</option>';
+							data.map(item => {
+								options += `<option value='${item.id}'>${item.name}</option>`
+							})
+							$(el).closest('tr').find('.select-expense-head-item').html(options);
+						},
+						error: function () {
+						}
+					})
+				})
+
+				function calculateTotal() {
+					let amount = 0;
+					$('#expense-table tbody>tr').each((a, el) => {
+						amount += Number($(el).find('.td-amount').val());
+					})
+					$('#sub_total').val(amount)
+					calculateVatAndAmount();
+				}
+				$(document).on('change', '#vat_percent, #tax_percent', function () {
+					calculateVatAndAmount()
+				})
+				function calculateVatAndAmount() {
+					let subTotal = parseFloat($('#sub_total').val())
+					let percentVat = $('#vat_percent').val() || 0;
+					let amountVat = (subTotal * parseFloat(percentVat)) / 100;
+					$('#vat_amount').val(amountVat)
+					let percentTax = $('#tax_percent').val() || 0;
+					let amountTax = (subTotal * parseFloat(percentTax)) / 100;
+					$('#tax_amount').val(amountTax)
+					let totalAmount = subTotal - (amountVat + amountTax)
+					$('#total_amount').val(totalAmount)
+				}
+			})
+		</script>
+		<script>
+			document.addEventListener("keydown", function(event) {
+				if (event.key === "Enter" && event.target.tagName !== "TEXTAREA") {
+					event.preventDefault();
+				}
+			});
+		</script>
+	@endpush
+
+								------------------------------------------------------------------------------------------------------
+								|                                                END                                                 |
+								------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
