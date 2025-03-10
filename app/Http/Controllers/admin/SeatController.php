@@ -86,7 +86,7 @@ class SeatController extends Controller
             }
             // $seat->vehicle_id = $request->vehicle_id;
             $seat->seat_no = $request->seat_no;
-            $seat->is_booked = $request->is_booked;
+            // $seat->is_booked = $request->is_booked;
             $seat->status = $request->status;
             $seat->save();
             Toastr::success('Seat Updated Successfully', 'Success');
