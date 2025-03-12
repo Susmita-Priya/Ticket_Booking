@@ -120,50 +120,24 @@
                         </a>
                     </li>
 
-
-                    @can('amenities-list')
+                    @can('setting-list')
                         <li class="side-nav-item">
-                            <a href="{{ route('amenities.section') }}" class="side-nav-link">
-                                <i class=" ri-pencil-fill"></i>
-                                <span> Amenities </span>
-                            </a>
-                        </li>
-                    @endcan
-
-                    @can('cupon-list')
-                        <li class="side-nav-item">
-                            <a href="{{ route('cupon.section') }}" class="side-nav-link">
-                                <i class=" ri-pencil-fill"></i>
-                                <span> Coupon </span>
-                            </a>
-                        </li>
-                    @endcan
-
-                    @can('menu-list-for-bus')
-                        <li class="side-nav-item">
-                            <a data-bs-toggle="collapse" href="#sidebarPages102" aria-expanded="false"
-                               aria-controls="sidebarPages102" class="side-nav-link">
-                                <i class="ri-rotate-lock-line"></i>
-                                <span>For Bus</span>
+                            <a data-bs-toggle="collapse" href="#sidebarPages" aria-expanded="false"
+                                aria-controls="sidebarPages" class="side-nav-link">
+                                <i class="ri-settings-3-line"></i>
+                                <span>Company Setting</span>
                                 <span class="menu-arrow"></span>
-                            </a>
-                            <div class="collapse" id="sidebarPages102">
+                            </a>    
+                            <div class="collapse" id="sidebarPages">
                                 <ul class="side-nav-second-level">
-                                    @can('division-list')
+                                    @can('amenities-list')
                                         <li>
-                                            <a href="{{ route('division.section') }}">Division</a>
+                                            <a href="{{ route('amenities.section') }}">Amenities</a>
                                         </li>
                                     @endcan
-
-                                    @can('district-list')
+                                    @can('cupon-list')
                                         <li>
-                                            <a href="{{ route('district.section') }}">District</a>
-                                        </li>
-                                    @endcan
-
-                                    @can('place-list')
-                                        <li>
-                                            <a href="{{ route('place.section') }}">Location</a>
+                                            <a href="{{ route('cupon.section') }}">Cupon</a>
                                         </li>
                                     @endcan
 
@@ -172,42 +146,6 @@
                                             <a href="{{ route('counter.section') }}">Counter</a>
                                         </li>                                 
                                     @endcan
-
-                                    {{-- @can('route-manager-list')
-                                        <li>
-                                            <a href="{{ route('routeManager.section') }}">Route Manager</a>
-                                        </li>
-                                    @endcan
-
-                                    @can('checker-list')
-                                        <li>
-                                            <a href="{{ route('checker.section') }}">Checker</a>
-                                        </li>
-                                    @endcan
-
-                                    @can('owner-list')
-                                        <li>
-                                            <a href="{{ route('owner.section') }}">Owner</a>
-                                        </li>
-                                    @endcan
-
-                                    @can('driver-list')
-                                        <li>
-                                            <a href="{{ route('driver.section') }}">Driver</a>
-                                        </li>
-                                    @endcan
-
-                                    @can('helper-list')
-                                        <li>
-                                            <a href="{{ route('helper.section') }}">Helper</a>
-                                        </li>
-                                    @endcan
-
-                                    @can('supervisor-list')
-                                        <li>
-                                            <a href="{{ route('supervisor.section') }}">Supervisor</a>
-                                        </li>
-                                    @endcan --}}
 
                                     @can('employee-list')
                                         <li>
@@ -233,6 +171,22 @@
                                             <a href="{{ route('route.section') }}">Route</a>
                                         </li>
                                     @endcan
+
+                                </ul>
+                            </div>
+                        </li>
+                    @endcan
+
+                    @can('menu-list-for-bus')
+                        <li class="side-nav-item">
+                            <a data-bs-toggle="collapse" href="#sidebarPages102" aria-expanded="false"
+                               aria-controls="sidebarPages102" class="side-nav-link">
+                                <i class="ri-bus-2-line"></i>
+                                <span>For Bus</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <div class="collapse" id="sidebarPages102">
+                                <ul class="side-nav-second-level">
 
                                     @can('trip-list')
                                         <li>
@@ -263,12 +217,11 @@
                         </li>
                     @endcan
 
-
                     @can('menu-list-for-plane')
                         <li class="side-nav-item">
                             <a data-bs-toggle="collapse" href="#sidebarPages103" aria-expanded="false"
                                aria-controls="sidebarPages103" class="side-nav-link">
-                                <i class="ri-rotate-lock-line"></i>
+                                <i class="ri-flight-takeoff-line"></i>
                                 <span>For Flight</span>
                                 <span class="menu-arrow"></span>
                             </a>
@@ -321,12 +274,30 @@
                         <li class="side-nav-item">
                             <a data-bs-toggle="collapse" href="#sidebarPages101" aria-expanded="false"
                                aria-controls="sidebarPages101" class="side-nav-link">
-                                <i class="ri-rotate-lock-line"></i>
+                                <i class="ri-admin-line"></i>
                                 <span>Admin Menu </span>
                                 <span class="menu-arrow"></span>
                             </a>
                             <div class="collapse" id="sidebarPages101">
                                 <ul class="side-nav-second-level">
+
+                                    @can('division-list')
+                                        <li>
+                                            <a href="{{ route('division.section') }}">Division</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('district-list')
+                                        <li>
+                                            <a href="{{ route('district.section') }}">District</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('place-list')
+                                        <li>
+                                            <a href="{{ route('place.section') }}">Location</a>
+                                        </li>
+                                    @endcan
 
                                     @can('slider-list')
                                         <li>
@@ -390,7 +361,7 @@
                         <li class="side-nav-item">
                             <a data-bs-toggle="collapse" href="#sidebarPages1" aria-expanded="false"
                                 aria-controls="sidebarPages" class="side-nav-link">
-                                <i class="ri-rotate-lock-line"></i>
+                                <i class="ri-lock-line"></i>
                                 <span>Permission Manage </span>
                                 <span class="menu-arrow"></span>
                             </a>

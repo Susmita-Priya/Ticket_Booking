@@ -47,7 +47,23 @@
                             <tr>
                                 <td>{{ ++$key }}</td>
                                 <td>{{ $employee->company->name }}</td>
-                                <td>{{ $employee->department }}</td>
+                                <td>
+                                    @if($employee->department == 'Checker')
+                                        <span class="badge bg-primary">Checker</span>
+                                    @elseif($employee->department == 'Driver')
+                                        <span class="badge bg-secondary">Driver</span>
+                                    @elseif($employee->department == 'Helper')
+                                        <span class="badge bg-success">Helper</span>
+                                    @elseif($employee->department == 'Supervisor')
+                                        <span class="badge bg-danger">Supervisor</span>
+                                    @elseif($employee->department == 'Route Manager')
+                                        <span class="badge bg-warning">Route Manager</span>
+                                    @elseif($employee->department == 'Owner')
+                                        <span class="badge bg-info">Owner</span>
+                                    @else
+                                        <span class="badge bg-dark">{{ $employee->department }}</span>
+                                    @endif
+                                </td>
                                 <td>{{ $employee->name }}</td>
                                 <td>{{ $employee->email }}</td>
                                 <td>{{ $employee->phone }}</td>
