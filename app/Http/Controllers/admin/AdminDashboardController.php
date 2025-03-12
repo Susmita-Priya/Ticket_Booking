@@ -60,20 +60,19 @@ class AdminDashboardController extends Controller
                 ->orWhere('company_id', $user->is_registration_by)->latest()->get();
             $routes = Route::where('company_id', $user->id)
                 ->orWhere('company_id', $user->is_registration_by)->latest()->get();
-            $routeManagers = Employee::where('department',"Route Manager")->where('company_id', $user->id)
-                ->orWhere('company_id', $user->is_registration_by)->latest()->get();
-            $checkers = Employee::where('department',"Checker")->where('company_id', $user->id)
-                ->orWhere('company_id', $user->is_registration_by)->latest()->get();
-            $owners = Employee::where('department',"Owner")->where('company_id', $user->id)
-                ->orWhere('company_id', $user->is_registration_by)->latest()->get();
-            $drivers = Employee::where('department',"Driver")->where('company_id', $user->id)
-                ->orWhere('company_id', $user->is_registration_by)->latest()->get();
+            $routeManagers = Employee::where('company_id', $user->id)
+                ->orWhere('company_id', $user->is_registration_by)->where('department',"Route Manager")->latest()->get();
+            $checkers = Employee::where('company_id', $user->id)
+                ->orWhere('company_id', $user->is_registration_by)->where('department',"Checker")->latest()->get();
+            $owners = Employee::where('company_id', $user->id)
+                ->orWhere('company_id', $user->is_registration_by)->where('department',"Owner")->latest()->get();
+            $drivers = Employee::where('company_id', $user->id)
+                ->orWhere('company_id', $user->is_registration_by)->where('department',"Driver")->latest()->get();
             $vehicles = Vehicle::where('company_id', $user->id)
                 ->orWhere('company_id', $user->is_registration_by)->latest()->get();
             $trips = Trip::where('company_id', $user->id)
                 ->orWhere('company_id', $user->is_registration_by)->latest()->get();
         }
-
 
         $loginLog = LoginLog::orderBy('last_login', 'desc')->get();
         $totalOffer = Offer::count();
