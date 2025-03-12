@@ -30,6 +30,7 @@ use App\Http\Controllers\admin\SupervisorController;
 use App\Http\Controllers\admin\SliderController;
 use App\Http\Controllers\admin\BlogController;
 use App\Http\Controllers\admin\completedTripController;
+use App\Http\Controllers\admin\employeeController;
 use App\Http\Controllers\admin\HelperController;
 use App\Http\Controllers\admin\PDFController;
 use App\Http\Controllers\admin\PlaceController;
@@ -238,46 +239,53 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/counter-delete/{id}', [CounterController::class, 'destroy'])->name('counter.destroy');
 
 
-    //RouteManager
-    Route::get('/routeManager-section', [RouteManagerController::class, 'index'])->name('routeManager.section');
-    Route::post('/routeManager-store', [RouteManagerController::class, 'store'])->name('routeManager.store');
-    Route::put('/routeManager-update/{id}', [RouteManagerController::class, 'update'])->name('routeManager.update');
-    Route::get('/routeManager-delete/{id}', [RouteManagerController::class, 'destroy'])->name('routeManager.destroy');
+    //employee
+    Route::get('/employee-section', [employeeController::class, 'index'])->name('employee.section');
+    Route::post('/employee-store', [employeeController::class, 'store'])->name('employee.store');
+    Route::put('/employee-update/{id}', [employeeController::class, 'update'])->name('employee.update');
+    Route::get('/employee-delete/{id}', [employeeController::class, 'destroy'])->name('employee.destroy');
 
 
-    //checker
-    Route::get('/checker-section', [CheckerController::class, 'index'])->name('checker.section');
-    Route::post('/checker-store', [CheckerController::class, 'store'])->name('checker.store');
-    Route::put('/checker-update/{id}', [CheckerController::class, 'update'])->name('checker.update');
-    Route::get('/checker-delete/{id}', [CheckerController::class, 'destroy'])->name('checker.destroy');
+    // //RouteManager
+    // Route::get('/routeManager-section', [RouteManagerController::class, 'index'])->name('routeManager.section');
+    // Route::post('/routeManager-store', [RouteManagerController::class, 'store'])->name('routeManager.store');
+    // Route::put('/routeManager-update/{id}', [RouteManagerController::class, 'update'])->name('routeManager.update');
+    // Route::get('/routeManager-delete/{id}', [RouteManagerController::class, 'destroy'])->name('routeManager.destroy');
 
 
-    //owner
-    Route::get('/owner-section', [OwnerController::class, 'index'])->name('owner.section');
-    Route::post('/owner-store', [OwnerController::class, 'store'])->name('owner.store');
-    Route::put('/owner-update/{id}', [OwnerController::class, 'update'])->name('owner.update');
-    Route::get('/owner-delete/{id}', [OwnerController::class, 'destroy'])->name('owner.destroy');
+    // //checker
+    // Route::get('/checker-section', [CheckerController::class, 'index'])->name('checker.section');
+    // Route::post('/checker-store', [CheckerController::class, 'store'])->name('checker.store');
+    // Route::put('/checker-update/{id}', [CheckerController::class, 'update'])->name('checker.update');
+    // Route::get('/checker-delete/{id}', [CheckerController::class, 'destroy'])->name('checker.destroy');
 
 
-    //driver
-    Route::get('/driver-section', [DriverController::class, 'index'])->name('driver.section');
-    Route::post('/driver-store', [DriverController::class, 'store'])->name('driver.store');
-    Route::put('/driver-update/{id}', [DriverController::class, 'update'])->name('driver.update');
-    Route::get('/driver-delete/{id}', [DriverController::class, 'destroy'])->name('driver.destroy');
+    // //owner
+    // Route::get('/owner-section', [OwnerController::class, 'index'])->name('owner.section');
+    // Route::post('/owner-store', [OwnerController::class, 'store'])->name('owner.store');
+    // Route::put('/owner-update/{id}', [OwnerController::class, 'update'])->name('owner.update');
+    // Route::get('/owner-delete/{id}', [OwnerController::class, 'destroy'])->name('owner.destroy');
 
 
-    //helper
-    Route::get('/helper-section', [HelperController::class, 'index'])->name('helper.section');
-    Route::post('/helper-store', [HelperController::class, 'store'])->name('helper.store');
-    Route::put('/helper-update/{id}', [HelperController::class, 'update'])->name('helper.update');
-    Route::get('/helper-delete/{id}', [HelperController::class, 'destroy'])->name('helper.destroy');    
+    // //driver
+    // Route::get('/driver-section', [DriverController::class, 'index'])->name('driver.section');
+    // Route::post('/driver-store', [DriverController::class, 'store'])->name('driver.store');
+    // Route::put('/driver-update/{id}', [DriverController::class, 'update'])->name('driver.update');
+    // Route::get('/driver-delete/{id}', [DriverController::class, 'destroy'])->name('driver.destroy');
 
 
-    //supervisor
-    Route::get('/supervisor-section', [SupervisorController::class, 'index'])->name('supervisor.section');
-    Route::post('/supervisor-store', [SupervisorController::class, 'store'])->name('supervisor.store');
-    Route::put('/supervisor-update/{id}', [SupervisorController::class, 'update'])->name('supervisor.update');
-    Route::get('/supervisor-delete/{id}', [SupervisorController::class, 'destroy'])->name('supervisor.destroy');
+    // //helper
+    // Route::get('/helper-section', [HelperController::class, 'index'])->name('helper.section');
+    // Route::post('/helper-store', [HelperController::class, 'store'])->name('helper.store');
+    // Route::put('/helper-update/{id}', [HelperController::class, 'update'])->name('helper.update');
+    // Route::get('/helper-delete/{id}', [HelperController::class, 'destroy'])->name('helper.destroy');    
+
+
+    // //supervisor
+    // Route::get('/supervisor-section', [SupervisorController::class, 'index'])->name('supervisor.section');
+    // Route::post('/supervisor-store', [SupervisorController::class, 'store'])->name('supervisor.store');
+    // Route::put('/supervisor-update/{id}', [SupervisorController::class, 'update'])->name('supervisor.update');
+    // Route::get('/supervisor-delete/{id}', [SupervisorController::class, 'destroy'])->name('supervisor.destroy');
 
 
     //route

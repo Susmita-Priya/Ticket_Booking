@@ -5,16 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RouteManager extends Model
+class Employee extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'company_id',
+        'department',
         'name',
         'email',
         'phone',
         'address',
+        'document',
         'nid',
         'status',
     ];

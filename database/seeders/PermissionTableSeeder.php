@@ -254,6 +254,13 @@ class PermissionTableSeeder extends Seeder
             'supervisor-delete',
 
 
+            //For employee
+            'employee-list',
+            'employee-create',
+            'employee-edit',
+            'employee-delete',
+
+
             //For route
             'route-list',
             'route-create',

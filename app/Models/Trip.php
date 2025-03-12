@@ -44,17 +44,17 @@ class Trip extends Model
 
     public function driver()
     {
-        return $this->belongsTo(Driver::class);
+        return $this->belongsTo(Employee::class);
     }
 
     public function supervisor()
     {
-        return $this->belongsTo(Supervisor::class);
+        return $this->belongsTo(Employee::class);
     }
 
     public function helper()
     {
-        return $this->belongsTo(Helper::class);
+        return $this->belongsTo(Employee::class);
     }
 
     public function payments()

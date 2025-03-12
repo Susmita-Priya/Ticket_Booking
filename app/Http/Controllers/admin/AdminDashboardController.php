@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Checker;
 use App\Models\Counter;
 use App\Models\Driver;
+use App\Models\Employee;
 use App\Models\LoginLog;
 use App\Models\News;
 use App\Models\Offer;
@@ -31,10 +32,10 @@ class AdminDashboardController extends Controller
         if (auth()->user()->hasRole('Super Admin')) {
             $counters = Counter::latest()->get();
             $routes = Route::latest()->get();
-            $routeManagers = RouteManager::latest()->get();
-            $checkers = Checker::latest()->get();
-            $owners = Owner::latest()->get();
-            $drivers = Driver::latest()->get();
+            $routeManagers = Employee::where('department',"Route Manager")->latest()->get();
+            $checkers = Employee::where('department',"Checker")->latest()->get();
+            $owners = Employee::where('department',"Owner")->latest()->get();
+            $drivers = Employee::where('department',"Driver")->latest()->get();
             $vehicles = Vehicle::latest()->get();
             $trips = Trip::latest()->get();
         } elseif (auth()->user()->hasRole('Company')) {
@@ -42,13 +43,13 @@ class AdminDashboardController extends Controller
                 user()->id)->latest()->get();
             $routes = Route::where('company_id', auth()->
                 user()->id)->latest()->get();
-            $routeManagers = RouteManager::where('company_id', auth()->
+            $routeManagers = Employee::where('department',"Route Manager")->where('company_id', auth()->
                 user()->id)->latest()->get();
-            $checkers = Checker::where('company_id', auth()->
+            $checkers = Employee::where('department',"Checker")->where('company_id', auth()->
                 user()->id)->latest()->get();
-            $owners = Owner::where('company_id', auth()->
+            $owners = Employee::where('department',"Owner")->where('company_id', auth()->
                 user()->id)->latest()->get();
-            $drivers = Driver::where('company_id', auth()->
+            $drivers = Employee::where('department',"Driver")->where('company_id', auth()->
                 user()->id)->latest()->get();
             $vehicles = Vehicle::where('company_id', auth()->
                 user()->id)->latest()->get();
@@ -59,13 +60,13 @@ class AdminDashboardController extends Controller
                 ->orWhere('company_id', $user->is_registration_by)->latest()->get();
             $routes = Route::where('company_id', $user->id)
                 ->orWhere('company_id', $user->is_registration_by)->latest()->get();
-            $routeManagers = RouteManager::where('company_id', $user->id)
+            $routeManagers = Employee::where('department',"Route Manager")->where('company_id', $user->id)
                 ->orWhere('company_id', $user->is_registration_by)->latest()->get();
-            $checkers = Checker::where('company_id', $user->id)
+            $checkers = Employee::where('department',"Checker")->where('company_id', $user->id)
                 ->orWhere('company_id', $user->is_registration_by)->latest()->get();
-            $owners = Owner::where('company_id', $user->id)
+            $owners = Employee::where('department',"Owner")->where('company_id', $user->id)
                 ->orWhere('company_id', $user->is_registration_by)->latest()->get();
-            $drivers = Driver::where('company_id', $user->id)
+            $drivers = Employee::where('department',"Driver")->where('company_id', $user->id)
                 ->orWhere('company_id', $user->is_registration_by)->latest()->get();
             $vehicles = Vehicle::where('company_id', $user->id)
                 ->orWhere('company_id', $user->is_registration_by)->latest()->get();

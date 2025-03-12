@@ -165,9 +165,12 @@ class SeatBookingController extends Controller
     {
         try {
             $seat_booking = TicketBooking::find($id);
-            $seat = Seat::where('id', $seat_booking->seat_id)->first();
-            $seat->is_booked = 0;
-            $seat->save();
+            $seat = Seat::where('id', $seat_booking->seat_id)->get()->first();
+            if ($seat !== null && $seat->is_booked == 1) {
+                $seat->is_booked = 0;
+                $seat->save();
+            }
+            
             $seat_booking->delete();
             Toastr::success('Seat Booking Deleted Successfully', 'Success');
             return redirect()->back();

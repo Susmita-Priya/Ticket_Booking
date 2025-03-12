@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Amenities;
 use App\Models\Category;
+use App\Models\Employee;
 use App\Models\Owner;
 use App\Models\Type;
 use Illuminate\Http\Request;
@@ -31,16 +32,15 @@ class VehicleController extends Controller
 
         if (auth()->user()->hasRole('Super Admin')) {
             $vehicles = Vehicle::with('owner', 'type')->latest()->get();
-            $owners = Owner::latest()->get();
+            $owners = Employee::where('department', 'Owner')->latest()->get();
             $types = Type::latest()->get();
             $amenities = Amenities::latest()->get();
         } else {
             $vehicles = Vehicle::with('owner', 'type')->where('company_id', auth()->user()->id)->latest()->get();
-            $owners = Owner::where('company_id', auth()->user()->id)->latest()->get();
+            $owners = Employee::where('department', 'Owner')->where('company_id', auth()->user()->id)->latest()->get();
             $types = Type::where('company_id', auth()->user()->id)->latest()->get();
             $amenities = Amenities::where('company_id', auth()->user()->id)->latest()->get();
         }
-
         return view('admin.pages.vehicle.index', compact('vehicles', 'owners', 'types', 'amenities'));
     }
 

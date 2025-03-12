@@ -100,13 +100,14 @@
             <a href="{{ route('dashboard') }}" class="logo logo-light">
                 <span class="logo-lg">
                     @php
-                        $companyLogo = \App\Models\SiteSetting::where('company_id', auth()->user()->id)->first()->logo ?? 'backend/images/bb.png';
+                         $user = auth()->user();
+                        $companyLogo = \App\Models\SiteSetting::where('company_id', $user->id)->orWhere('company_id', $user->is_registration_by)->first()->logo ?? 'backend/images/bb.png';
                     @endphp
                     <img src="{{ URL::to($companyLogo) }}" alt="logo" style="height: 50px;">
                 </span>
-                <span class="logo-sm">
+                {{-- <span class="logo-sm">
                     <img src="{{ URL::to($companyLogo) }}" alt="small logo">
-                </span>
+                </span> --}}
             </a>
 
             <div class="h-100" id="leftside-menu-container" data-simplebar>
@@ -172,7 +173,7 @@
                                         </li>                                 
                                     @endcan
 
-                                    @can('route-manager-list')
+                                    {{-- @can('route-manager-list')
                                         <li>
                                             <a href="{{ route('routeManager.section') }}">Route Manager</a>
                                         </li>
@@ -205,6 +206,12 @@
                                     @can('supervisor-list')
                                         <li>
                                             <a href="{{ route('supervisor.section') }}">Supervisor</a>
+                                        </li>
+                                    @endcan --}}
+
+                                    @can('employee-list')
+                                        <li>
+                                            <a href="{{ route('employee.section') }}">Employee</a>
                                         </li>
                                     @endcan
 

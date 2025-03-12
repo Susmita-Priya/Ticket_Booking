@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Checker;
 use App\Models\Counter;
+use App\Models\Employee;
 use App\Models\Place;
 use App\Models\Route;
 use App\Models\RouteManager;
@@ -32,17 +33,18 @@ class RouteController extends Controller
         // $counters = Counter::where('company_id',auth()->user()->id)->latest()->get();
         // $routeManagers = RouteManager::where('company_id',auth()->user()->id)->latest()->get();
         // $checkers = Checker::where('company_id',auth()->user()->id)->latest()->get();
+        
         $locations = Place::latest()->get();
         if (auth()->user()->hasRole('Super Admin')) {
             $routes = Route::with('routeManager')->latest()->get();
             $counters = Counter::with('location')->latest()->get(); 
-            $routeManagers = RouteManager::latest()->get();
-            $checkers = Checker::latest()->get();
+            $routeManagers = Employee::where('department',"Route Manager")->latest()->get();
+            $checkers = Employee::where('department',"Checker")->latest()->get();
         } else {
             $routes = Route::with('routeManager')->where('company_id', auth()->user()->id)->latest()->get();
             $counters = Counter::with('location')->where('company_id', auth()->user()->id)->latest()->get();
-            $routeManagers = RouteManager::where('company_id', auth()->user()->id)->latest()->get();
-            $checkers = Checker::where('company_id', auth()->user()->id)->latest()->get();
+            $routeManagers = Employee::where('department',"Route Manager")->where('company_id', auth()->user()->id)->latest()->get();
+            $checkers = Employee::where('department',"Checker")->where('company_id', auth()->user()->id)->latest()->get();
         }
         return view('admin.pages.route.index', compact('routes', 'counters', 'routeManagers', 'checkers', 'locations'));
     }

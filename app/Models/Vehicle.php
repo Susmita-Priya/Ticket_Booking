@@ -31,7 +31,7 @@ class Vehicle extends Model
     }
 
     public function owner(){
-        return $this->belongsTo(Owner::class);
+        return $this->belongsTo(Employee::class);
     }
 
     public function type(){

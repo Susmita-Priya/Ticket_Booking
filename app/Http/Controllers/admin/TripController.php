@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Driver;
+use App\Models\Employee;
 use App\Models\Helper;
 use App\Models\Place;
 use App\Models\Route;
@@ -34,17 +35,17 @@ class TripController extends Controller
             $trips = Trip::with('route', 'vehicle', 'driver', 'supervisor')->where('trip_status',1)->latest()->get();
             $routes = Route::all();
             // $vehicles = Vehicle::where('status', 1)->where('current_location_id', $routes->first()->fromLocation)->get();
-            $drivers = Driver::all();
-            $helpers = Helper::all();
-            $supervisors = Supervisor::all();
+            $drivers = Employee::where('department',"Driver")->latest()->get();
+            $helpers = Employee::where('department',"Helper")->latest()->get();
+            $supervisors = Employee::where('department',"Supervisor")->latest()->get();
 
         } else {
             $trips = Trip::with('route', 'vehicle', 'driver', 'supervisor')->where('company_id', auth()->user()->id)->where('trip_status',1)->latest()->get();
             $routes = Route::where('company_id', auth()->user()->id)->get();
             // $vehicles = Vehicle::where('company_id', auth()->user()->id)->where('status', 1)->get();
-            $drivers = Driver::where('company_id', auth()->user()->id)->get();
-            $helpers = Helper::where('company_id', auth()->user()->id)->get();
-            $supervisors = Supervisor::where('company_id', auth()->user()->id)->get();
+            $drivers = Employee::where('department',"Driver")->where('company_id', auth()->user()->id)->get();
+            $helpers = Employee::where('department',"Helper")->where('company_id', auth()->user()->id)->get();
+            $supervisors = Employee::where('department',"Supervisor")->where('company_id', auth()->user()->id)->get();
         }
         
         return view('admin.pages.trip.index', compact('trips', 'routes', 'drivers', 'supervisors', 'locations', 'helpers'));

@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Driver;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Yoeunes\Toastr\Facades\Toastr;
 
-class DriverController extends Controller
+class employeeController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
         $this->middleware(function ($request, $next) {
-            if (!Gate::allows('driver-list')) {
+            if (!Gate::allows('employee-list')) {
                 return redirect()->route('unauthorized.action');
             }
             return $next($request);
@@ -23,13 +23,13 @@ class DriverController extends Controller
 
     public function index()
     {
-        // $drivers = Driver::where('company_id',auth()->user()->id)->latest()->get();
+        // $employees = Employee::where('company_id',auth()->user()->id)->latest()->get();
         if (auth()->user()->hasRole('Super Admin')) {
-            $drivers = Driver::latest()->get();
+            $employees = Employee::latest()->get();
         } else {
-            $drivers = Driver::where('company_id', auth()->user()->id)->latest()->get();
+            $employees = Employee::where('company_id', auth()->user()->id)->latest()->get();
         }
-        return view('admin.pages.driver.index',compact('drivers'));
+        return view('admin.pages.employee.index',compact('employees'));
     }
 
     public function store(Request $request)
@@ -43,24 +43,25 @@ class DriverController extends Controller
                 'nid' => 'required',
             ]);
 
-            $driver = new Driver();
-            $driver->company_id = auth()->user()->id;
-            $driver->name = $request->name;
-            $driver->email = $request->email;
-            $driver->phone = $request->phone;
-            $driver->address = $request->address;
-            if ($request->hasFile('license')) {
-                $file = $request->file('license');
+            $employee = new Employee();
+            $employee->company_id = auth()->user()->id;
+            $employee->department = $request->department;
+            $employee->name = $request->name;
+            $employee->email = $request->email;
+            $employee->phone = $request->phone;
+            $employee->address = $request->address;
+            if ($request->hasFile('document')) {
+                $file = $request->file('document');
                 $filename = time() . '.' . $file->getClientOriginalExtension();
-                $path = 'uploads/driverLicense';
+                $path = 'uploads/employeeDocument';
                 $file->move(public_path($path), $filename);
                 $fullpath = $path . '/' . $filename;
-                $driver->license = $fullpath;
+                $employee->document = $fullpath;
             }
-            $driver->nid = $request->nid;
-            $driver->save();
+            $employee->nid = $request->nid;
+            $employee->save();
             
-            Toastr::success('Driver Added Successfully', 'Success');
+            Toastr::success('Employee Added Successfully', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
             // Handle the exception here
@@ -79,31 +80,31 @@ class DriverController extends Controller
                 'nid' => 'required',
             ]);
             
-            $driver = Driver::find($id);
-            $driver->name = $request->name;
-            $driver->email = $request->email;
-            $driver->phone = $request->phone;
-            $driver->address = $request->address;
-            $driver->nid = $request->nid;
-            if ($request->hasFile('license')) {
-                $file = $request->file('license');
+            $employee = Employee::find($id);
+            $employee->name = $request->name;
+            $employee->email = $request->email;
+            $employee->phone = $request->phone;
+            $employee->address = $request->address;
+            $employee->nid = $request->nid;
+            if ($request->hasFile('document')) {
+                $file = $request->file('document');
 
-                if ($driver->license && file_exists(public_path($driver->license))) {
-                    unlink(public_path($driver->license));
+                if ($employee->document && file_exists(public_path($employee->document))) {
+                    unlink(public_path($employee->document));
                 }
 
                 $filename = time() . '.' . $file->getClientOriginalExtension();
-                $path = 'uploads/driverLicense';
+                $path = 'uploads/employeeDocument';
                 $file->move(public_path($path), $filename);
                 $fullpath = $path . '/' . $filename;
             }
             else{
-                $fullpath = $driver->license;
+                $fullpath = $employee->document;
             }
-            $driver->license = $fullpath;
-            $driver->status = $request->status;
-            $driver->save();
-            Toastr::success('Driver Updated Successfully', 'Success');
+            $employee->document = $fullpath;
+            $employee->status = $request->status;
+            $employee->save();
+            Toastr::success('Employee Updated Successfully', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
@@ -113,17 +114,16 @@ class DriverController extends Controller
     public function destroy($id)
     {
         try {
-            $driver = Driver::find($id);
+            $employee = Employee::find($id);
 
-            if ($driver->license && file_exists(public_path($driver->license))) {
-                unlink(public_path($driver->license));
+            if ($employee->document && file_exists(public_path($employee->document))) {
+                unlink(public_path($employee->document));
             }
-            $driver->delete();
-            Toastr::success('Driver Deleted Successfully', 'Success');
+            $employee->delete();
+            Toastr::success('Employee Deleted Successfully', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
 }
-

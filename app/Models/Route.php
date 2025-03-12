@@ -39,7 +39,7 @@ class Route extends Model
 
     public function routeManager()
     {
-        return $this->belongsTo(RouteManager::class, 'route_manager_id');
+        return $this->belongsTo(Employee::class);
     }
 
     public function startCounter()
@@ -59,7 +59,7 @@ class Route extends Model
 
     public function checkers()
     {
-        return $this->belongsTo(Checker::class);
+        return $this->belongsTo(Employee::class);
     }
 
 }

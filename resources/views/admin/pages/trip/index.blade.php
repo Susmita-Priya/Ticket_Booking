@@ -53,7 +53,7 @@
                             <tr>
                                 <td>{{ ++$key }}</td>
                                 <td class="text-wrap">{{ $trip->company->name ?? 'N/A' }}</td>
-                                <td>{{ $trip->route->fromLocation->name ?? 'N/A' }} to {{ $trip->route->toLocation->name }}
+                                <td>{{ $trip->route->fromLocation->name ?? 'N/A' }} to {{ $trip->route->toLocation->name ?? 'N/A' }}
                                 </td>
                                 <td>{{ $trip->vehicle->name ?? 'N/A' }} <br>
                                     ({{ $trip->vehicle->vehicle_no ?? 'N/A' }})
@@ -132,8 +132,8 @@
                                                                     data-bs-toggle="dropdown" aria-expanded="false"
                                                                     style="text-align: left; padding-left: 10px;">
                                                                     <span id="selected-route{{ $trip->id }}">
-                                                                        {{ $trip->route->fromLocation->name }} to
-                                                                        {{ $trip->route->toLocation->name }}
+                                                                        {{ $trip->route->fromLocation->name ?? 'N/A' }} to
+                                                                        {{ $trip->route->toLocation->name ?? 'N/A' }}
                                                                     </span>
                                                                 </button>
                                                                 <ul class="dropdown-menu pt-0"
