@@ -32,6 +32,17 @@ Route::post('/login', [UserController::class, 'login']);
 Route::post('/forgot-password', [UserController::class, 'forgotPassword']);
 Route::post('/reset-password', [UserController::class, 'resetPassword']);
 
+//type 
+Route::get('/type', [TypeController::class, 'type']);
+
+//location
+Route::get('/location-bus', [LocationController::class, 'locationBus']);
+
+//search
+Route::post('/search-bus', [SearchController::class, 'searchBus']);
+
+//slider
+Route::get('/slider', [SliderController::class, 'index']);
 
 //user info
 Route::middleware('auth:sanctum')->group(function () {
@@ -54,17 +65,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //booking
     Route::get('/booking', [BookingController::class, 'booking']);
 
-    //type 
-    Route::get('/type', [TypeController::class, 'type']);
-
-    //location
-    Route::get('/location-bus', [LocationController::class, 'locationBus']);
-
-    //search
-    Route::post('/search-bus', [SearchController::class, 'searchBus']);
-
-    //slider
-    Route::get('/slider', [SliderController::class, 'index']);
+    
 });
 
 
