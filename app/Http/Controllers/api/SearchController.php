@@ -89,13 +89,16 @@ class SearchController extends Controller
             $trip->route->checkers_id = is_string($trip->route->checkers_id)
             ? json_decode($trip->route->checkers_id, true)
             : [];
-        }
 
-        // Ensure amenities_id is an array for each vehicle
-        foreach ($trips as $trip) {
-            $trip->vehicle->amenities_id = is_string($trip->vehicle->amenities_id)
-                ? json_decode($trip->vehicle->amenities_id, true)
+            $trip->route->via_counters_id = is_string($trip->route->via_counters_id)
+                ? json_decode($trip->route->via_counters_id, true)
                 : [];
+
+            $trip->vehicle->amenities_id = is_string($trip->vehicle->amenities_id)
+            ? json_decode($trip->vehicle->amenities_id, true)
+            : [];
+
+            $trip->vehicle->seats = $trip->vehicle->seats()->select( 'id','seat_no', 'is_booked')->get();
         }
 
     
@@ -113,6 +116,7 @@ class SearchController extends Controller
             $trip->route->endCounter;
             $trip->route->routeManager;
             $trip->vehicle;
+            $trip->vehicle->seats;
             $trip->vehicle->owner;
             $trip->vehicle->type;
             $trip->driver;

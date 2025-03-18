@@ -17,6 +17,8 @@ class TicketBooking extends Model
         'passenger_name',
         'passenger_phone',
         'travel_date',
+        'type',
+        'user_id',
     ];
 
     public function company()

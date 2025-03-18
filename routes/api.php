@@ -8,7 +8,9 @@ use App\Http\Controllers\api\LocationController;
 use App\Http\Controllers\api\PassengerController;
 use App\Http\Controllers\api\PlaneController;
 use App\Http\Controllers\api\SearchController;
+use App\Http\Controllers\api\TicketBookingController;
 use App\Http\Controllers\api\UserController;
+use App\Models\TicketBooking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,7 +40,7 @@ Route::get('/type', [TypeController::class, 'type']);
 //location
 Route::get('/location-bus', [LocationController::class, 'locationBus']);
 
-//search
+//search bus
 Route::post('/search-bus', [SearchController::class, 'searchBus']);
 
 //slider
@@ -56,16 +58,23 @@ Route::middleware('auth:sanctum')->group(function () {
     //logout
     Route::post('/logout', [UserController::class, 'logout']);
 
-    //Passenger routes
+    //booking bus
+    Route::post('/ticket-booking', [TicketBookingController::class, 'storeBooking']);
+
+    //get booking bus
+    Route::get('/ticket-booking-list', [TicketBookingController::class, 'booking']);
+
+
+
+    //Passenger routes plane
     Route::post('/store-passenger', [PassengerController::class, 'storePassenger']);
 
-    // Booking routes
+    // Booking routes plane
     Route::post('/store-booking', [BookingController::class, 'storeBooking']);
     
-    //booking
+    //booking plane
     Route::get('/booking', [BookingController::class, 'booking']);
 
-    
 });
 
 

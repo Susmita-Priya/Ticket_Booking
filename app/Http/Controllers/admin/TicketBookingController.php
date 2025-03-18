@@ -123,8 +123,7 @@ public function store(Request $request)
                     'passenger_name' => $request->passenger_name,
                     'passenger_phone' => $request->passenger_phone,
                     'travel_date' => $request->travel_date,
-                    // 'payment_method' => $request->payment_method, 
-                    // 'total_payment' => $totalPayment,
+                    'type' => "Counter",
                 ]);
                 Payment::create([
                     'booking_id' => $ticket_booking->id,
