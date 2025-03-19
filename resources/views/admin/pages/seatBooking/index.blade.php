@@ -122,22 +122,22 @@
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($booking->travel_date)->format('d-m-Y') }}</td>
                                 <td>
-                                    @if ($booking->payments->payment_method == 'card')
+                                    @if ($booking->payments && $booking->payments->payment_method == 'card')
                                         {{ "Card" }}
                                         <br>Card Number: {{ $booking->payments->card_number ?? 'N/A' }}
                                         <br>Expiry: {{ $booking->payments->card_expiry ?? 'N/A' }}
                                         <br>Security Code: {{ $booking->payments->security_code ?? 'N/A' }}
-                                    @elseif ($booking->payments->payment_method == 'mobile_banking')
+                                    @elseif ($booking->payments && $booking->payments->payment_method == 'mobile_banking')
                                         {{ "Mobile Banking" }}
                                         <br>Transaction ID: {{ $booking->payments->transaction_id ?? 'N/A' }}
                                         <br>Banking Type: {{ $booking->payments->banking_type ?? 'N/A' }}
-                                    @elseif ($booking->payments->payment_method == 'cash')
+                                    @elseif ($booking->payments && $booking->payments->payment_method == 'cash')
                                         {{ "Cash" }}
                                     @else
                                         {{ "N/A" }}
                                     @endif
                                 </td>
-                                <td>{{ $booking->payments->total_payment?? 'N/A' }} TK </br>
+                                <td>{{ $booking->payments->total_payment ?? 'N/A' }} TK </br>
                                     (Ticket Price : {{ $seatPrice }} TK)</td>
                                 <td>{{ $booking->passenger_name ?? 'N/A' }}</td>
                                 <td>{{ $booking->passenger_phone }}</td>

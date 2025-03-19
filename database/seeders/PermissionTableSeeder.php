@@ -237,6 +237,15 @@ class PermissionTableSeeder extends Seeder
             //setting
             'setting-list',
 
+            //For Accounting
+            'accounting-list',
+
+            //For Expense
+            'expense-list',
+            'expense-create',
+            'expense-edit',
+            'expense-delete',
+
 
         ];
         foreach ($permissions as $permission) {

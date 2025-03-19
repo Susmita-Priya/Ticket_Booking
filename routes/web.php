@@ -31,6 +31,7 @@ use App\Http\Controllers\admin\SliderController;
 use App\Http\Controllers\admin\BlogController;
 use App\Http\Controllers\admin\completedTripController;
 use App\Http\Controllers\admin\employeeController;
+use App\Http\Controllers\admin\ExpenseController;
 use App\Http\Controllers\admin\HelperController;
 use App\Http\Controllers\admin\PDFController;
 use App\Http\Controllers\admin\PlaceController;
@@ -45,6 +46,7 @@ use App\Http\Controllers\admin\VehicleController;
 use App\Http\Controllers\frontend\HomePageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Models\Expense;
 use App\Models\SeatBooking;
 use App\Models\TicketBooking;
 use App\Models\Vehicle;
@@ -306,6 +308,22 @@ Route::middleware('auth')->group(callback: function () {
 
     //Completed Trip
     Route::get('/completed-trip-section', [completedTripController::class, 'index'])->name('completed.trip.section');
+
+
+    //Accounting Section Expense
+    Route::get('/expense-section', [ExpenseController::class, 'index'])->name('expense.section');
+    Route::post('/expense-store', [ExpenseController::class, 'store'])->name('expense.store');
+    Route::put('/expense-update/{id}', [ExpenseController::class, 'update'])->name('expense.update');
+    Route::get('/expense-delete/{id}', [ExpenseController::class, 'destroy'])->name('expense.destroy');
+
+    // web.php
+
+Route::get('/fetch/employees', [ExpenseController::class, 'fetchEmployees'])->name('fetch.employees');
+Route::get('/fetch/expense/types', [ExpenseController::class, 'fetchExpenseTypes'])->name('fetch.expense.types');
+Route::get('/fetch/counters', [ExpenseController::class, 'fetchCounters'])->name('fetch.counters');
+Route::get('/fetch/vehicles', [ExpenseController::class, 'fetchVehicles'])->name('fetch.vehicles');
+Route::get('/fetch/routes', [ExpenseController::class, 'fetchRoutes'])->name('fetch.routes');
+
 
     //slider
     Route::get('/slider-section', [SliderController::class, 'index'])->name('slider.section');
