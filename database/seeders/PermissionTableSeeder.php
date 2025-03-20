@@ -245,6 +245,7 @@ class PermissionTableSeeder extends Seeder
             'expense-create',
             'expense-edit',
             'expense-delete',
+            'deleted-expense-list',
 
 
         ];

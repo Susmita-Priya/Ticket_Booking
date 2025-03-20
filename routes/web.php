@@ -315,10 +315,15 @@ Route::middleware('auth')->group(callback: function () {
     Route::post('/expense-store', [ExpenseController::class, 'store'])->name('expense.store');
     Route::put('/expense-update/{id}', [ExpenseController::class, 'update'])->name('expense.update');
     Route::get('/expense-delete/{id}', [ExpenseController::class, 'destroy'])->name('expense.destroy');
+    Route::get('/deleted-expense-section', [ExpenseController::class, 'deletedExpense'])->name('deleted.expense.section');
+    Route::post('/expense-restore/{id}', [ExpenseController::class, 'restore'])->name('expense.restore');
+    Route::delete('/expense-force-delete/{id}', [ExpenseController::class, 'forceDelete'])->name('expense.forceDelete');
+    Route::get('/expenses/pdf', [ExpenseController::class, 'downloadPDF'])->name('expenses.pdf');
+    
+    // Route::view('/expen/pdf', 'admin.pages.expense.pdf');
 
     // Get types and employees based on department
     Route::get('/get-employee', [ExpenseController::class, 'getTypeEmployee'])->name('get.type.employee');
-
 
     //slider
     Route::get('/slider-section', [SliderController::class, 'index'])->name('slider.section');

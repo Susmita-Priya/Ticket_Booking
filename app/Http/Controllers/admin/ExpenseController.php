@@ -11,6 +11,7 @@ use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Yoeunes\Toastr\Facades\Toastr;
+use PDF;
 
 class ExpenseController extends Controller
 {
@@ -27,50 +28,55 @@ class ExpenseController extends Controller
 
     public function index()
     {
+        $query = Expense::query();
+
         if (auth()->user()->hasRole('Super Admin')) {
-            $expenses = Expense::latest()->get();
+            $query->latest();
+        } else {
+            $query->where('company_id', auth()->user()->id)->latest();
+        }
+
+        if ($department = request('department')) {
+            $query->where('department', $department);
+        }
+
+        if ($type = request('type')) {
+            $query->where('type', $type);
+        }
+
+        if ($fromDate = request('from_date')) {
+            $query->whereDate('date', '>=', $fromDate);
+        }
+
+        if ($toDate = request('to_date')) {
+            $query->whereDate('date', '<=', $toDate);
+        }
+        if (auth()->user()->hasRole('Super Admin')) {
+            $expenses = $query->latest()->get();
             $employees = Employee::latest()->get();
             $counters = Counter::latest()->get();
             $vehicles = Vehicle::latest()->get();
             $routes = Route::latest()->get();
         } else {
-            $expenses = Expense::where('company_id', auth()->user()->id)->latest()->get();
+            $expenses = $query->where('company_id',auth()->user()->id)->latest()->get();
             $employees = Employee::where('company_id', auth()->user()->id)->latest()->get();
             $counters = Counter::where('company_id', auth()->user()->id)->latest()->get();
             $vehicles = Vehicle::where('company_id', auth()->user()->id)->latest()->get();
             $routes = Route::where('company_id', auth()->user()->id)->latest()->get();
         }
+
         return view('admin.pages.expense.index', compact('expenses', 'employees', 'counters', 'vehicles', 'routes'));
     }
 
     public function getTypeEmployee(Request $request)
     {
-        // dd($request->all());
         $department = $request->department;
-        // $types = [];
         $employees = [];
-
-        // if ($department === 'Counter') {
-        //     $types = ["Counter Rent", "Maintenance", "Utilities"];
-        // } elseif ($department === 'Vehicle') {
-        //     $types = ["Fuel", "Maintenance"];
-        // } elseif ($department === 'Route') {
-        //     $types = ["Route Cost"];
-        // } elseif ($department === 'Owner') {
-        //     $types = ["Vehicle Expense"];
-        // } elseif (in_array($department, ['Checker', 'Driver', 'Helper', 'Supervisor'])) {
-        //     $types = ["Salary"];
-        //     // dd($types);
-        // } else {
-        //     $types = [];
-        // }
 
         if ($department) {
             $employees = Employee::where('department', $department)->get(['id', 'name']); 
         }
-        //return redirect()->back()->withInput();
         return response()->json([
-            // 'types' => $types,
             'employees' => $employees,
         ]);
     }
@@ -142,6 +148,65 @@ class ExpenseController extends Controller
             $expense->delete();
 
             Toastr::success('Expense Deleted Successfully', 'Success');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            // Handle the exception here
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+        }
+    }
+
+    public function downloadPDF(Request $request)
+    {
+        // Fetch filtered expenses based on request parameters
+        $expenses = Expense::when($request->department, function ($query, $department) {
+                return $query->where('department', $department);
+            })
+            ->when($request->type, function ($query, $type) {
+                return $query->where('type', $type);
+            })
+            ->when($request->from_date, function ($query, $from_date) {
+                return $query->whereDate('date', '>=', $from_date);
+            })
+            ->when($request->to_date, function ($query, $to_date) {
+                return $query->whereDate('date', '<=', $to_date);
+            })
+            ->get();
+
+        // Load the PDF view and pass the expenses data
+        $pdf = PDF::loadView('admin.pages.expense.pdf', compact('expenses'));
+
+        // Download PDF
+        return $pdf->download('expense_report.pdf');
+    }
+
+    public function deletedExpense()
+    {
+        $deletedExpenses = Expense::onlyTrashed()->get();
+
+        return view('admin.pages.expense.deleted', compact('deletedExpenses'));
+    }
+
+    public function restore($id)
+    {
+        try {
+            $expense = Expense::withTrashed()->find($id);
+            $expense->restore();
+
+            Toastr::success('Expense Restored Successfully', 'Success');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            // Handle the exception here
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+        }
+    }
+
+    public function forceDelete($id)
+    {
+        try {
+            $expense = Expense::withTrashed()->find($id);
+            $expense->forceDelete();
+
+            Toastr::success('Expense Deleted Permanently', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
             // Handle the exception here

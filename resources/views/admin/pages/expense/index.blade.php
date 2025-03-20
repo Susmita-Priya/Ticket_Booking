@@ -18,37 +18,50 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <div class="d-flex justify-content-end">
-                    @can('expense-create')
-                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addNewModalId">Add
-                            New</button>
-                    @endcan
+                <div class="d-flex align-items-center">
+                    <form method="GET" action="{{ route('expense.section') }}" class="d-flex gap-2">
+                        <select name="department" class="form-select" style="width: 200px;">
+                            <option value="" selected>All Departments</option>
+                            @foreach (['Checker', 'Driver', 'Helper', 'Supervisor', 'Route Manager', 'Owner', 'Counter', 'Vehicle', 'Route'] as $dept)
+                                <option value="{{ $dept }}" {{ request('department') == $dept ? 'selected' : '' }}>{{ $dept }}</option>
+                            @endforeach
+                        </select>
+                        <select name="type" class="form-select" style="width: 200px;">
+                            <option value="" selected>All Expense Types</option>
+                            <option value="Salary" {{ request('type') == 'Salary' ? 'selected' : '' }}>Salary</option>
+                            <option value="Counter Rent" {{ request('type') == 'Counter Rent' ? 'selected' : '' }}>Counter Rent</option>
+                            <option value="Maintenance" {{ request('type') == 'Maintenance' ? 'selected' : '' }}>Maintenance</option>
+                            <option value="Utilities" {{ request('type') == 'Utilities' ? 'selected' : '' }}>Utilities</option>
+                            <option value="Fuel" {{ request('type') == 'Fuel' ? 'selected' : '' }}>Fuel</option>
+                            <option value="Route Cost" {{ request('type') == 'Route Cost' ? 'selected' : '' }}>Route Cost</option>
+                            <option value="Vehicle Expense" {{ request('type') == 'Vehicle Expense' ? 'selected' : '' }}>Vehicle Expense</option>
+                        </select>
+                        <input type="date" name="from_date" class="form-control" value="{{ request('from_date') }}" placeholder="From Date">
+                        <input type="date" name="to_date" class="form-control" value="{{ request('to_date') }}" placeholder="To Date">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <a href="{{ route('expense.section') }}" class="btn btn-secondary">Reset</a>
+                        
+                    </form>
+                    <div class="d-flex justify-content-between align-items-center ms-2 w-100">
+                        <a href="{{ route('expenses.pdf', request()->all()) }}" class="btn btn-success">Download PDF</a>
+                        @can('expense-create')
+                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addNewModalId">Add New</button>
+                        @endcan
+                    </div>
                 </div>
             </div>
+
             <div class="card-body table-responsive">
+                <h3 class="text-center">List of all expenses</h3>
                 <table id="basic-datatable" class="table table-striped nowrap w-100">
+                    
                     <thead>
                         <tr>
                             <th>S/N</th>
                             <th>Company Name</th>
                             <th>Department</th>
                             <th>Type</th>
-                            {{-- @if ($expense->employee_name)
-                                <th>Employee Name</th>
-                            @endif
-                            @if ($expense->counter)
-                                <th>Counter</th>
-                            @endif
-                            @if ($expense->vehicle)
-                                <th>Vehicle</th>
-                            @endif
-                            @if ($expense->route)
-                                <th>Route</th>
-                            @endif --}}
                             <th>Name</th>
-                            {{-- <th>Counter</th>
-                            <th>Vehicle</th>
-                            <th>Route</th> --}}
                             <th>Amount</th>
                             <th>Date</th>
                             <th>Status</th>
@@ -80,13 +93,13 @@
                                 <td>{{ $expense->type }}</td>
                                 <td>{{ $expense->employee->name ?? ($expense->counter->name ?? ($expense->vehicle->name ?? ($expense->route->fromLocation->name . ' to ' . $expense->route->toLocation->name ?? 'N/A'))) }}
                                 </td>
-                                {{-- <td>{{ $expense->employee_name ?? 'N/A' }}</td>
-                                <td>{{ $expense->counter ?? 'N/A' }}</td>
-                                <td>{{ $expense->vehicle ?? 'N/A' }}</td>
-                                <td>{{ $expense->route ?? 'N/A' }}</td> --}}
-                                <td>{{ $expense->amount }}TK</td>
+                                <td>{{ number_format($expense->amount, 2) }}TK</td>
                                 <td>{{ \Carbon\Carbon::parse($expense->date)->format('d-m-Y') }}</td>
-                                <td>{{ $expense->status == 1 ? 'Active' : 'Inactive' }}</td>
+                                <td>
+                                    <span class="badge {{ $expense->status == 1 ? 'bg-success' : 'bg-danger' }}">
+                                        {{ $expense->status == 1 ? 'Active' : 'Inactive' }}
+                                    </span>
+                                </td>
                                 <td style="width: 100px;">
                                     <div class="d-flex justify-content-end gap-1">
                                         @can('expense-edit')
@@ -270,6 +283,11 @@
                                 </div>
                             </tr>
                         @endforeach
+                        <tr>
+                            <td colspan="5" class="text-end"><strong>Total Expense:</strong></td>
+                            <td><strong><span class="text-danger">{{ number_format($expenses->sum('amount'), 2) }}TK</span></strong></td>
+                            <td colspan="3"></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

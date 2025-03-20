@@ -60,7 +60,7 @@
                                     $user = auth()->user();
                                     $companyLogo = \App\Models\SiteSetting::where('company_id', $user->id)->orWhere('company_id', $user->is_registration_by)->first()->logo ?? 'backend/images/bb.png';
                                     @endphp
-                    {{-- <img src="{{ URL::to($companyLogo) }}" alt="logo" style="height: 50px;"> --}}
+                                    {{-- <img src="{{ URL::to($companyLogo) }}" alt="logo" style="height: 50px;"> --}}
                                     <img src="{{ public_path($companyLogo) }}" alt="logo" style=" width: 100px; height:50px; margin-right: 10px; object-fit: contain;">
                                 </div>
                                 

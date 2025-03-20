@@ -379,6 +379,12 @@
                                         </li>
                                     @endcan
 
+                                    @can('deleted-expense-list')
+                                        <li>
+                                            <a href="{{ route('deleted.expense.section') }}">Deleted Expense</a>
+                                        </li>
+                                    @endcan
+
                                     @can('account-list')
                                         <li>
                                             <a href="{{ route('account.section') }}">Account</a>
