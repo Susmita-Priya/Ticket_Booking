@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Seat;
 use App\Models\TicketBooking;
 use App\Models\Trip;
 use Illuminate\Database\QueryException;
@@ -24,6 +25,13 @@ class TicketBookingController extends Controller
         $trip = Trip::find($request->trip_id)->first();
         $company_id = $trip->company_id;
         $vehicle_id = $trip->vehicle_id;
+        $selectedSeats = $request->seat_data;
+
+        if (!is_array($selectedSeats)) {
+            return response()->json([
+                'message' => 'Invalid seat data format'
+            ], 400);
+        }
 
         // Check if the booking already exists
         $existingBooking = TicketBooking::where('trip_id', $request->trip_id)
@@ -39,7 +47,7 @@ class TicketBookingController extends Controller
 
         try {
             $booking = new TicketBooking();
-            $user_id = $request->id;
+            $user_id = $request->user_id;
             $booking->company_id = $company_id;
             $booking->trip_id = $request->trip_id;
             $booking->vehicle_id = $vehicle_id;
@@ -50,6 +58,18 @@ class TicketBookingController extends Controller
             $booking->type = 'App';
             $booking->user_id = $user_id;
             $booking->save();
+            foreach ($selectedSeats as $seat) {
+                $seatModel = Seat::where('id', $seat['seatId'])->first();
+                if ($seatModel) {
+                    $seatModel->is_booked = 2;
+                    $seatModel->save();
+                } else {
+                    return response()->json([
+                        'message' => 'Seat not found for ID: ' . $seat['seatId']
+                    ], 404);
+                }
+            }
+
 
             return response()->json([
                 'message' => 'Ticket Booking created successfully',

@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Amenities;
 use App\Models\JourneyType;
 use App\Models\PlaneJourney;
 use App\Models\Route;
+use App\Models\SiteSetting;
 use App\Models\Trip;
 use Illuminate\Http\Request;
+use Spatie\Permission\Commands\Show;
 
 class SearchController extends Controller
 {
@@ -87,24 +90,30 @@ class SearchController extends Controller
         // Ensure checkers_id is an array for each trip route
         foreach ($trips as $trip) {
             $trip->route->checkers_id = is_string($trip->route->checkers_id)
-            ? json_decode($trip->route->checkers_id, true)
-            : [];
+                ? json_decode($trip->route->checkers_id, true)
+                : [];
 
             $trip->route->via_counters_id = is_string($trip->route->via_counters_id)
                 ? json_decode($trip->route->via_counters_id, true)
                 : [];
 
+            // Decode amenities_id if it's a string
             $trip->vehicle->amenities_id = is_string($trip->vehicle->amenities_id)
-            ? json_decode($trip->vehicle->amenities_id, true)
-            : [];
+                ? json_decode($trip->vehicle->amenities_id, true)
+                : [];
 
-            $trip->vehicle->seats = $trip->vehicle->seats()->select( 'id','seat_no', 'is_booked')->get();
+            // Fetch multiple amenities using whereIn
+            $trip->vehicle->amenities = Amenities::whereIn('id', $trip->vehicle->amenities_id)
+                ->select('id', 'name')
+                ->get();
+
+            $trip->vehicle->seats = $trip->vehicle->seats()->select('id', 'seat_no', 'is_booked')->get();
         }
 
-    
         // Load related details for each trip
         foreach ($trips as $trip) {
             $trip->company;
+            $trip->company->siteSetting;
             $trip->route;
             $trip->route->fromLocation;
             $trip->route->fromLocation->district;
@@ -116,14 +125,13 @@ class SearchController extends Controller
             $trip->route->endCounter;
             $trip->route->routeManager;
             $trip->vehicle;
+            $trip->vehicle->amenities;
             $trip->vehicle->seats;
             $trip->vehicle->owner;
             $trip->vehicle->type;
             $trip->driver;
             $trip->supervisor;
         }
-
-
 
         // Return the results with related details
         return response()->json([

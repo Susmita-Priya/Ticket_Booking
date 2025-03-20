@@ -33,6 +33,11 @@ class User extends Authenticatable
         'is_registration_by',
     ];
 
+    public function siteSetting()
+    {
+        return $this->hasOne(SiteSetting::class,'company_id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -52,4 +57,6 @@ class User extends Authenticatable
         //'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
 }

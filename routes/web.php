@@ -316,13 +316,8 @@ Route::middleware('auth')->group(callback: function () {
     Route::put('/expense-update/{id}', [ExpenseController::class, 'update'])->name('expense.update');
     Route::get('/expense-delete/{id}', [ExpenseController::class, 'destroy'])->name('expense.destroy');
 
-    // web.php
-
-Route::get('/fetch/employees', [ExpenseController::class, 'fetchEmployees'])->name('fetch.employees');
-Route::get('/fetch/expense/types', [ExpenseController::class, 'fetchExpenseTypes'])->name('fetch.expense.types');
-Route::get('/fetch/counters', [ExpenseController::class, 'fetchCounters'])->name('fetch.counters');
-Route::get('/fetch/vehicles', [ExpenseController::class, 'fetchVehicles'])->name('fetch.vehicles');
-Route::get('/fetch/routes', [ExpenseController::class, 'fetchRoutes'])->name('fetch.routes');
+    // Get types and employees based on department
+    Route::get('/get-employee', [ExpenseController::class, 'getTypeEmployee'])->name('get.type.employee');
 
 
     //slider

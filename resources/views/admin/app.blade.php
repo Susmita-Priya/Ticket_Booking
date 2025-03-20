@@ -357,6 +357,44 @@
                         </li>
                     @endcan
 
+                    @can('accounting-list')
+                        <li class="side-nav-item">
+                            <a data-bs-toggle="collapse" href="#sidebarPages104" aria-expanded="false"
+                               aria-controls="sidebarPages104" class="side-nav-link">
+                                <i class="ri-bank-line"></i>
+                                <span>Accounting</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <div class="collapse" id="sidebarPages104">
+                                <ul class="side-nav-second-level">
+                                    @can('income-list')
+                                        <li>
+                                            <a href="{{ route('income.section') }}">Income</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('expense-list')
+                                        <li>
+                                            <a href="{{ route('expense.section') }}">Expense</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('account-list')
+                                        <li>
+                                            <a href="{{ route('account.section') }}">Account</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('transaction-list')
+                                        <li>
+                                            <a href="{{ route('transaction.section') }}">Transaction</a>
+                                        </li>
+                                    @endcan
+                                </ul>
+                            </div>
+                        </li>
+                    @endcan
+
                     @can('role-and-permission-list')
                         <li class="side-nav-item">
                             <a data-bs-toggle="collapse" href="#sidebarPages1" aria-expanded="false"

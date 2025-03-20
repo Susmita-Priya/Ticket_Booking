@@ -73,18 +73,12 @@
                                         <span class="badge bg-warning">Route Manager</span>
                                     @elseif($expense->department == 'Owner')
                                         <span class="badge bg-info">Owner</span>
-                                    @elseif($expense->department == 'Counter')
-                                        <span class="badge bg-light">Counter</span>
-                                    @elseif($expense->department == 'Vehicle')
-                                        <span class="badge bg-primary">Vehicle</span>
-                                    @elseif($expense->department == 'Route')
-                                        <span class="badge bg-secondary">Route</span>
                                     @else
                                         <span class="badge bg-dark">{{ $expense->department }}</span>
                                     @endif
                                 </td>
                                 <td>{{ $expense->type }}</td>
-                                <td>{{ $expense->employee->name ?? ($expense->counter->name ?? ($expense->vehicle->name ?? ($expense->route->name ?? 'N/A'))) }}
+                                <td>{{ $expense->employee->name ?? ($expense->counter->name ?? ($expense->vehicle->name ?? ($expense->route->fromLocation->name . ' to ' . $expense->route->toLocation->name ?? 'N/A'))) }}
                                 </td>
                                 {{-- <td>{{ $expense->employee_name ?? 'N/A' }}</td>
                                 <td>{{ $expense->counter ?? 'N/A' }}</td>
@@ -127,62 +121,55 @@
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
                                                             <label for="department" class="form-label">Department</label>
-                                                            <select name="department" class="form-select">
-                                                                <option value="Checker"
-                                                                    {{ $expense->department == 'Checker' ? 'selected' : '' }}>
-                                                                    Checker</option>
-                                                                <option value="Driver"
-                                                                    {{ $expense->department == 'Driver' ? 'selected' : '' }}>
-                                                                    Driver</option>
-                                                                <option value="Helper"
-                                                                    {{ $expense->department == 'Helper' ? 'selected' : '' }}>
-                                                                    Helper</option>
-                                                                <option value="Supervisor"
-                                                                    {{ $expense->department == 'Supervisor' ? 'selected' : '' }}>
-                                                                    Supervisor</option>
-                                                                <option value="Route Manager"
-                                                                    {{ $expense->department == 'Route Manager' ? 'selected' : '' }}>
-                                                                    Route Manager</option>
-                                                                <option value="Owner"
-                                                                    {{ $expense->department == 'Owner' ? 'selected' : '' }}>
-                                                                    Owner</option>
-                                                                <option value="Counter"
-                                                                    {{ $expense->department == 'Counter' ? 'selected' : '' }}>
-                                                                    Counter</option>
-                                                                <option value="Vehicle"
-                                                                    {{ $expense->department == 'Vehicle' ? 'selected' : '' }}>
-                                                                    Vehicle</option>
-                                                                <option value="Route"
-                                                                    {{ $expense->department == 'Route' ? 'selected' : '' }}>
-                                                                    Route</option>
-                                                            </select>
+                                                            <input type="text" class="form-control" value="{{ $expense->department }}" disabled>
                                                         </div>
                                                     </div>
 
                                                     <div class="row">
                                                         <div class="col-12 mb-3">
-                                                            <label for="type" class="form-label">Type</label>
-                                                            <input type="text" id="type" name="type"
-                                                                class="form-control" value="{{ $expense->type }}" required>
+                                                            <label for="type" class="form-label">Expense Type</label>
+                                                            <select name="type" id="type" class="form-select" required>
+                                                                <option value="" disabled>Select Expense Type</option>
+                                                                <option value="Salary" {{ $expense->type == 'Salary' ? 'selected' : '' }}>Salary</option>
+                                                                <option value="Counter Rent" {{ $expense->type == 'Counter Rent' ? 'selected' : '' }}>Counter Rent</option>
+                                                                <option value="Maintenance" {{ $expense->type == 'Maintenance' ? 'selected' : '' }}>Maintenance</option>
+                                                                <option value="Utilities" {{ $expense->type == 'Utilities' ? 'selected' : '' }}>Utilities</option>
+                                                                <option value="Fuel" {{ $expense->type == 'Fuel' ? 'selected' : '' }}>Fuel</option>
+                                                                <option value="Route Cost" {{ $expense->type == 'Route Cost' ? 'selected' : '' }}>Route Cost</option>
+                                                                <option value="Vehicle Expense" {{ $expense->type == 'Vehicle Expense' ? 'selected' : '' }}>Vehicle Expense</option>
+                                                            </select>
                                                         </div>
                                                     </div>
-                                                    @if ($expense->employee_name)
+
+                                                    @if ($expense->employee)
                                                         <div class="row">
                                                             <div class="col-12 mb-3">
                                                                 <label for="employee_name" class="form-label">Employee
                                                                     Name</label>
-                                                                <input type="text" id="employee_name"
-                                                                    name="employee_name" class="form-control"
-                                                                    value="{{ $expense->employee_name }}">
+                                                                <select id="employee_name" name="employee_id" class="form-select">
+                                                                    <option value="" disabled>Select Employee</option>
+                                                                    @foreach ($employees as $employee)
+                                                                        <option value="{{ $employee->id }}" {{ $expense->employee->id == $employee->id ? 'selected' : '' }}>
+                                                                            {{ $employee->name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     @endif
+                                                    
                                                     @if ($expense->counter)
                                                         <div class="row">
                                                             <div class="col-12 mb-3">
                                                                 <label for="counter" class="form-label">Counter</label>
-                                                                <input type="text" id="counter" name="counter"
-                                                                    class="form-control" value="{{ $expense->counter }}">
+                                                                <select name="counter_id" id="counter" class="form-select">
+                                                                    <option value="" disabled>Select Counter</option>
+                                                                    @foreach ($counters as $counter)
+                                                                        <option value="{{ $counter->id }}" {{ $expense->counter->id == $counter->id ? 'selected' : '' }}>
+                                                                            {{ $counter->name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     @endif
@@ -190,8 +177,14 @@
                                                         <div class="row">
                                                             <div class="col-12 mb-3">
                                                                 <label for="vehicle" class="form-label">Vehicle</label>
-                                                                <input type="text" id="vehicle" name="vehicle"
-                                                                    class="form-control" value="{{ $expense->vehicle }}">
+                                                                <select name="vehicle_id" id="vehicle" class="form-select">
+                                                                    <option value="" disabled>Select Vehicle</option>
+                                                                    @foreach ($vehicles as $vehicle)
+                                                                        <option value="{{ $vehicle->id }}" {{ $expense->vehicle->id == $vehicle->id ? 'selected' : '' }}>
+                                                                            {{ $vehicle->name }} (Coach-{{ $vehicle->vehicle_no }})
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     @endif
@@ -199,8 +192,14 @@
                                                         <div class="row">
                                                             <div class="col-12 mb-3">
                                                                 <label for="route" class="form-label">Route</label>
-                                                                <input type="text" id="route" name="route"
-                                                                    class="form-control" value="{{ $expense->route }}">
+                                                                <select name="route_id" id="route" class="form-select">
+                                                                    <option value="" disabled>Select Route</option>
+                                                                    @foreach ($routes as $route)
+                                                                        <option value="{{ $route->id }}" {{ $expense->route->id == $route->id ? 'selected' : '' }}>
+                                                                            {{ $route->fromLocation->name }} to {{ $route->toLocation->name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     @endif
@@ -278,361 +277,230 @@
     </div>
 
     <!-- Add Modal -->
-    <div class="modal fade" id="addNewModalId" data-bs-backdrop="static" tabindex="-1" role="dialog"
-        aria-labelledby="addNewModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="addNewModalLabel">Add</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="post" action="{{ route('expense.store') }}" enctype="multipart/form-data">
-                        @csrf
+<div class="modal fade" id="addNewModalId" data-bs-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="addNewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="addNewModalLabel">Add</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{{ route('expense.store') }}" enctype="multipart/form-data">
+                    @csrf
 
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <label for="department" class="form-label">Department</label>
-                                <select name="department" id="department" class="form-select">
-                                    <option value="" disabled selected>Select Department</option>
-                                    <option value="Checker">Checker</option>
-                                    <option value="Driver">Driver</option>
-                                    <option value="Helper">Helper</option>
-                                    <option value="Supervisor">Supervisor</option>
-                                    <option value="Route Manager">Route Manager</option>
-                                    <option value="Owner">Owner</option>
-                                    <option value="Counter">Counter</option>
-                                    <option value="Vehicle">Vehicle</option>
-                                    <option value="Route">Route</option>
-                                </select>
-                            </div>
+                    <!-- Department Selection -->
+                    <div class="col-12 mb-3">
+                        <label for="department" class="form-label">Department</label>
+                        <select name="department" id="department" class="form-select" required>
+                            <option value="" disabled selected>Select Department</option>
+                            @foreach (['Checker', 'Driver', 'Helper', 'Supervisor', 'Route Manager', 'Owner', 'Counter', 'Vehicle', 'Route'] as $dept)
+                                <option value="{{ $dept }}" {{ old('department') == $dept ? 'selected' : '' }}>{{ $dept }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                     <!-- Employee Selection -->
+                     <div class="col-12 mb-3" id="employee_field" style="display: none;">
+                        <label for="employee" class="form-label">Employee Name</label>
+                        <select name="employee_id" id="employee" class="form-select">
+                            <option value="" disabled selected>Select Employee</option>
+                        </select>
+                    </div>
+
+                    <!-- Expense Type -->
+                    {{-- <div class="col-12 mb-3">
+                        <label for="type" class="form-label">Expense Type</label>
+                        <select name="type" id="type" class="form-select" required>
+                            <option value="" disabled selected>Select Expense Type</option>
+                        </select>
+                    </div> --}}
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="type" class="form-label">Expense Type</label>
+                            <select name="type" id="type" class="form-select" required>
+                                <option value="" disabled selected>Select Expense Type</option>
+                                <option value="Salary">Salary</option>
+                                <option value="Counter Rent">Counter Rent</option>
+                                <option value="Maintenance">Maintenance</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Fuel">Fuel</option>
+                                <option value="Route Cost">Route Cost</option>
+                                <option value="Vehicle Expense">Vehicle Expense</option>
+                            </select>
                         </div>
+                    </div>
 
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <label for="type" class="form-label">Expense Type</label>
-                                <select name="type" id="type" class="form-select" required>
-                                    <option value="" disabled selected>Select Expense Type</option>
-                                    <option value="Salary">Salary</option>
-                                    <option value="Counter Rent">Counter Rent</option>
-                                    <option value="Maintenance">Maintenance</option>
-                                    <option value="Utilities">Utilities</option>
-                                    <option value="Fuel">Fuel</option>
-                                    <option value="Route Cost">Route Cost</option>
-                                    <option value="Vehicle Expense">Vehicle Expense</option>
-                                </select>
-                            </div>
-                        </div>
+                    <!-- Counter Field -->
+                    <div class="col-12 mb-3" id="counter_field" style="display: none;">
+                        <label for="counter" class="form-label">Counter</label>
+                        <select name="counter_id" id="counter" class="form-select">
+                            <option value="" disabled selected>Select Counter</option>
+                            @foreach ($counters as $counter)
+                                <option value="{{ $counter->id }}">{{ $counter->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                        <div class="row" id="employee_field">
-                            <div class="col-12 mb-3">
-                                <label for="employee" class="form-label">Employee Name</label>
-                                <select name="employee_id" id="employee" class="form-select">
-                                    <option value="" disabled selected>Select Employee</option>
-                                    @foreach ($employees as $employee)
-                                        <option value="{{ $employee->id }}"
-                                            data-department="{{ $employee->department }}">
-                                            {{ $employee->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+                    <!-- Vehicle Field -->
+                    <div class="col-12 mb-3" id="vehicle_field" style="display: none;">
+                        <label for="vehicle" class="form-label">Vehicle</label>
+                        <select name="vehicle_id" id="vehicle" class="form-select">
+                            <option value="" disabled selected>Select Vehicle</option>
+                            @foreach ($vehicles as $vehicle)
+                                <option value="{{ $vehicle->id }}">{{ $vehicle->name }} (Coach-{{ $vehicle->vehicle_no }})</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                        <div class="row" id="counter_field" style="display: none;">
-                            <div class="col-12 mb-3">
-                                <label for="counter" class="form-label">Counter</label>
-                                <select name="counter_id" id="counter" class="form-select">
-                                    <option value="" disabled selected>Select Counter</option>
-                                    @foreach ($counters as $counter)
-                                        <option value="{{ $counter->id }}">{{ $counter->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+                    <!-- Route Field -->
+                    <div class="col-12 mb-3" id="route_field" style="display: none;">
+                        <label for="route" class="form-label">Route</label>
+                        <select name="route_id" id="route" class="form-select">
+                            <option value="" disabled selected>Select Route</option>
+                            @foreach ($routes as $route)
+                                <option value="{{ $route->id }}">{{ $route->fromLocation->name }} to {{ $route->toLocation->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                        <div class="row" id="vehicle_field" style="display: none;">
-                            <div class="col-12 mb-3">
-                                <label for="vehicle" class="form-label">Vehicle</label>
-                                <select name="vehicle_id" id="vehicle" class="form-select">
-                                    <option value="" disabled selected>Select Vehicle</option>
-                                    @foreach ($vehicles as $vehicle)
-                                        <option value="{{ $vehicle->id }}">{{ $vehicle->name }} (
-                                            Coach-{{ $vehicle->vehicle_no }} )</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+                    <!-- Amount -->
+                    <div class="col-12 mb-3">
+                        <label for="amount" class="form-label">Amount</label>
+                        <input type="text" id="amount" name="amount" class="form-control" required>
+                    </div>
 
-                        <div class="row" id="route_field" style="display: none;">
-                            <div class="col-12 mb-3">
-                                <label for="route" class="form-label">Route</label>
-                                <select name="route_id" id="route" class="form-select">
-                                    <option value="" disabled selected>Select Route</option>
-                                    @foreach ($routes as $route)
-                                        <option value="{{ $route->id }}">{{ $route->fromLocation->name }} to
-                                            {{ $route->toLocation->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+                    <!-- Date -->
+                    <div class="col-12 mb-3">
+                        <label for="date" class="form-label">Date</label>
+                        <input type="date" id="date" name="date" class="form-control" required>
+                    </div>
 
-                        {{-- <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                const addNewModal = document.getElementById('addNewModalId');
+                    <!-- Submit Button -->
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </div>
 
-                                addNewModal.addEventListener('show.bs.modal', function() {
-                                    const departmentSelect = document.getElementById('department');
-                                    const typeSelect = document.getElementById('type');
-                                    console.log(departmentSelect, typeSelect);
-                                    const employeeField = document.getElementById('employee_field');
-                                    const employeeSelect = document.getElementById('employee');
-                                    const counterField = document.getElementById('counter_field');
-                                    const vehicleField = document.getElementById('vehicle_field');
-                                    const routeField = document.getElementById('route_field');
-
-                                    // Store all employee options
-                                    let allEmployeeOptions = Array.from(employeeSelect.options).slice(1);
-
-                                    // Expense type options categorized by department
-                                    const expenseOptions = {
-                                        "Checker": ["Salary"],
-                                        "Driver": ["Salary"],
-                                        "Helper": ["Salary"],
-                                        "Supervisor": ["Salary"],
-                                        "Route Manager": ["Salary"],
-                                        "Counter": ["Counter Rent", "Maintenance", "Utilities"],
-                                        "Vehicle": ["Fuel", "Maintenance"],
-                                        "Route": ["Route Cost"],
-                                        "Owner": ["Vehicle Expense"]
-                                    };
-
-                                    // Function to reset form fields properly
-                                    function resetFields() {
-                                        employeeField.style.display = 'none';
-                                        counterField.style.display = 'none';
-                                        vehicleField.style.display = 'none';
-                                        routeField.style.display = 'none';
-                                        typeSelect.innerHTML =
-                                            `<option value="" disabled selected>Select Expense Type</option>`;
-                                    }
-
-                                    // Function to update expense types based on department
-                                    // function updateExpenseTypeOptions(department) {
-                                    //     typeSelect.innerHTML =
-                                    //         `<option value="" disabled selected>Select Expense Type</option>`;
-
-                                    //     if (expenseOptions[department]) {
-                                    //         expenseOptions[department].forEach(type => {
-                                    //             const option = document.createElement("option");
-                                    //             option.value = type;
-                                    //             option.textContent = type;
-                                    //             typeSelect.appendChild(option);
-                                    //         });
-                                    //     } else {
-
-                                    //     }
-                                    // }
-                                    function updateExpenseTypeOptions(department) {
-                                        typeSelect.innerHTML =
-                                            `<option value="" disabled selected>Select Expense Type</option>`;
-
-                                        if (expenseOptions[department]) {
-                                            expenseOptions[department].forEach(type => {
-                                                const option = document.createElement("option");
-                                                option.value = type;
-                                                option.textContent = type;
-                                                typeSelect.appendChild(option);
-                                            });
-                                        }
-                                    }
-
-                                    // Function to filter employees by department
-                                    function filterEmployees(department) {
-                                        employeeSelect.innerHTML =
-                                            `<option value="" disabled selected>Select Employee</option>`;
-
-                                        allEmployeeOptions.forEach(option => {
-                                            if (option.dataset.department === department) {
-                                                employeeSelect.appendChild(option.cloneNode(true));
-                                            }
-                                        });
-
-                                        if (employeeSelect.options.length === 1) {
-                                            employeeSelect.innerHTML =
-                                                `<option value="" disabled>No employees available</option>`;
-                                        }
-                                    }
-
-                                    // Department change event listener
-                                    departmentSelect.addEventListener('change', function() {
-                                        const selectedDepartment = this.value;
-                                        resetFields();
-
-                                        if (["Counter", "Vehicle", "Route"].includes(selectedDepartment)) {
-                                            document.getElementById(`${selectedDepartment.toLowerCase()}_field`).style
-                                                .display =
-                                                'block';
-                                        } else if (["Checker", "Driver", "Helper", "Supervisor", "Route Manager",
-                                                "Owner"
-                                            ].includes(
-                                                selectedDepartment)) {
-                                            employeeField.style.display = 'block';
-                                            filterEmployees(selectedDepartment);
-
-                                        }
-
-                                        updateExpenseTypeOptions(selectedDepartment);
-                                    });
-
-                                    // Trigger change event initially
-                                    // departmentSelect.dispatchEvent(new Event('change'));
-                                    addNewModal.addEventListener('show.bs.modal', function() {
-                                        departmentSelect.dispatchEvent(new Event('change'));
-                                    });
-                                });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                            });
-                        </script> --}}
-
-
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <label for="amount" class="form-label">Amount</label>
-                                <input type="text" id="amount" name="amount" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <label for="date" class="form-label">Date</label>
-                                <input type="date" id="date" name="date" class="form-control" required>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-end">
-                            <button class="btn btn-primary" type="submit">Submit</button>
-                        </div>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const addNewModal = document.getElementById('addNewModalId');
-            const departmentSelect = document.getElementById('department');
-            const typeSelect = document.getElementById('type');
-            const employeeField = document.getElementById('employee_field');
-            const employeeSelect = document.getElementById('employee');
-            const counterField = document.getElementById('counter_field');
-            const vehicleField = document.getElementById('vehicle_field');
-            const routeField = document.getElementById('route_field');
-    
-            // Store all employee options
-            let allEmployeeOptions = Array.from(employeeSelect.options).slice(1);
-    
-            // Expense type options categorized by department
-            const expenseOptions = {
-                "Checker": ["Salary"],
-                "Driver": ["Salary"],
-                "Helper": ["Salary"],
-                "Supervisor": ["Salary"],
-                "Route Manager": ["Salary"],
-                "Counter": ["Counter Rent", "Maintenance", "Utilities"],
-                "Vehicle": ["Fuel", "Maintenance"],
-                "Route": ["Route Cost"],
-                "Owner": ["Vehicle Expense"]
-            };
-    
-            // Function to reset form fields properly
-            function resetFields() {
-                employeeField.style.display = 'none';
-                counterField.style.display = 'none';
-                vehicleField.style.display = 'none';
-                routeField.style.display = 'none';
-                typeSelect.innerHTML =
-                    `<option value="" disabled selected>Select Expense Type</option>`;
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Expense Type & Employee Fetching Script -->
+<script>
+    $(document).ready(function () {
+        // When modal opens, fetch data if a department is already selected
+        $('#addNewModalId').on('shown.bs.modal', function () {
+            if ($('#department').val()) {
+                fetchTypeAndEmployee();
             }
-    
-            // Function to update expense types based on department
-            function updateExpenseTypeOptions(department) {
-                typeSelect.innerHTML =
-                    `<option value="" disabled selected>Select Expense Type</option>`;
-    
-                if (expenseOptions[department]) {
-                    expenseOptions[department].forEach(type => {
-                        const option = document.createElement("option");
-                        option.value = type;
-                        option.textContent = type;
-                        typeSelect.appendChild(option);
+        });
+
+        // Listen for department changes
+        $('#department').on('change', fetchTypeAndEmployee);
+    });
+
+    function fetchTypeAndEmployee() {
+        const department = $('#department').val();
+        const employeeField = $('#employee_field');
+        const employeeSelect = $('#employee');
+
+        employeeSelect.html('<option value="" disabled selected>Select Employee</option>');
+        resetFields();
+
+        if (!department) return;
+
+        $.ajax({
+            url: `/get-employee?department=${department}`,
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data.employees && data.employees.length > 0) {
+                    employeeField.show();
+                    data.employees.forEach(employee => {
+                        employeeSelect.append(new Option(employee.name, employee.id));
                     });
                 }
-            }
-    
-            // Function to filter employees by department
-            function filterEmployees(department) {
-                employeeSelect.innerHTML =
-                    `<option value="" disabled selected>Select Employee</option>`;
-    
-                allEmployeeOptions.forEach(option => {
-                    if (option.dataset.department === department) {
-                        employeeSelect.appendChild(option.cloneNode(true));
-                    }
-                });
-    
-                if (employeeSelect.options.length === 1) {
-                    employeeSelect.innerHTML =
-                        `<option value="" disabled>No employees available</option>`;
+
+                // Show additional fields based on department
+                if (["Counter", "Vehicle", "Route"].includes(department)) {
+                    $(`#${department.toLowerCase()}_field`).show();
+                } else if (["Checker", "Driver", "Helper", "Supervisor", "Route Manager", "Owner"].includes(department)) {
+                    employeeField.show();
                 }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching data:", error);
             }
-    
-            // Department change event listener
-            departmentSelect.addEventListener('change', function() {
-                const selectedDepartment = this.value;
-                resetFields();
-    
-                // Handle the display of fields based on department
-                if (["Counter", "Vehicle", "Route"].includes(selectedDepartment)) {
-                    document.getElementById(`${selectedDepartment.toLowerCase()}_field`).style.display = 'block';
-                } else if (["Checker", "Driver", "Helper", "Supervisor", "Route Manager", "Owner"].includes(selectedDepartment)) {
-                    employeeField.style.display = 'block';
-                    filterEmployees(selectedDepartment);
-                }
-    
-                // Update expense type options
-                updateExpenseTypeOptions(selectedDepartment);
-            });
-    
-            // Trigger department change event when the modal is shown
-            addNewModal.addEventListener('show.bs.modal', function() {
-                departmentSelect.dispatchEvent(new Event('change'));
-            });
         });
-    </script>
-    
+    }
+
+    function resetFields() {
+        $('#counter_field, #vehicle_field, #route_field, #employee_field').hide();
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        // When edit modal opens, fetch data if a department is already selected
+        $('[id^=editNewModalId]').on('shown.bs.modal', function () {
+            const modalId = $(this).attr('id');
+            const department = $(`#${modalId} select[name="department"]`).val();
+            if (department) {
+                fetchEditEmployee(modalId, department);
+            }
+        });
+
+        // Listen for department changes in edit modals
+        $('[id^=editNewModalId] select[name="department"]').on('change', function () {
+            const modalId = $(this).closest('.modal').attr('id');
+            const department = $(this).val();
+            fetchEditEmployee(modalId, department);
+        });
+    });
+
+    function fetchEditEmployee(modalId, department) {
+        const employeeField = $(`#${modalId} #employee_field`);
+        const employeeSelect = $(`#${modalId} #employee_name`);
+
+        employeeSelect.html('<option value="" disabled>Select Employee</option>');
+        resetEditFields(modalId);
+
+        if (!department) return;
+
+        $.ajax({
+            url: `/get-employee?department=${department}`,
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data.employees && data.employees.length > 0) {
+                    employeeField.show();
+                    data.employees.forEach(employee => {
+                        employeeSelect.append(new Option(employee.name, employee.id));
+                    });
+                }
+
+                // Show additional fields based on department
+                if (["Counter", "Vehicle", "Route"].includes(department)) {
+                    $(`#${modalId} #${department.toLowerCase()}_field`).show();
+                } else if (["Checker", "Driver", "Helper", "Supervisor", "Route Manager", "Owner"].includes(department)) {
+                    employeeField.show();
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    }
+
+    function resetEditFields(modalId) {
+        $(`#${modalId} #counter_field, #${modalId} #vehicle_field, #${modalId} #route_field, #${modalId} #employee_field`).hide();
+    }
+</script>
+
+
     @endsection

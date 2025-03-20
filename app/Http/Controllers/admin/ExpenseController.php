@@ -43,6 +43,38 @@ class ExpenseController extends Controller
         return view('admin.pages.expense.index', compact('expenses', 'employees', 'counters', 'vehicles', 'routes'));
     }
 
+    public function getTypeEmployee(Request $request)
+    {
+        // dd($request->all());
+        $department = $request->department;
+        // $types = [];
+        $employees = [];
+
+        // if ($department === 'Counter') {
+        //     $types = ["Counter Rent", "Maintenance", "Utilities"];
+        // } elseif ($department === 'Vehicle') {
+        //     $types = ["Fuel", "Maintenance"];
+        // } elseif ($department === 'Route') {
+        //     $types = ["Route Cost"];
+        // } elseif ($department === 'Owner') {
+        //     $types = ["Vehicle Expense"];
+        // } elseif (in_array($department, ['Checker', 'Driver', 'Helper', 'Supervisor'])) {
+        //     $types = ["Salary"];
+        //     // dd($types);
+        // } else {
+        //     $types = [];
+        // }
+
+        if ($department) {
+            $employees = Employee::where('department', $department)->get(['id', 'name']); 
+        }
+        //return redirect()->back()->withInput();
+        return response()->json([
+            // 'types' => $types,
+            'employees' => $employees,
+        ]);
+    }
+
     public function store(Request $request)
     {
         try {
@@ -73,7 +105,7 @@ class ExpenseController extends Controller
         }
     }
 
-   
+
     public function update(Request $request, $id)
     {
         try {
@@ -96,6 +128,20 @@ class ExpenseController extends Controller
             $expense->save();
 
             Toastr::success('Expense Updated Successfully', 'Success');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            // Handle the exception here
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $expense = Expense::find($id);
+            $expense->delete();
+
+            Toastr::success('Expense Deleted Successfully', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
             // Handle the exception here

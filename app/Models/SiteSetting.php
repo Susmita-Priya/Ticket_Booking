@@ -27,4 +27,9 @@ class SiteSetting extends Model
         'instagram_link',
         'youtube_link',
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
