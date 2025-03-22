@@ -70,8 +70,6 @@ class SeatBookingController extends Controller
             $filter_date = $request->filter_date;
             $vehicle = Vehicle::where('id', $request->vehicle_id)->firstOrFail();
 
-
-
             if ($user->hasRole('User')) {
                 $bookings = TicketBooking::where('company_id', $user->id)
                 ->orWhere('company_id', $user->is_registration_by)

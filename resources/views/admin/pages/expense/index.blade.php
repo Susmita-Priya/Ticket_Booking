@@ -64,7 +64,7 @@
                             <th>Name</th>
                             <th>Amount</th>
                             <th>Date</th>
-                            <th>Status</th>
+                            {{-- <th>Status</th> --}}
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -95,11 +95,11 @@
                                 </td>
                                 <td>{{ number_format($expense->amount, 2) }}TK</td>
                                 <td>{{ \Carbon\Carbon::parse($expense->date)->format('d-m-Y') }}</td>
-                                <td>
+                                {{-- <td>
                                     <span class="badge {{ $expense->status == 1 ? 'bg-success' : 'bg-danger' }}">
                                         {{ $expense->status == 1 ? 'Active' : 'Inactive' }}
                                     </span>
-                                </td>
+                                </td> --}}
                                 <td style="width: 100px;">
                                     <div class="d-flex justify-content-end gap-1">
                                         @can('expense-edit')
