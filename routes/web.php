@@ -33,6 +33,7 @@ use App\Http\Controllers\admin\completedTripController;
 use App\Http\Controllers\admin\employeeController;
 use App\Http\Controllers\admin\ExpenseController;
 use App\Http\Controllers\admin\HelperController;
+use App\Http\Controllers\admin\IncomeController;
 use App\Http\Controllers\admin\PDFController;
 use App\Http\Controllers\admin\PlaceController;
 use App\Http\Controllers\admin\ServiceController;
@@ -324,6 +325,12 @@ Route::middleware('auth')->group(callback: function () {
 
     // Get types and employees based on department
     Route::get('/get-employee', [ExpenseController::class, 'getTypeEmployee'])->name('get.type.employee');
+
+    //Income Section
+    Route::get('/income-section', [IncomeController::class, 'index'])->name('income.section');
+    Route::get('/income/pdf', [IncomeController::class, 'downloadPDF'])->name('income.pdf');
+
+    Route::get('/get-vehicles', [IncomeController::class, 'getVehicles'])->name('get.vehicles');
 
     //slider
     Route::get('/slider-section', [SliderController::class, 'index'])->name('slider.section');

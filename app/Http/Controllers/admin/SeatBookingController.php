@@ -40,24 +40,30 @@ class SeatBookingController extends Controller
             ->get();
             $bookings = TicketBooking::where('company_id', $user->id)
             ->orWhere('company_id', $user->is_registration_by)
+            ->where('type', 'Counter')
             ->latest()
             ->get();
 
         } elseif ($user->hasRole('Company')) {
             $vehicles = Vehicle::where('company_id', $user->id)
             ->orWhereHas('company', function ($query) use ($user) {
-                $query->where('is_registration_by', $user->id);
+            $query->where('is_registration_by', $user->id);
             })
             ->get();
-            $bookings = TicketBooking::where('company_id', $user->id)
+            $bookings = TicketBooking::where('type', 'Counter')
+            ->where('company_id', $user->id)
             ->orWhereHas('company', function ($query) use ($user) {
                 $query->where('is_registration_by', $user->id);
+                })
+            ->orWhereHas('company', function ($query) use ($user) {
+            $query->where('is_registration_by', $user->id);
             })
+            
             ->latest()
             ->get();
         } elseif ($user->hasRole('Super Admin')) {
             $vehicles = Vehicle::latest()->get();
-            $bookings = TicketBooking::latest()->get();
+            $bookings = TicketBooking::where('type', 'Counter')->latest()->get();
         }
 
 
@@ -75,17 +81,23 @@ class SeatBookingController extends Controller
                 ->orWhere('company_id', $user->is_registration_by)
                 ->where('vehicle_id', $request->vehicle_id)
                 ->where('travel_date', $filter_date)
+                ->where('type', 'Counter')
                 ->latest()
                 ->get();
             } elseif ($user->hasRole('Company')) {
                 $bookings = TicketBooking::where('company_id', $user->id)
                 ->where('vehicle_id', $request->vehicle_id)
                 ->where('travel_date', $filter_date)
+                ->where('type', 'Counter')
+                ->orWhereHas('company', function ($query) use ($user) {
+                    $query->where('is_registration_by', $user->id);
+                    })
                 ->latest()
                 ->get();
             } elseif ($user->hasRole('Super Admin')) {
                 $bookings = TicketBooking::where('vehicle_id', $request->vehicle_id)
                 ->where('travel_date', $filter_date)
+                ->where('type', 'Counter')
                 ->latest()
                 ->get();
             }

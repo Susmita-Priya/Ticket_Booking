@@ -48,7 +48,7 @@ class Kernel extends ConsoleKernel
             } catch (\Exception $e) {
                 Log::error('Failed to update vehicle statuses: ' . $e->getMessage());
             }
-        })->everyMinute(); // Adjust the frequency as needed
+        })->everySixHours(); // Adjust the frequency as needed
     }
 
     /**

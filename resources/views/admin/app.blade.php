@@ -385,7 +385,7 @@
                                         </li>
                                     @endcan
 
-                                    @can('account-list')
+                                    {{-- @can('account-list')
                                         <li>
                                             <a href="{{ route('account.section') }}">Account</a>
                                         </li>
@@ -395,7 +395,7 @@
                                         <li>
                                             <a href="{{ route('transaction.section') }}">Transaction</a>
                                         </li>
-                                    @endcan
+                                    @endcan --}}
                                 </ul>
                             </div>
                         </li>

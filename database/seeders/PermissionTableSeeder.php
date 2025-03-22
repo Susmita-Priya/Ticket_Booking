@@ -247,6 +247,9 @@ class PermissionTableSeeder extends Seeder
             'expense-delete',
             'deleted-expense-list',
 
+            //For Income
+            'income-list',
+
 
         ];
         foreach ($permissions as $permission) {

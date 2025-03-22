@@ -29,11 +29,14 @@ class ExpenseController extends Controller
     public function index()
     {
         $query = Expense::query();
+        $user = auth()->user();
 
         if (auth()->user()->hasRole('Super Admin')) {
             $query->latest();
         } else {
-            $query->where('company_id', auth()->user()->id)->latest();
+            $query->where('company_id', $user->id)->orWhereHas('company', function ($query) use ($user) {
+                $query->where('is_registration_by', $user->id);
+                })->latest();
         }
 
         if ($department = request('department')) {
@@ -58,7 +61,7 @@ class ExpenseController extends Controller
             $vehicles = Vehicle::latest()->get();
             $routes = Route::latest()->get();
         } else {
-            $expenses = $query->where('company_id',auth()->user()->id)->latest()->get();
+            $expenses = $query->latest()->get();
             $employees = Employee::where('company_id', auth()->user()->id)->latest()->get();
             $counters = Counter::where('company_id', auth()->user()->id)->latest()->get();
             $vehicles = Vehicle::where('company_id', auth()->user()->id)->latest()->get();
