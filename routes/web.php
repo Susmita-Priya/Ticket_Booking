@@ -145,7 +145,7 @@ Route::middleware('auth')->group(callback: function () {
     Route::post('/reserve-seats', [TicketBookingController::class, 'reserveSeats'])->name('reserve.seats');
     Route::post('/cancel/reservation', [TicketBookingController::class, 'cancelReservation'])->name('cancel.reservation');
     Route::get('/booking-confirmation', [TicketBookingController::class, 'showConfirmation'])->name('booking.confirmation');
-    Route::get('/generate-pdf', [TicketBookingController::class, 'generatePDF'])->name('generate.pdf');
+    Route::get('/generate-pdf/{id}', [TicketBookingController::class, 'generatePDF'])->name('generate.pdf');
 
 
     //Seat Booking Section after ticket booking done
@@ -213,7 +213,7 @@ Route::middleware('auth')->group(callback: function () {
 
     //Site Setting
     Route::get('/site-setting', [SiteSettingController::class, 'index'])->name('site.setting');
-    Route::post('/site-settings-store-update/{id?}', [SiteSettingController::class, 'createOrUpdate'])->name('site-settings.createOrUpdate');
+    Route::post('/site-settings-store-update/{company_id?}', [SiteSettingController::class, 'createOrUpdate'])->name('site-settings.createOrUpdate');
 
 
     //Division Section

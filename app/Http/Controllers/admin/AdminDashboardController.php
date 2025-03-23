@@ -29,45 +29,40 @@ class AdminDashboardController extends Controller
     public function index()
     {
         $user = auth()->user();
-        if (auth()->user()->hasRole('Super Admin')) {
+        if ($user->status != 1) {
+            return redirect()->back()->with('error', 'Your account is inactive.');
+        }
+        if ($user->hasRole('Super Admin')) {
             $counters = Counter::latest()->get();
             $routes = Route::latest()->get();
-            $routeManagers = Employee::where('department',"Route Manager")->latest()->get();
-            $checkers = Employee::where('department',"Checker")->latest()->get();
-            $owners = Employee::where('department',"Owner")->latest()->get();
-            $drivers = Employee::where('department',"Driver")->latest()->get();
+            $routeManagers = Employee::where('department', "Route Manager")->latest()->get();
+            $checkers = Employee::where('department', "Checker")->latest()->get();
+            $owners = Employee::where('department', "Owner")->latest()->get();
+            $drivers = Employee::where('department', "Driver")->latest()->get();
             $vehicles = Vehicle::latest()->get();
             $trips = Trip::latest()->get();
-        } elseif (auth()->user()->hasRole('Company')) {
-            $counters = Counter::where('company_id', auth()->
-                user()->id)->latest()->get();
-            $routes = Route::where('company_id', auth()->
-                user()->id)->latest()->get();
-            $routeManagers = Employee::where('department',"Route Manager")->where('company_id', auth()->
-                user()->id)->latest()->get();
-            $checkers = Employee::where('department',"Checker")->where('company_id', auth()->
-                user()->id)->latest()->get();
-            $owners = Employee::where('department',"Owner")->where('company_id', auth()->
-                user()->id)->latest()->get();
-            $drivers = Employee::where('department',"Driver")->where('company_id', auth()->
-                user()->id)->latest()->get();
-            $vehicles = Vehicle::where('company_id', auth()->
-                user()->id)->latest()->get();
-            $trips = Trip::where('company_id', auth()->
-                user()->id)->latest()->get();
-        }else {
+        } elseif ($user->hasRole('Company')) {
+            $counters = Counter::where('company_id', $user->id)->latest()->get();
+            $routes = Route::where('company_id', $user->id)->latest()->get();
+            $routeManagers = Employee::where('department', "Route Manager")->where('company_id', $user->id)->latest()->get();
+            $checkers = Employee::where('department', "Checker")->where('company_id', $user->id)->latest()->get();
+            $owners = Employee::where('department', "Owner")->where('company_id', $user->id)->latest()->get();
+            $drivers = Employee::where('department', "Driver")->where('company_id', $user->id)->latest()->get();
+            $vehicles = Vehicle::where('company_id', $user->id)->latest()->get();
+            $trips = Trip::where('company_id', $user->id)->latest()->get();
+        } else {
             $counters = Counter::where('company_id', $user->id)
                 ->orWhere('company_id', $user->is_registration_by)->latest()->get();
             $routes = Route::where('company_id', $user->id)
                 ->orWhere('company_id', $user->is_registration_by)->latest()->get();
             $routeManagers = Employee::where('company_id', $user->id)
-                ->orWhere('company_id', $user->is_registration_by)->where('department',"Route Manager")->latest()->get();
+                ->orWhere('company_id', $user->is_registration_by)->where('department', "Route Manager")->latest()->get();
             $checkers = Employee::where('company_id', $user->id)
-                ->orWhere('company_id', $user->is_registration_by)->where('department',"Checker")->latest()->get();
+                ->orWhere('company_id', $user->is_registration_by)->where('department', "Checker")->latest()->get();
             $owners = Employee::where('company_id', $user->id)
-                ->orWhere('company_id', $user->is_registration_by)->where('department',"Owner")->latest()->get();
+                ->orWhere('company_id', $user->is_registration_by)->where('department', "Owner")->latest()->get();
             $drivers = Employee::where('company_id', $user->id)
-                ->orWhere('company_id', $user->is_registration_by)->where('department',"Driver")->latest()->get();
+                ->orWhere('company_id', $user->is_registration_by)->where('department', "Driver")->latest()->get();
             $vehicles = Vehicle::where('company_id', $user->id)
                 ->orWhere('company_id', $user->is_registration_by)->latest()->get();
             $trips = Trip::where('company_id', $user->id)

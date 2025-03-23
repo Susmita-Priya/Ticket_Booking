@@ -125,30 +125,19 @@
                                                                 <div class="mb-3">
                                                                     <label for="seat_no" class="form-label">Seat
                                                                         No</label>
-                                                                    <input type="text" id="seat_no" name="seat_no"
-                                                                        value="{{ $seatData->seat_no }}"
-                                                                        class="form-control" placeholder="Enter Seat No"
-                                                                        required>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        {{-- <div class="row">
-                                                            <div class="col-12">
-                                                                <div class="mb-3">
-                                                                    <label for="example-select" class="form-label">Is
-                                                                        Booked</label>
-                                                                    <select name="is_booked" class="form-select">
-                                                                        <option value="1"
-                                                                            {{ $seatData->is_booked === 1 ? 'selected' : '' }}>
-                                                                            Yes</option>
-                                                                        <option value="0"
-                                                                            {{ $seatData->is_booked === 0 ? 'selected' : '' }}>
-                                                                            No</option>
+                                                                    <select id="seat_no" name="seat_no" class="form-select" required>
+                                                                        @foreach (range('A', 'G') as $row)
+                                                                            @foreach (range(1, 6) as $col)
+                                                                                <option value="{{ $row . $col }}" 
+                                                                                    {{ $seatData->seat_no == $row . $col ? 'selected' : '' }}>
+                                                                                    {{ $row . $col }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                        </div> --}}
+                                                        </div>
 
                                                         <div class="row">
                                                             <div class="col-12">
@@ -234,8 +223,13 @@
                                 <div class="col-12">
                                     <div class="mb-3">
                                         <label for="seat_no" class="form-label">Seat No</label>
-                                        <input type="text" id="seat_no" name="seat_no" class="form-control"
-                                            placeholder="Enter Seat No" required>
+                                        <select id="seat_no" name="seat_no" class="form-select" required>
+                                            @foreach (range('A', 'G') as $row)
+                                                @foreach (range(1, 6) as $col)
+                                                    <option value="{{ $row . $col }}">{{ $row . $col }}</option>
+                                                @endforeach
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>

@@ -23,11 +23,11 @@ class SiteSettingController extends Controller
     }
     public function index()
     {
-        $siteSettings = SiteSetting::where('id', 1)->first();
+        $siteSettings = SiteSetting::where('company_id', auth()->user()->id)->first();
         return view('admin.pages.siteSetting.siteSetting', compact('siteSettings'));
     }
 
-    public function createOrUpdate(Request $request, $id = null)
+    public function createOrUpdate(Request $request, $company_id = null)
     {
         // Validation rules
         $rules = [
@@ -60,8 +60,8 @@ class SiteSettingController extends Controller
         }
 
         // Check if the setting with the provided ID exists
-        if ($id) {
-            $setting = SiteSetting::findOrFail($id);
+        if ($company_id) {
+            $setting = SiteSetting::findOrFail($company_id);
             $setting->update($request->except(['favicon', 'logo', 'site_preview_image'])); // Exclude image fields from update
         } else {
             // If no ID provided, create a new setting
@@ -89,7 +89,7 @@ class SiteSettingController extends Controller
             $setting->site_preview_image = 'images/site_preview_image/'.$previewName;
         }
         $setting->save();
-        $message = $id ? 'Site settings updated successfully!' : 'Site settings created successfully!';
+        $message = $company_id ? 'Site settings updated successfully!' : 'Site settings created successfully!';
         return redirect()->back()->with('success', $message);
     }
 

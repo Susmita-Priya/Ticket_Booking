@@ -100,8 +100,12 @@
             <a href="{{ route('dashboard') }}" class="logo logo-light">
                 <span class="logo-lg">
                     @php
-                         $user = auth()->user();
-                        $companyLogo = \App\Models\SiteSetting::where('company_id', $user->id)->orWhere('company_id', $user->is_registration_by)->first()->logo ?? 'backend/images/bb.png';
+                        $user = auth()->user();
+                        $parent_id = $user->is_registration_by;
+                        
+                        $companyLogo = \App\Models\SiteSetting::where('company_id', $user->id)->value('logo') 
+                                            ?? \App\Models\SiteSetting::where('company_id', $parent_id)->value('logo');
+
                     @endphp
                     <img src="{{ URL::to($companyLogo) }}" alt="logo" style="height: 50px;">
                 </span>
@@ -138,6 +142,12 @@
                                     @can('cupon-list')
                                         <li>
                                             <a href="{{ route('cupon.section') }}">Cupon</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('site-setting')
+                                        <li>
+                                            <a href="{{ route('site.setting') }}">Site Setting</a>
                                         </li>
                                     @endcan
 
@@ -256,14 +266,11 @@
                                         </li>
                                     @endcan
 
-
                                     @can('booking-list')
                                         <li>
                                             <a href="{{ route('booking.section') }}">Plane Booking</a>
                                         </li>
                                     @endcan
-
-
 
                                 </ul>
                             </div>
@@ -347,11 +354,6 @@
                                         </li>
                                     @endcan
 
-                                    @can('site-setting')
-                                        <li>
-                                            <a href="{{ route('site.setting') }}">Site Setting</a>
-                                        </li>
-                                    @endcan
                                 </ul>
                             </div>
                         </li>
@@ -420,6 +422,12 @@
                                     @can('role-list')
                                         <li>
                                             <a href="{{ url('roles') }}">Role & Permission</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('company-list')
+                                        <li>
+                                            <a href="{{ route('company.section') }}">Company</a>
                                         </li>
                                     @endcan
                                 </ul>

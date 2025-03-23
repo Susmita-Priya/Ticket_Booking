@@ -140,6 +140,7 @@ class PermissionTableSeeder extends Seeder
             //For Ticket Booking
             'ticket-booking',
             'ticket-booking-list',
+            'ticket-print',
 
 
             //Site Setting

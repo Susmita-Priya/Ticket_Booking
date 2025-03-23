@@ -161,6 +161,30 @@ public function store(Request $request)
         Toastr::success('Ticket Booking Successfully', 'Success');
 }
 
+public function generatePDF($id)
+{
+    try {
+        $ticketBooking = TicketBooking::findOrFail($id);
+        $trip = Trip::find($ticketBooking->trip_id);
+        $vehicle = Vehicle::find($ticketBooking->vehicle_id);
+        $seatsData = json_decode($ticketBooking->seat_data, true);
+
+        $data = [
+            'ticket_booking' => $ticketBooking,
+            'trip' => $trip,
+            'vehicle' => $vehicle,
+            'seatsData' => $seatsData,
+            'passenger_name' => $ticketBooking->passenger_name,
+            'passenger_phone' => $ticketBooking->passenger_phone,
+        ];
+
+        $pdf = FacadePdf::loadView('admin.pages.ticketBooking.print', $data);
+        return $pdf->download('ticket_' . $ticketBooking->id . '.pdf');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+    }
+}
+
 public function reserveSeats(Request $request)
 {
     $request->validate([

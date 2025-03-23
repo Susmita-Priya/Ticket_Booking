@@ -142,11 +142,15 @@
                                 <td>{{ $booking->passenger_name ?? 'N/A' }}</td>
                                 <td>{{ $booking->passenger_phone }}</td>
                                 <td>{{ $booking->company->name }}</td>
-                                <td>
-                                    <div class="d-flex ">
+                                <td style="width: 100px;">
+                                    <div class="d-flex justify-content-end gap-1 ">
                                         {{-- @can('seats-edit')
                                         <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{$booking->id}}">Edit</button>
                                         @endcan --}}
+                                        @can('ticket-print')
+                                            <a href="{{ route('generate.pdf', $booking->id) }}"
+                                                class="btn btn-primary btn-sm">Print</a>
+                                        @endcan
                                         @can('booking-delete')
                                             <a href="{{ route('seat_booking.destroy', $booking->id) }}"
                                                 class="btn btn-danger btn-sm" data-bs-toggle="modal"
