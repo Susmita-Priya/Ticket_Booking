@@ -27,12 +27,12 @@ class SeatController extends Controller
     }
 
     public function index(Request $request)
-    {
-        $vehicle_id = $request->vehicle_id;
-        $flag = $vehicle_id ? 1 : 0;
-        $seat_count = 0;
+{
+    $vehicle_id = $request->vehicle_id;
+    $flag = $vehicle_id ? 1 : 0;
+    $seat_count = 0;
 
-        if (auth()->user()->hasRole('Super Admin')) {
+    if (auth()->user()->hasRole('Super Admin')) {
         $vehicles = Vehicle::where('status', 1)->get();
         $seats = Seat::where('vehicle_id', $vehicle_id)
             ->orderBy('seat_no', 'asc')
@@ -40,19 +40,36 @@ class SeatController extends Controller
 
         $vehicle = Vehicle::firstWhere('id', $vehicle_id);
         $trip = Trip::where('vehicle_id', $request->vehicle_id)->first();
-        } else{
-            $vehicles = Vehicle::where('company_id', auth()->user()->id)->where('status', 1)->get();
+
+        // Get the booked seats for this vehicle
+        $bookedSeats = Seat::where('vehicle_id', $vehicle_id)
+            ->pluck('seat_no') // Get the seat_no of all seats already assigned to this vehicle
+            ->toArray();
+    } else {
+        $vehicles = Vehicle::where('company_id', auth()->user()->id)
+            ->where('status', 1)
+            ->get();
         $seats = Seat::where('company_id', auth()->user()->id)
             ->where('vehicle_id', $vehicle_id)
             ->orderBy('seat_no', 'asc')
             ->get();
 
         $vehicle = Vehicle::firstWhere('id', $vehicle_id);
-        $trip = Trip::where('company_id', auth()->user()->id)->where('vehicle_id', $request->vehicle_id)->first();
-        }
+        $trip = Trip::where('company_id', auth()->user()->id)
+            ->where('vehicle_id', $request->vehicle_id)
+            ->first();
 
-        return view('admin.pages.seat.index', compact('vehicles', 'vehicle', 'seats', 'trip', 'flag', 'seat_count'));
+        // Get the booked seats for this vehicle
+        $bookedSeats = Seat::where('company_id', auth()->user()->id)
+            ->where('vehicle_id', $vehicle_id)
+            ->pluck('seat_no')
+            ->toArray();
     }
+
+    // Pass the booked seats to the view
+    return view('admin.pages.seat.index', compact('vehicles', 'vehicle', 'seats', 'trip', 'flag', 'seat_count', 'bookedSeats'));
+}
+
 
 
     public function store(Request $request)

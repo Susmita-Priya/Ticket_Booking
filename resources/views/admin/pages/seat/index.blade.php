@@ -120,24 +120,35 @@
                                                         </select>
                                                     </div>
                                                 </div> --}}
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <div class="mb-3">
-                                                                    <label for="seat_no" class="form-label">Seat
-                                                                        No</label>
-                                                                    <select id="seat_no" name="seat_no" class="form-select" required>
-                                                                        @foreach (range('A', 'G') as $row)
-                                                                            @foreach (range(1, 6) as $col)
-                                                                                <option value="{{ $row . $col }}" 
-                                                                                    {{ $seatData->seat_no == $row . $col ? 'selected' : '' }}>
-                                                                                    {{ $row . $col }}
-                                                                                </option>
-                                                                            @endforeach
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="mb-3">
+                                                            <label for="seat_no" class="form-label">Seat No</label>
+                                                            <select id="seat_no" name="seat_no" class="form-select" required>
+                                                                @foreach (range('A', 'G') as $row)
+                                                                    @foreach (range(1, 6) as $col)
+                                                                        @php
+                                                                            $seatNo = $row . $col;
+                                                                        @endphp
+                                                                        <!-- Check if the seat is booked, disable it and apply the color -->
+                                                                        @if(in_array($seatNo, $bookedSeats))
+                                                                            <option value="{{ $seatNo }}" disabled class="text-danger">
+                                                                                {{ $seatNo }}
+                                                                            </option>
+                                                                        @else
+                                                                            <option value="{{ $seatNo }}" 
+                                                                                {{ $seatData->seat_no == $seatNo ? 'selected' : '' }}>
+                                                                                {{ $seatNo }}
+                                                                            </option>
+                                                                        @endif
+                                                                    @endforeach
+                                                                @endforeach
+                                                            </select>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                
 
                                                         <div class="row">
                                                             <div class="col-12">
@@ -226,13 +237,20 @@
                                         <select id="seat_no" name="seat_no" class="form-select" required>
                                             @foreach (range('A', 'G') as $row)
                                                 @foreach (range(1, 6) as $col)
-                                                    <option value="{{ $row . $col }}">{{ $row . $col }}</option>
+                                                    @php
+                                                        $seatNo = $row . $col;
+                                                    @endphp
+                                                    <option value="{{ $seatNo }}"
+                                                        @if(in_array($seatNo, $bookedSeats)) disabled class="text-danger" @endif>
+                                                        {{ $seatNo }}
+                                                    </option>
                                                 @endforeach
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
-                            </div>
+                            </div>                            
+                            
                             <div class="d-flex justify-content-end">
                                 <button class="btn btn-primary" type="submit">Submit</button>
                             </div>
@@ -242,6 +260,17 @@
             </div>
         </div>
     @endif
-
+    <script>
+        // Example of booked seats passed from the backend to JavaScript
+        var bookedSeats = @json($bookedSeats); // This will be an array of booked seat numbers
+    
+        // Disable already booked seats in the dropdown
+        document.querySelectorAll('#seat_no option').forEach(function(option) {
+            if (bookedSeats.includes(option.value)) {
+                option.disabled = true;
+            }
+        });
+    </script>
+    
 
 @endsection

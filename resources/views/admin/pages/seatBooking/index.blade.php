@@ -116,9 +116,13 @@
                                 <td>{{ $booking->vehicle->name ?? "N/A"}} <br>
                                     Vehicle No : {{ $booking->vehicle->vehicle_no ?? "N/A"}}</td>
                                 <td>
+                                    @php $totalTicketPrice = 0; @endphp
                                     @foreach (json_decode($booking->seat_data) as $seat)
                                         {{ $seat->seatNo }}<br>
-                                        @php $seatPrice = $seat->seatPrice; @endphp
+                                        @php
+                                        $seatPrice = $seat->seatPrice; 
+                                        $totalTicketPrice += $seatPrice;
+                                        @endphp
                                     @endforeach
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($booking->travel_date)->format('d-m-Y') }}</td>
@@ -138,7 +142,7 @@
                                         {{ "N/A" }}
                                     @endif
                                 </td>
-                                <td>{{ $booking->payments->total_payment ?? 'N/A' }} TK </br>
+                                <td><strong>Total Price: <span class="text-danger">{{ $totalTicketPrice }} TK</span> </strong></br>
                                     (Ticket Price : {{ $seatPrice }} TK)</td>
                                 <td>{{ $booking->passenger_name ?? 'N/A' }}</td>
                                 <td>{{ $booking->passenger_phone }}</td>
