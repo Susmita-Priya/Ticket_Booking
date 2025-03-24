@@ -40,7 +40,6 @@ class SeatBookingController extends Controller
             ->get();
             $bookings = TicketBooking::where('company_id', $user->id)
             ->orWhere('company_id', $user->is_registration_by)
-            ->where('type', 'Counter')
             ->latest()
             ->get();
 
@@ -50,8 +49,7 @@ class SeatBookingController extends Controller
             $query->where('is_registration_by', $user->id);
             })
             ->get();
-            $bookings = TicketBooking::where('type', 'Counter')
-            ->where('company_id', $user->id)
+            $bookings = TicketBooking::where('company_id', $user->id)
             ->orWhereHas('company', function ($query) use ($user) {
                 $query->where('is_registration_by', $user->id);
                 })
@@ -63,7 +61,7 @@ class SeatBookingController extends Controller
             ->get();
         } elseif ($user->hasRole('Super Admin')) {
             $vehicles = Vehicle::latest()->get();
-            $bookings = TicketBooking::where('type', 'Counter')->latest()->get();
+            $bookings = TicketBooking::latest()->get();
         }
 
 
