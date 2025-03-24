@@ -36,7 +36,7 @@ class TicketBookingController extends Controller
                     $seatData[] = [
                         'seatId' => $seatModel->id,
                         'seatNo' => $seatModel->seat_no,
-                        'SeatPrice' => $trip->ticket_price,
+                        'seatPrice' => $trip->ticket_price,
                     ];
                 } else {
                     return response()->json([
