@@ -38,6 +38,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Roles</th>
+            <th>Status</th>
             <th width="280px">Action</th>
         </tr>
     </thead>
@@ -54,6 +55,7 @@
                         @endforeach
                     @endif
                 </td>
+                <td>{{$user->status==1? 'Active':'Inactive'}}</td>
                 <td>
                     <a class="btn btn-info" href="{{ route('users.show',$user->id) }}">Show</a>
                     <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a>
