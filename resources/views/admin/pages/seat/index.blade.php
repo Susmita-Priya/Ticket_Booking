@@ -16,8 +16,8 @@
             </div>
         </div>
     </div>
-   
-    <div class="col-12">  
+
+    <div class="col-12">
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-end gap-1">
@@ -91,9 +91,9 @@
                                     </td>
 
                                     <!--Edit Modal -->
-                                    <div class="modal fade" id="editNewModalId{{ $seatData->id }}"
-                                        data-bs-backdrop="static" tabindex="-1" role="dialog"
-                                        aria-labelledby="editNewModalLabel{{ $seatData->id }}" aria-hidden="true">
+                                    <div class="modal fade" id="editNewModalId{{ $seatData->id }}" data-bs-backdrop="static"
+                                        tabindex="-1" role="dialog" aria-labelledby="editNewModalLabel{{ $seatData->id }}"
+                                        aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -120,35 +120,37 @@
                                                         </select>
                                                     </div>
                                                 </div> --}}
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="mb-3">
-                                                            <label for="seat_no" class="form-label">Seat No</label>
-                                                            <select id="seat_no" name="seat_no" class="form-select" required>
-                                                                @foreach (range('A', 'G') as $row)
-                                                                    @foreach (range(1, 6) as $col)
-                                                                        @php
-                                                                            $seatNo = $row . $col;
-                                                                        @endphp
-                                                                        <!-- Check if the seat is booked, disable it and apply the color -->
-                                                                        @if(in_array($seatNo, $bookedSeats))
-                                                                            <option value="{{ $seatNo }}" disabled class="text-danger">
-                                                                                {{ $seatNo }}
-                                                                            </option>
-                                                                        @else
-                                                                            <option value="{{ $seatNo }}" 
-                                                                                {{ $seatData->seat_no == $seatNo ? 'selected' : '' }}>
-                                                                                {{ $seatNo }}
-                                                                            </option>
-                                                                        @endif
-                                                                    @endforeach
-                                                                @endforeach
-                                                            </select>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="mb-3">
+                                                                    <label for="seat_no" class="form-label">Seat No</label>
+                                                                    <select id="seat_no" name="seat_no"
+                                                                        class="form-select" required>
+                                                                        @foreach (range('A', 'G') as $row)
+                                                                            @foreach (range(1, 6) as $col)
+                                                                                @php
+                                                                                    $seatNo = $row . $col;
+                                                                                @endphp
+                                                                                <!-- Check if the seat is booked, disable it and apply the color -->
+                                                                                @if (in_array($seatNo, $bookedSeats))
+                                                                                    <option value="{{ $seatNo }}"
+                                                                                        disabled class="text-danger">
+                                                                                        {{ $seatNo }}
+                                                                                    </option>
+                                                                                @else
+                                                                                    <option value="{{ $seatNo }}"
+                                                                                        {{ $seatData->seat_no == $seatNo ? 'selected' : '' }}>
+                                                                                        {{ $seatNo }}
+                                                                                    </option>
+                                                                                @endif
+                                                                            @endforeach
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                
+
+
 
                                                         <div class="row">
                                                             <div class="col-12">
@@ -241,7 +243,7 @@
                                                         $seatNo = $row . $col;
                                                     @endphp
                                                     <option value="{{ $seatNo }}"
-                                                        @if(in_array($seatNo, $bookedSeats)) disabled class="text-danger" @endif>
+                                                        @if (in_array($seatNo, $bookedSeats)) disabled class="text-danger" @endif>
                                                         {{ $seatNo }}
                                                     </option>
                                                 @endforeach
@@ -249,8 +251,8 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>                            
-                            
+                            </div>
+
                             <div class="d-flex justify-content-end">
                                 <button class="btn btn-primary" type="submit">Submit</button>
                             </div>
@@ -263,7 +265,7 @@
     <script>
         // Example of booked seats passed from the backend to JavaScript
         var bookedSeats = @json($bookedSeats); // This will be an array of booked seat numbers
-    
+
         // Disable already booked seats in the dropdown
         document.querySelectorAll('#seat_no option').forEach(function(option) {
             if (bookedSeats.includes(option.value)) {
@@ -271,6 +273,6 @@
             }
         });
     </script>
-    
+
 
 @endsection
