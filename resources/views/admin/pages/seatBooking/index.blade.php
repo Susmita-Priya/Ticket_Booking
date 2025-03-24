@@ -102,6 +102,7 @@
                             <th>Passenger Name</th>
                             <th>Passenger Phone</th>
                             <th>Booked By</th>
+                            <th>Type</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -142,6 +143,16 @@
                                 <td>{{ $booking->passenger_name ?? 'N/A' }}</td>
                                 <td>{{ $booking->passenger_phone }}</td>
                                 <td>{{ $booking->company->name }}</td>
+                                <td>
+                                    @if ($booking->type == 'Counter')
+                                        <span class="badge bg-warning">Counter</span>
+                                    @elseif ($booking->type == 'App')
+                                        <span class="badge bg-success">App</span>
+                                    @else
+                                        <span class="badge bg-secondary">Unknown</span>
+                                    @endif
+                                </td>
+                                
                                 <td style="width: 100px;">
                                     <div class="d-flex justify-content-end gap-1 ">
                                         {{-- @can('seats-edit')
