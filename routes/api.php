@@ -52,6 +52,9 @@ Route::middleware('auth:sanctum')->group(function () {
     //user info
     Route::get('/user-info', [UserController::class, 'userInfo']);
 
+    //user info update
+    Route::post('/update-info', [UserController::class, 'updateInfo']);
+
     //update password
     Route::post('/update-password', [UserController::class, 'updatePassword']);
 

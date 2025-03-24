@@ -99,6 +99,11 @@ class TicketBookingController extends Controller
 
         foreach ($bookings as $booking) {
             $booking->seat_data = json_decode($booking->seat_data);
+            $booking->company;
+            $booking->trip->route;
+            $booking->trip->route->fromLocation;
+            $booking->trip->route->toLocation;
+            $booking->vehicle;
         }
 
         return response()->json([

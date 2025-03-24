@@ -280,6 +280,28 @@ class UserController extends Controller
         ], 200);
     }
 
+    public function updateInfo(Request $request)
+{
+    // Validate the input
+    $this->validate($request, [
+        'name' => 'nullable|string|max:255',
+        'phone' => 'nullable|string|max:15',
+        'email' => 'nullable|email,', // Ignore current user's email
+    ]);
+
+    $user = Auth::user();
+
+    // Only update the fields that are present in the request
+    $user->update($request->only('name', 'phone', 'email'));
+
+    return response()->json([
+        'success' => true,
+        'message' => 'User information updated successfully.',
+        'user' => $user,
+    ], 200);
+}
+
+
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
@@ -287,6 +309,8 @@ class UserController extends Controller
             'message' => 'Logged out',
         ], 200);
     }
+
+
 
 
 }
